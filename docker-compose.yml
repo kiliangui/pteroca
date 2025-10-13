@@ -9,7 +9,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306"
+      - "33304:3306"
     volumes:
       - db_data_dev:/var/lib/mysql
     healthcheck:
@@ -22,7 +22,7 @@ services:
     container_name: pteroca_phpmyadmin_dev
     restart: always
     ports:
-      - "8080:80"
+      - "8088:80"
     environment:
       PMA_HOST: db
       PMA_USER: root
@@ -41,7 +41,7 @@ services:
         APP_ENV: dev
     container_name: pteroca_web_dev
     ports:
-      - "8000:8000"
+      - "8003:8000"
     environment:
       DATABASE_URL: "mysql://user:password@db:3306/pteroca?serverVersion=8.0"
       APP_ENV: dev
