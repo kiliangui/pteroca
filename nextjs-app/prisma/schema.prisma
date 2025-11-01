@@ -1,0 +1,313 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id                    String   @id @default(cuid())
+  email                 String   @unique
+  roles                 Json
+  password              String?
+  balance               String
+  name                  String?
+  surname               String?
+  pterodactylUserId     Int?
+  pterodactylUserApiKey String?
+  isVerified            Boolean  @default(false)
+  isBlocked             Boolean  @default(false)
+  avatarPath            String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime?
+  deletedAt             DateTime?
+  emailVerified         DateTime?
+
+  servers               Server[]
+  payments              Payment[]
+  logs                  Log[]
+  passwordResetRequests PasswordResetRequest[]
+  serverSubusers        ServerSubuser[]
+  serverLogs            ServerLog[]
+  accounts              Account[]
+  sessions              Session[]
+
+  @@map("user")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+
+  products    Product[]
+
+  @@map("category")
+}
+
+model Product {
+  id                Int      @id @default(autoincrement())
+  name              String
+  description       String?
+  isActive          Boolean  @default(true)
+  diskSpace         Int
+  memory            Int
+  io                Int
+  cpu               Int
+  dbCount           Int
+  swap              Int
+  backups           Int
+  ports             Int
+  nodes             Json?
+  eggs              Json?
+  eggsConfiguration String?
+  allowChangeEgg    Boolean  @default(false)
+  schedules         Int      @default(10)
+  threads           String?
+  createdAt         DateTime
+  updatedAt         DateTime?
+  deletedAt         DateTime?
+  categoryId        Int?
+
+  category          Category? @relation(fields: [categoryId], references: [id])
+  prices            ProductPrice[]
+  serverProducts    ServerProduct[]
+
+  @@map("product")
+}
+
+model ProductPrice {
+  id         Int      @id @default(autoincrement())
+  productId  Int
+  type       String
+  value      Int
+  unit       String
+  price      String
+  deletedAt  DateTime?
+
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_price")
+}
+
+model Server {
+  id                        Int      @id @default(autoincrement())
+  pterodactylServerId       Int
+  pterodactylServerIdentifier String
+  name                      String?
+  createdAt                 DateTime
+  expiresAt                 DateTime
+  isSuspended               Boolean  @default(false)
+  autoRenewal               Boolean  @default(false)
+  deletedAt                 DateTime?
+
+  user                      User     @relation(fields: [userId], references: [id])
+  userId                    String
+  serverProduct             ServerProduct?
+  logs                      ServerLog[]
+  subusers                  ServerSubuser[]
+
+  @@map("server")
+}
+
+model ServerProduct {
+  id                Int      @id @default(autoincrement())
+  serverId          Int      @unique
+  originalProductId Int?
+  name              String
+  diskSpace         Int
+  memory            Int
+  io                Int
+  cpu               Int
+  dbCount           Int
+  swap              Int
+  backups           Int
+  ports             Int
+  nodes             Json?
+  nest              Int?
+  eggs              Json?
+  eggsConfiguration String?
+  allowChangeEgg    Boolean  @default(false)
+  schedules         Int      @default(10)
+  threads           String?
+
+  server            Server           @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  originalProduct   Product?         @relation(fields: [originalProductId], references: [id])
+  prices            ServerProductPrice[]
+
+  @@map("server_product")
+}
+
+model ServerProductPrice {
+  id              Int      @id @default(autoincrement())
+  serverProductId Int
+  type            String
+  value           Int
+  unit            String
+  price           String
+  isSelected      Boolean  @default(false)
+  deletedAt       DateTime?
+
+  serverProduct   ServerProduct @relation(fields: [serverProductId], references: [id], onDelete: Cascade)
+
+  @@map("server_product_price")
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  sessionId     String
+  status        String?
+  amount        String
+  currency      String
+  balanceAmount String
+  usedVoucherId Int?
+  createdAt     DateTime
+  updatedAt     DateTime?
+
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  usedVoucher   Voucher? @relation(fields: [usedVoucherId], references: [id])
+
+  @@map("payment")
+}
+
+model Voucher {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  discount    String
+  type        String
+  uses        Int      @default(0)
+  maxUses     Int?
+  expiresAt   DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  payments    Payment[]
+
+  @@map("voucher")
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  actionId  String
+  details   String?
+  createdAt DateTime
+
+  user      User @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("log")
+}
+
+model PasswordResetRequest {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  expiresAt  DateTime
+  isUsed     Boolean  @default(false)
+
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+
+  @@map("password_reset_request")
+}
+
+model ServerLog {
+  id        Int      @id @default(autoincrement())
+  actionId  String
+  details   String?
+  createdAt DateTime
+
+  server    Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  serverId  Int
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("server_log")
+}
+
+model ServerSubuser {
+  id          Int      @id @default(autoincrement())
+  permissions Json
+  createdAt   DateTime
+  updatedAt   DateTime?
+
+  server      Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  serverId    Int
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@unique([serverId, userId])
+  @@map("server_subuser")
+}
+
+model Setting {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  value     String
+  type      String
+  context   String?
+  hierarchy Int      @default(100)
+
+  options   SettingOption[]
+
+  @@map("setting")
+}
+
+model SettingOption {
+  id           Int      @id @default(autoincrement())
+  settingName  String
+  optionKey    String
+  optionValue  String
+  sortOrder    Int      @default(0)
+  createdAt    DateTime
+  updatedAt    DateTime
+
+  setting      Setting? @relation(fields: [settingName], references: [name])
+
+  @@map("setting_option")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("account")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtoken")
+}
