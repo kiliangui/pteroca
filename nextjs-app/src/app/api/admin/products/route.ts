@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
     const cpu = parseInt(formData.get("cpu") as string)
     const io = parseInt(formData.get("io") as string)
     const isActive = formData.get("isActive") === "on"
+    const recommended = formData.get("recommended") === "on"
 
     if (!name || !diskSpace || !memory || !cpu || !io) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 })
@@ -58,13 +59,14 @@ export async function POST(request: NextRequest) {
         cpu,
         io,
         isActive,
+        recommended,
         categoryId,
         createdAt: new Date(),
         updatedAt: new Date(),
-        dbCount:3,
-        swap:0,
-        backups:2,
-        ports:2
+        dbCount: 3,
+        swap: 0,
+        backups: 2,
+        ports: 2,
       },
       include: {
         category: {

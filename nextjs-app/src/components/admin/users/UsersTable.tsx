@@ -123,6 +123,27 @@ export function UsersTable() {
     }
   }
 
+  const handleCreateStripeUser = async (user: User) => {
+    setCreatingUser(user.id)
+    try {
+      const response = await fetch(`/api/admin/users/${user.id}/create-stripe`, {
+        method: "POST",
+      })
+      if (response.ok) {
+        toast.success("Stripe customer created successfully")
+        fetchUsers()
+      }
+      else {
+        toast.error("Failed to create Stripe customer")
+      }
+  }
+    catch (error) {
+      toast.error("Failed to create Stripe customer")
+    } finally {
+      setCreatingUser(null)
+    }
+  }
+
   const handleCreatePterodactylUser = async (userId: string) => {
     setCreatingUser(userId)
 
@@ -263,6 +284,7 @@ export function UsersTable() {
                 <TableHead>Balance</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Pterodactyl</TableHead>
+                <TableHead>Stripe</TableHead>
                 <TableHead>Created</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -312,6 +334,33 @@ export function UsersTable() {
                           size="sm"
                           variant="outline"
                           onClick={() => handleCreatePterodactylUser(user.id)}
+                          disabled={creatingUser === user.id}
+                        >
+                          {creatingUser === user.id ? "Creating..." : "Create"}
+                        </Button>
+                      </div>
+                    )}
+                  </TableCell>
+
+                  <TableCell>
+                    {user.stripeId ? (
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">ID: {user.stripeId}</Badge>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleViewPterodactylUser(user.stripeId!)}
+                        >
+                          View
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary">Not Created</Badge>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleCreateStripeUser(user)}
                           disabled={creatingUser === user.id}
                         >
                           {creatingUser === user.id ? "Creating..." : "Create"}

@@ -1,5 +1,24 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Stripe Subscription Setup
+
+To enable Stripe subscriptions, add the following environment variables to your `.env.local` file:
+
+```
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PRICE_ID=price_12345
+STRIPE_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+You'll get these values from your Stripe Dashboard. Create a product with a recurring price to get the `STRIPE_PRICE_ID`.
+
+For local webhook testing, run:
+```bash
+npx stripe listen --forward-to localhost:3000/api/webhook
+```
+
 ## Getting Started
 
 First, run the development server:

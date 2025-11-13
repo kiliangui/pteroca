@@ -16,6 +16,7 @@ export async function PUT(
     const cpu = parseInt(formData.get("cpu") as string)
     const io = parseInt(formData.get("io") as string)
     const isActive = formData.get("isActive") === "on"
+    const recommended = formData.get("recommended") === "on"
 
     const product = await prisma.product.update({
       where: { id: parseInt(id) },
@@ -28,6 +29,7 @@ export async function PUT(
         io,
         isActive,
         categoryId,
+        recommended,
         updatedAt: new Date(),
       },
       include: {

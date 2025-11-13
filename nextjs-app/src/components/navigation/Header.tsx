@@ -30,7 +30,7 @@ const navigation = [
   },
   {
     name: "Store",
-    href: "/store",
+    href: "/create",
     icon: ShoppingCart,
   },
   {

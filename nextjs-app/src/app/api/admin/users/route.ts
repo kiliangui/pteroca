@@ -18,6 +18,7 @@ export async function GET() {
         createdAt: true,
         roles: true,
         pterodactylUserId: true,
+        stripeId: true,
       },
       orderBy: {
         createdAt: "desc",

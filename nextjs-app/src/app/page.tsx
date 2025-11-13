@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Server, Shield, Zap, Users } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Server, Shield, Zap, Users, Check } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -9,19 +10,39 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16">
         <header className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Professional Game Server Hosting
+            Play with your friends on your own game server !
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            Deploy and manage your game servers with ease. Fast, reliable, and secure hosting
-            powered by Pterodactyl with automated billing and management.
+            Deploy your server and start playing in minutes with our easy-to-use platform
           </p>
-          <div className="flex gap-4 justify-center">
-            <Button size="lg" asChild>
-              <Link href="/store">Browse Products</Link>
+          <div className="flex items-center justify-center mb-8">
+            <Select defaultValue="minecraft" >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="minecraft">Minecraft</SelectItem>
+                <SelectItem value="bedrock">Minecraft Bedrock</SelectItem>
+                <SelectItem value="csgo">Counter-Strike: Global Offensive</SelectItem>
+                <SelectItem value="tf2">Team Fortress 2</SelectItem>
+                <SelectItem value="rust">Rust</SelectItem>
+                <SelectItem value="ark">ARK: Survival Evolved</SelectItem>
+                </SelectContent>
+            </Select>
+            <Button size="lg" className="ml-4" asChild>
+              <Link href="/create">Deploy Now</Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/dashboard">Dashboard</Link>
-            </Button>
+          </div>
+          <div className="flex items-center gap-4 justify-center space-x-8 text-lg text-gray-700 dark:text-gray-300">
+            <span>
+              <Check className="h-6 w-6 inline-block mr-2 text-green-600" />
+                FreeServers Available
+            </span>
+            <span>
+              <Check className="h-6 w-6 inline-block mr-2 text-green-600" />
+                No Credit Card Required
+            </span>
+
           </div>
         </header>
 
@@ -74,6 +95,13 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+        <div>
+          <p>Multiplayer</p>
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">Invite Your Friends to your server</h2>
+          <p>Play with your friends when they want and when you want !</p>
+          <Button>Create server</Button>
+
+        </div>
 
         <div className="text-center">
           <Card className="max-w-2xl mx-auto">
@@ -85,7 +113,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <Button size="lg" className="w-full" asChild>
-                <Link href="/store">View Available Plans</Link>
+                <Link href="/create">View Available Plans</Link>
               </Button>
             </CardContent>
           </Card>

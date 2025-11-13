@@ -19,6 +19,7 @@ interface Product {
   name: string
   description: string | null
   isActive: boolean
+  recommended: boolean
   diskSpace: number
   memory: number
   cpu: number
@@ -34,6 +35,7 @@ interface Product {
     value: number
     unit: string
     price: string
+    stripePriceId?: string
   }>
 }
 
@@ -51,6 +53,8 @@ export function ProductsTable() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isPriceDialogOpen, setIsPriceDialogOpen] = useState(false)
+  const [isEditPriceDialogOpen, setIsEditPriceDialogOpen] = useState(false)
+  const [selectedPrice, setSelectedPrice] = useState<(Product["prices"][number]) | null>(null)
 
   useEffect(() => {
     fetchProducts()
@@ -62,7 +66,7 @@ export function ProductsTable() {
       const response = await fetch("/api/products")
       if (response.ok) {
         const data = await response.json()
-        setProducts(data)
+        setProducts((data as any)?.products ?? data)
         setLoading(false)
       }
     } catch (error) {
@@ -83,9 +87,9 @@ export function ProductsTable() {
     }
   }
 
-  let filteredProducts = [] as any
-  console.log(products)
-  if (products)  filteredProducts = products.products?.filter(product =>
+  const filteredProducts: Product[] = (
+    Array.isArray(products) ? products : ((products as any)?.products ?? [])
+  ).filter((product: Product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()))
   )
@@ -152,13 +156,13 @@ export function ProductsTable() {
 
   const handleAddPrice = async (formData: FormData) => {
     if (!selectedProduct) return
-
+  
     try {
       const response = await fetch(`/api/admin/products/${selectedProduct.id}/prices`, {
         method: "POST",
         body: formData,
       })
-
+  
       if (response.ok) {
         toast.success("Price added successfully")
         fetchProducts()
@@ -168,6 +172,29 @@ export function ProductsTable() {
       }
     } catch (error) {
       toast.error("Failed to add price")
+    }
+  }
+  
+  const handleUpdatePrice = async (formData: FormData) => {
+    if (!selectedPrice) return
+  
+    try {
+      const response = await fetch(`/api/admin/products/prices/${selectedPrice.id}`, {
+        method: "PUT",
+        body: formData,
+      })
+  
+      if (response.ok) {
+        toast.success("Price updated successfully")
+        setIsEditPriceDialogOpen(false)
+        setSelectedPrice(null)
+        fetchProducts()
+      } else {
+        const data = await response.json().catch(() => ({}))
+        toast.error(data?.error || "Failed to update price")
+      }
+    } catch (error) {
+      toast.error("Failed to update price")
     }
   }
 
@@ -281,6 +308,10 @@ export function ProductsTable() {
                     <Switch id="isActive" name="isActive" defaultChecked />
                     <Label htmlFor="isActive">Active</Label>
                   </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch id="recommended" name="recommended" />
+                    <Label htmlFor="recommended">Recommended</Label>
+                  </div>
                   <Button type="submit">Create Product</Button>
                 </form>
               </DialogContent>
@@ -337,7 +368,7 @@ export function ProductsTable() {
                     <div className="text-sm">
                       {product.prices.slice(0, 2).map((price) => (
                         <div key={price.id}>
-                          {price.type}: ${price.price}
+                          {price.type}: {(price.unit?.toUpperCase() === 'EUR' ? '€' : '$')}{price.price}
                         </div>
                       ))}
                       {product.prices.length > 2 && (
@@ -404,11 +435,21 @@ export function ProductsTable() {
                         <div>
                           <span className="font-medium">{price.type}</span>
                           <span className="text-sm text-muted-foreground ml-2">
-                            {price.value} {price.unit}
+                            {price.value} {price.type}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium">${price.price}</span>
+                          <span className="font-medium">{(price.unit?.toUpperCase() === 'EUR' ? '€' : '$')}{price.price}</span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setSelectedPrice(price)
+                              setIsEditPriceDialogOpen(true)
+                            }}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
                           <Button
                             size="sm"
                             variant="outline"
@@ -449,27 +490,86 @@ export function ProductsTable() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="price-unit">Unit</Label>
+                      <Label htmlFor="price-unit">Currency</Label>
                       <Select name="unit" required>
                         <SelectTrigger>
                           <SelectValue placeholder="Select unit" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="month">Month</SelectItem>
-                          <SelectItem value="quarter">Quarter</SelectItem>
-                          <SelectItem value="year">Year</SelectItem>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="price-amount">Price ($)</Label>
+                      <Label htmlFor="price-amount">Price</Label>
                       <Input id="price-amount" name="price" type="number" step="0.01" placeholder="9.99" required />
                     </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="price-stripe-id">Stripe Price ID (optional)</Label>
+                    <Input id="price-stripe-id" name="stripePriceId" placeholder="price_123..." />
                   </div>
                   <Button type="submit">Add Price</Button>
                 </form>
               </div>
             </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Price Dialog */}
+      <Dialog open={isEditPriceDialogOpen} onOpenChange={setIsEditPriceDialogOpen}>
+        <DialogContent className="max-w-xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Price</DialogTitle>
+            <DialogDescription>Update price details</DialogDescription>
+          </DialogHeader>
+          {selectedPrice && (
+            <form action={handleUpdatePrice} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-price-type">Type</Label>
+                  <Select name="type" defaultValue={selectedPrice.type}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="quarterly">Quarterly</SelectItem>
+                      <SelectItem value="yearly">Yearly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-price-value">Duration</Label>
+                  <Input id="edit-price-value" name="value" type="number" defaultValue={selectedPrice.value} />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-price-unit">Currency</Label>
+                  <Select name="unit" defaultValue={selectedPrice.unit}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USD">$ USD</SelectItem>
+                      <SelectItem value="EUR">€ EUR</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-price-amount">Price</Label>
+                  <Input id="edit-price-amount" name="price" type="number" step="0.01" defaultValue={selectedPrice.price} />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="edit-price-stripe-id">Stripe Price ID</Label>
+                <Input id="edit-price-stripe-id" name="stripePriceId" defaultValue={selectedPrice.stripePriceId || ""} placeholder="price_123..." />
+              </div>
+              <Button type="submit">Update Price</Button>
+            </form>
           )}
         </DialogContent>
       </Dialog>
@@ -531,6 +631,10 @@ export function ProductsTable() {
               <div className="flex items-center space-x-2">
                 <Switch id="edit-isActive" name="isActive" defaultChecked={selectedProduct.isActive} />
                 <Label htmlFor="edit-isActive">Active</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch id="edit-recommended" name="recommended" defaultChecked={selectedProduct.recommended} />
+                <Label htmlFor="edit-recommended">Recommended</Label>
               </div>
               <Button type="submit">Update Product</Button>
             </form>

@@ -19,6 +19,8 @@ export async function GET() {
         pterodactylServerIdentifier: true,
         isSuspended: true,
         expiresAt: true,
+        installed:true,
+        productId: true,
         createdAt: true
       },
       orderBy: { createdAt: "desc" }

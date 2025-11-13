@@ -7,12 +7,15 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Server, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import axios from "axios"
 
 interface ServerData {
   id: number
   name: string | null
   pterodactylServerIdentifier: string
   isSuspended: boolean
+  installed: boolean
+  productId: number | null
   expiresAt: string
   createdAt: string
 }
@@ -70,6 +73,7 @@ export function ServersTable() {
         <CardDescription>Your server overview</CardDescription>
       </CardHeader>
       <CardContent>
+        
         {servers.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             No servers found
@@ -79,10 +83,7 @@ export function ServersTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Identifier</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Expires</TableHead>
-                <TableHead>Created</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -92,17 +93,21 @@ export function ServersTable() {
                   <TableCell className="font-medium">
                     {server.name || `Server ${server.id}`}
                   </TableCell>
-                  <TableCell className="font-mono text-sm">
-                    {server.pterodactylServerIdentifier}
-                  </TableCell>
+ 
                   <TableCell>
                     <Badge variant={server.isSuspended ? "destructive" : "default"}>
                       {server.isSuspended ? "Suspended" : "Active"}
                     </Badge>
                   </TableCell>
-                  <TableCell>{formatDate(server.expiresAt)}</TableCell>
-                  <TableCell>{formatDate(server.createdAt)}</TableCell>
                   <TableCell>
+                    {!server.installed ? <Button onClick={async ()=>{
+                      await axios.post("/api/servers/install",{
+                        serverId:server.id,
+                        game:server.name?.split("-")[0] || "unknown",
+                        productId: server.productId?.toString() || ""
+
+                      })
+                    }}>Install</Button>:
                     <Button
                       size="sm"
                       variant="outline"
@@ -111,6 +116,7 @@ export function ServersTable() {
                       <ExternalLink className="h-4 w-4 mr-2" />
                       Manage
                     </Button>
+}
                   </TableCell>
                 </TableRow>
               ))}

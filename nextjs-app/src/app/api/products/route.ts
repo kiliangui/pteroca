@@ -25,15 +25,8 @@ export async function GET(request: NextRequest) {
               description: true,
             },
           },
-          prices: {
-            select: {
-              id: true,
-              type: true,
-              value: true,
-              unit: true,
-              price: true,
-            },
-          },
+          // Include all ProductPrice fields so newly added columns (e.g., stripePriceId) are available
+          prices: true,
         },
         orderBy: {
           createdAt: 'desc',

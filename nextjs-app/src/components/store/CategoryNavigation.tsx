@@ -20,7 +20,7 @@ export function CategoryNavigation({ categories, activeCategoryId }: CategoryNav
         size="sm"
         asChild
       >
-        <Link href="/store">
+        <Link href="/create">
           All Categories
         </Link>
       </Button>
@@ -31,7 +31,7 @@ export function CategoryNavigation({ categories, activeCategoryId }: CategoryNav
           size="sm"
           asChild
         >
-          <Link href={`/store?category=${category.id}`}>
+          <Link href={`/create?category=${category.id}`}>
             {category.name}
           </Link>
         </Button>

@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "stripe": {
+      "url": "https://mcp.stripe.com"
+    },
+    
     "context7": {
       "command": "npx",
       "args": [

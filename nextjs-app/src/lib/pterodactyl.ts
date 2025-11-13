@@ -585,7 +585,6 @@ class PterodactylServerService extends PterodactylService {
         `${(await this.getSettings()).baseUrl}/api/application/nests/${nestId}/eggs/${eggId}`,
         { headers: await this.getHeaders() }
       )
-
       const eggData = eggResponse.data.attributes
       const defaultStartupCommand = eggData.startup || ''
       const defaultDockerImage = eggData.docker_image || ''
@@ -599,6 +598,10 @@ class PterodactylServerService extends PterodactylService {
         feature_limits: featureLimits,
         allocation: {
           default: allocationId
+        },
+        "environment": {
+          "VANILLA_VERSION": "latest",
+          "SERVER_JARFILE": "server.jar"
         },
         startup: startupCommand || defaultStartupCommand,
         docker_image: defaultDockerImage

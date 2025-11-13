@@ -19,15 +19,8 @@ export async function GET(
             description: true
           }
         },
-        prices: {
-          select: {
-            id: true,
-            type: true,
-            value: true,
-            unit: true,
-            price: true
-          }
-        }
+        // Include full ProductPrice to expose stripePriceId and other fields
+        prices: true
       }
     })
 

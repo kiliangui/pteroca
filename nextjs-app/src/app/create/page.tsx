@@ -1,0 +1,73 @@
+"use client";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default async function CreatePage() {
+
+
+    return <div className="max-w-2/3 m-auto flex flex-col items-center">
+        <h1 className="text-5xl font-bold text-gray-900 pt-12 dark:text-white mb-6 text-center w-full">Choose your Game Server</h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 w-full py-12">
+        <GameCard 
+            game="Minecraft"
+            features={["Java & Bedrock Support", "Modpack Installation", "DDoS Protection", "Automatic Backups"]}
+            background="/images/games/minecraft.jpg"
+            freetrial={true}
+            link={"minecraft"}
+        />
+        <GameCard
+            game="Minecraft Bedrock"
+            features={["Cross-Platform Play", "Easy Setup", "DDoS Protection", "Automatic Backups"]}
+            background="/images/games/bedrock.jpg"
+            freetrial={true}
+            link={"bedrock"}
+        />
+        <GameCard
+            game="Rust"
+            features={["High Performance Servers", "Mod Support", "DDoS Protection", "Automatic Backups"]}
+            background="/images/games/rust.jpg"
+            freetrial={false}
+            link={"rust"}
+        />
+        <GameCard
+            game="Satisfactory"
+            features={["1-Click Mods", "High Performance Servers", "DDoS Protection", "Automatic Backups"]}
+            background="/images/games/satisfactory.jpg"
+            freetrial={false}
+            link={"satisfactory"}
+        />
+        
+</div>
+    </div>
+
+}
+
+
+
+function GameCard({game, features,background,freetrial,link}: {game: string, features: string[], background: string, freetrial: boolean,link:string}) {
+    return <Card onClick={()=>{
+        window.location.href=`/create/${link}`
+    }} className=" relative overflow-hidden text-white cursor-pointer h-64 pt-0">
+        <div className="h-full w-full absolute  " style={{backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
+
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+
+        </div>
+
+    <div className="flex flex-col p-4">
+
+        <CardHeader className="flex items-center justify-between" style={{zIndex:"2"}}>
+            <CardTitle className="text-4xl font-black">{game}</CardTitle>
+            <CardDescription className="text-nowrap">
+                {freetrial && <span className="text-lg text-white bg-green-600 py-1 px-2 rounded-xl font-bold">Free Trial Available</span>}   
+            </CardDescription>
+        </CardHeader>
+        <div className="px-4 pb-4" style={{zIndex:"2"}}>
+            <ul className="list-disc list-inside mb-4">
+                {features.map((feature, index) => (
+                    <li key={index} className="text-md font-bold text-gray-200 dark:text-gray-300">{feature}</li>
+                ))}
+            </ul>
+            </div>
+            </div>
+    </Card>
+}

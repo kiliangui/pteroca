@@ -27,6 +27,7 @@ model User {
   updatedAt             DateTime?
   deletedAt             DateTime?
   emailVerified         DateTime?
+  stripeId              String?
 
   servers               Server[]
   payments              Payment[]
@@ -55,6 +56,7 @@ model Product {
   name              String
   description       String?
   isActive          Boolean  @default(true)
+  recommended       Boolean  @default(false)
   diskSpace         Int
   memory            Int
   io                Int
@@ -74,88 +76,53 @@ model Product {
   deletedAt         DateTime?
   categoryId        Int?
 
-  category          Category? @relation(fields: [categoryId], references: [id])
+  category          Category?    @relation(fields: [categoryId], references: [id])
   prices            ProductPrice[]
-  serverProducts    ServerProduct[]
+  servers           Server[]
 
   @@map("product")
 }
 
 model ProductPrice {
-  id         Int      @id @default(autoincrement())
-  productId  Int
-  type       String
-  value      Int
-  unit       String
-  price      String
-  deletedAt  DateTime?
+  id            Int      @id @default(autoincrement())
+  productId     Int
+  type          String
+  value         Int
+  unit          String
+  price         String
+  stripePriceId String?
+  deletedAt     DateTime?
 
-  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product       Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  servers       Server[]
 
   @@map("product_price")
 }
 
 model Server {
-  id                        Int      @id @default(autoincrement())
-  pterodactylServerId       Int
-  pterodactylServerIdentifier String
-  name                      String?
-  createdAt                 DateTime
-  expiresAt                 DateTime
-  isSuspended               Boolean  @default(false)
-  autoRenewal               Boolean  @default(false)
-  deletedAt                 DateTime?
+  id                          Int       @id @default(autoincrement())
+  pterodactylServerId         Int?
+  pterodactylServerIdentifier String?
+  name                        String?
+  createdAt                   DateTime
+  expiresAt                   DateTime
+  isSuspended                 Boolean   @default(false)
+  autoRenewal                 Boolean   @default(false)
+  deletedAt                   DateTime?
+  stripeSubscriptionId        String?   // Link to Stripe subscription
+  status                      String    @default("inactive") // active, inactive, suspended, etc.
+  installed                   Boolean   @default(false)      // false until actually created on Pterodactyl
+  productPriceId              Int?
 
-  user                      User     @relation(fields: [userId], references: [id])
-  userId                    String
-  serverProduct             ServerProduct?
-  logs                      ServerLog[]
-  subusers                  ServerSubuser[]
+  user                        User      @relation(fields: [userId], references: [id])
+  userId                      String
+  logs                        ServerLog[]
+  subusers                    ServerSubuser[]
+  product                     Product   @relation(fields: [productId], references: [id])
+  productId                   Int
+  productPrice                ProductPrice? @relation(fields: [productPriceId], references: [id])
 
   @@map("server")
-}
-
-model ServerProduct {
-  id                Int      @id @default(autoincrement())
-  serverId          Int      @unique
-  originalProductId Int?
-  name              String
-  diskSpace         Int
-  memory            Int
-  io                Int
-  cpu               Int
-  dbCount           Int
-  swap              Int
-  backups           Int
-  ports             Int
-  nodes             Json?
-  nest              Int?
-  eggs              Json?
-  eggsConfiguration String?
-  allowChangeEgg    Boolean  @default(false)
-  schedules         Int      @default(10)
-  threads           String?
-
-  server            Server           @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  originalProduct   Product?         @relation(fields: [originalProductId], references: [id])
-  prices            ServerProductPrice[]
-
-  @@map("server_product")
-}
-
-model ServerProductPrice {
-  id              Int      @id @default(autoincrement())
-  serverProductId Int
-  type            String
-  value           Int
-  unit            String
-  price           String
-  isSelected      Boolean  @default(false)
-  deletedAt       DateTime?
-
-  serverProduct   ServerProduct @relation(fields: [serverProductId], references: [id], onDelete: Cascade)
-
-  @@map("server_product_price")
 }
 
 model Payment {

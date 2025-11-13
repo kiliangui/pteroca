@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { hashPassword } from "@/lib/auth"
 import { pterodactylAccountService } from "@/lib/pterodactyl"
 import { z } from "zod"
+import { stripe } from "@/lib/stripe"
 
 const registerSchema = z.object({
   name: z.string().min(1),
@@ -67,6 +68,16 @@ export async function POST(request: NextRequest) {
         pterodactylUserId,
         pterodactylUserApiKey,
       },
+    })
+
+    // creating stripe customer
+    const cus = await stripe.customers.create({
+      email: user.email,
+      metadata: { userId: user.id.toString() }
+    })
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { stripeId: cus.id }
     })
 
     return NextResponse.json(
