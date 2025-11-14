@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { pterodactylAccountService } from "@/lib/pterodactyl"
-import { stripe } from "@/lib/stripe"
+import Stripe from "stripe"
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+
+  const stripeSecretKey = await prisma.setting.findUnique({
+          where: { name: "stripe_secret_key" },
+        });
+    if (!stripeSecretKey) return
+    const stripe = new Stripe(stripeSecretKey.value);
   try {
     await requireAdmin()
     const {id} = await params;

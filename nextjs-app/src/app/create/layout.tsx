@@ -2,6 +2,8 @@ import { getServerSession } from "next-auth/next"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { Header } from "@/components/navigation/Header"
+import { headers } from "next/headers"
+import { Redirect } from "@/components/navigation/Redirect"
 
 export default async function StoreLayout({
   children,
@@ -9,9 +11,13 @@ export default async function StoreLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions)
+  const headerList = await headers();
+  const pathname = headerList.get("x-current-path");
 
   if (!session) {
-    redirect("/auth/login")
+    console.log("ehadersList",pathname)
+    //redirect("/auth/login?redirect="+fullUrl)
+    return <Redirect href="/auth/login" redirect={true}/>
   }
 
   return (

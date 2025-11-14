@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { Header } from "@/components/navigation/Header"
+import { Redirect } from "@/components/navigation/Redirect"
 
 export default async function DashboardLayout({
   children,
@@ -11,7 +12,8 @@ export default async function DashboardLayout({
   const session = await getServerSession(authOptions)
 
   if (!session) {
-    redirect("/auth/login")
+    console.log("redirecting")
+    return <Redirect href="/auth/login" redirect={true}/>
   }
 
   return (

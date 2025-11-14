@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { hashPassword } from "@/lib/auth"
 import { pterodactylAccountService } from "@/lib/pterodactyl"
 import { z } from "zod"
-import { stripe } from "@/lib/stripe"
+import Stripe from "stripe"
 
 const registerSchema = z.object({
   name: z.string().min(1),
@@ -14,6 +14,8 @@ const registerSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    
+
     const body = await request.json()
     const { name, surname, email, password } = registerSchema.parse(body)
 
@@ -69,6 +71,12 @@ export async function POST(request: NextRequest) {
         pterodactylUserApiKey,
       },
     })
+
+    const stripeSecretKey = await prisma.setting.findUnique({
+          where: { name: "stripe_secret_key" },
+        });
+    if (!stripeSecretKey) return
+    const stripe = new Stripe(stripeSecretKey.value);
 
     // creating stripe customer
     const cus = await stripe.customers.create({

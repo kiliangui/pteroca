@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -23,7 +23,9 @@ type LoginForm = z.infer<typeof loginSchema>
 export default function LoginPage() {
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
+  const params = useSearchParams()
   const router = useRouter()
+  console.log("params : ",params)
 
   const {
     register,
@@ -47,7 +49,13 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Invalid credentials")
       } else {
-        router.push("/")
+        const redirect = params.get("redirect")
+        if (redirect){
+          
+          router.push(redirect)
+          return
+        }
+        router.push("/dashboard/servers")
       }
     } catch (error) {
       setError("An error occurred. Please try again.")
