@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import Stripe from 'stripe';
 
 // GET /api/user/balance - Get user balance
 export async function GET() {
@@ -13,15 +14,51 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { balance: true },
+      select: { balance: true,stripeId:true },
     });
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+    const stripeSecretKey = await prisma.setting.findUnique({
+          where: { name: "stripe_secret_key" },
+        });
+    if (!user.stripeId ||!stripeSecretKey ) return NextResponse.json({
+      balance: parseFloat(user.balance || '0'),
+    });
+    const stripe = new Stripe(stripeSecretKey.value);
+    let stripeSubscriptions = await stripe.subscriptions.list({
+      customer:user.stripeId
+    })
+    let newSubs = []
+    stripeSubscriptions.data.map((sub)=>{
+      prisma.server.findFirst({
+        where:{
+          stripeSubscriptionId:sub.id
+        }}).then((server)=>{
+          console.log(sub)
+           newSubs.push({...sub,serverId: server?.id})
+
+        })
+        
+    })
+    const stripeBillingPortalSession = await stripe.billingPortal.sessions.create
+        ({
+          customer
+        : user.stripeId,
+          return_url
+        : 'https://hostchicken.com/',
+        });
+    
+    const stripeInvoices = await stripe.invoices.list({
+      customer:user.stripeId
+    })
 
     return NextResponse.json({
       balance: parseFloat(user.balance || '0'),
+      subscriptions:newSubs,
+      invoices:stripeInvoices.data,
+      manageUrl: stripeBillingPortalSession.url
     });
   } catch (error) {
     console.error('Error fetching balance:', error);
