@@ -1,6 +1,0 @@
-pteroca:
-  crud:
-    user:
-      passwords_must_match: 'Wachtwoorden moeten overeenkomen.'
-  register:
-    email_already_exists: 'Er bestaat al een account met dit e-mailadres.'

@@ -1,9 +1,0 @@
-twig:
-    file_name_pattern: '*.twig'
-    paths:
-        '%kernel.project_dir%/src/Core/Resources/templates': core_templates
-        '%kernel.project_dir%/themes/default': default_theme
-
-when@test:
-    twig:
-        strict_variables: true

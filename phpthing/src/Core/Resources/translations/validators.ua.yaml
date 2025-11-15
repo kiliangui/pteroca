@@ -1,6 +1,0 @@
-pteroca:
-  crud:
-    user:
-      passwords_must_match: 'Паролі повинні збігатися.'
-  register:
-    email_already_exists: 'Обліковий запис з такою електронною поштою вже існує.'
