@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma"
 
 export default  async function GamePage({ params }: { params: { game: string } }) {
   const { game } = await params
+  const session = await auth
   let offers = await prisma.product.findMany({
     where: {
       isActive: true,

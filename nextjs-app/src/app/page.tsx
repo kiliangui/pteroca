@@ -73,7 +73,7 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="w-10 h-10 flex items-center justify-center"
             >
-              <img src="/chicken.png" alt="HostChicken" className="w-10 h-10" />
+              <img src="/logo.png" alt="SiteLogo" className="w-10 h-10" />
             </motion.div>
             <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
               HostChicken

@@ -177,7 +177,7 @@ export default async function BlogPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/icon.png" alt="HostChicken" width={32} height={32} className="rounded" />
+                <img src="/logo.png" alt="SiteLogo" width={32} height={32} className="rounded" />
                 <span className="text-2xl font-bold">HostChicken</span>
               </div>
               <p className="text-slate-400">

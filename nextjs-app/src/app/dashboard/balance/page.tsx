@@ -15,7 +15,6 @@ interface BalanceData {
   balance: number;
   invoices?: any[];
   subscriptions?: any[];
-  manageUrl?: string;
 }
 
 interface VoucherResult {
@@ -33,7 +32,6 @@ interface VoucherResult {
 export default function BalancePage() {
   const { data: session } = useSession();
   const [balance, setBalance] = useState<number>(0);
-  const [manageUrl, setManageUrl] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
   const [invoices, setInvoices] = useState<any[]>([]);
   const [subscriptions, setSubscriptions] = useState<any[]>([]);
@@ -55,7 +53,6 @@ export default function BalancePage() {
         const data: BalanceData = await response.json();
         setBalance(data.balance);
         setSubscriptions(data?.subscriptions || []);
-        setManageUrl(data?.manageUrl || "")
         setInvoices(data?.invoices || []);
       }
     } catch (error) {
@@ -368,7 +365,7 @@ export default function BalancePage() {
                       <div className="text-sm text-muted-foreground space-y-1">
                         <div className="flex justify-between">
                           <span>Amount:</span>
-                          <span>${(subscription?.plan.amount/100).toString() || '0.00'}</span>
+                          <span>${subscription?.amount || '0.00'}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Current Period:</span>
@@ -386,9 +383,6 @@ export default function BalancePage() {
                       </div>
                     </div>
                   ))}
-                  <Button onClick={()=>{
-                    window.location.href = manageUrl
-                  }}>Manage Subscriptions</Button>
                 </div>
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
@@ -425,7 +419,7 @@ export default function BalancePage() {
                       <div className="text-sm text-muted-foreground space-y-1">
                         <div className="flex justify-between">
                           <span>Amount:</span>
-                          <span>${(invoice?.amount_due/100 || 0 / 100).toFixed(2)}</span>
+                          <span>${(invoice?.amount_due || 0 / 100).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Date:</span>

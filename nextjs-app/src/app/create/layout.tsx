@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { Header } from "@/components/navigation/Header"
 import { headers } from "next/headers"
 import { Redirect } from "@/components/navigation/Redirect"
+import { prisma } from "@/lib/prisma"
 
 export default async function StoreLayout({
   children,
@@ -19,10 +20,15 @@ export default async function StoreLayout({
     //redirect("/auth/login?redirect="+fullUrl)
     return <Redirect href="/auth/login" redirect={true}/>
   }
+  const siteName = await prisma.setting.findFirst({
+      where:{
+        name:"site_name"
+      }
+    })
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header />
+      <Header siteName={siteName?.value ? siteName.value:"pteroCa"} />
       {children}
     </div>
   )

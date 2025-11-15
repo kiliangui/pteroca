@@ -2,10 +2,15 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select,SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import axios from "axios";
 import { ArrowLeft } from "lucide-react"
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-export function GameClient({offers,game}){
+export function GameClient({offers,game}:any){
   const [offer, setOffer] = useState("8GB");
+  const session =useSession()
+  
+
   return <div className="max-w-2/3 m-auto">
     <h1 className="text-3xl font-bold py-4">Create Server</h1>
     <Card className=" flex rounded-lg relative p-0 items-center justify-center ">
@@ -27,8 +32,9 @@ export function GameClient({offers,game}){
                 <Card className={"px-8 cursor-pointer mt-8 py-6  border-2 hover:shadow-lg transition-shadow "+ (offer=="freetrial"?"border-blue-500":"border-transparent")} onClick={()=>{
                     setOffer("freetrial")
                 }}>
-                  <div >
-                    <div className="text-lg font-bold mb-2">Free Trial</div>
+                  <div  className="flex items-center gap-2">
+                    <div className="text-lg font-bold">Essaie gratuit</div>
+                    <p>(1 mois)</p>
                   </div>
                 </Card>
                 <div className="grid grid-cols-2 gap-4 mt-4 ">
@@ -48,9 +54,20 @@ export function GameClient({offers,game}){
                   </Select>
                 </div>
 
-                <Button className="mt-8 w-full" size="lg" onClick={()=>{
+                <Button className="mt-8 w-full" size="lg" onClick={async ()=>{
+                  if (offer=="freetrial") {
+                    const res = await axios.post("/api/servers/create/freetrial",{
+                       game:"minecraft", 
+                       serverName:"freeTrial",
+                    })
+                    if (res.data.server){
+                      window.location.href="/dashboard/servers"
+                    }
+                  }else{
+                    window.location.href=`/create/${game}/${offer}`
 
-                 window.location.href=`/create/${game}/${offer}`
+                  }
+
 
                 }}>
                     {offer=="freetrial"?"Start Free Trial":"Continue to Checkout"}
@@ -73,10 +90,10 @@ function OfferCard({
 
     <div className="flex items-center justify-between p-4">
       <div>
-        <div className="text-lg font-bold">{memory} RAM / {cores} Cores / {storage} Storage</div>
+        <div className="text-lg font-bold">{memory} RAM / {cores} CPU / {storage} de Stockage</div>
         <div className="text-sm text-gray-500">Perfect for small to medium-sized servers</div>
       </div>
-      <div className="text-2xl font-bold">{price}€/month</div>
+      <div className="text-2xl font-bold">{price}€/mois</div>
     </div>
 
   </Card>

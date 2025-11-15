@@ -48,7 +48,7 @@ const adminNavigation = [
   },
 ]
 
-export function Header() {
+export function Header({siteName="Pteroca"}) {
   const pathname = usePathname()
   const { data: session } = useSession()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -63,10 +63,10 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/dashboard" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">P</span>
+                <span className="text-white font-bold text-sm">{siteName.charAt(0).toUpperCase()}</span>
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                Pteroca
+                {siteName}
               </span>
             </Link>
           </div>
@@ -74,7 +74,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+              const isActive = pathname === item.href 
               return (
                 <Link
                   key={item.name}
