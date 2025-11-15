@@ -7,18 +7,12 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getAllSlugs, getArticleBySlug, getAllArticles, markdownToBasicHtml } from "@/lib/md";
 
-export const dynamic = "force-static";
-
 interface BlogPostPageProps {
   params: {
     slug: string;
   };
 }
 
-export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const article = await getArticleBySlug(params.slug);

@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for Next.js application
 
 # Build stage
-FROM node:25-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Production stage
-FROM node:25-alpine AS runner
+FROM node:20-alpine AS runner
 
 # Set working directory
 WORKDIR /app
