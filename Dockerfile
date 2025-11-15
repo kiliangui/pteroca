@@ -18,6 +18,7 @@ COPY . .
 
 # Generate Prisma client
 RUN npx prisma generate
+run npx prisma db push
 
 # Build the application
 RUN npm run build
