@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { identifier: string } }
+  context: { params: Promise<{ identifier: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -13,6 +13,8 @@ export async function POST(
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const { identifier } = await context.params
 
     // Get user API key
     const user = await prisma.user.findUnique({
@@ -42,7 +44,7 @@ export async function POST(
 
     // Proxy the request to Pterodactyl
     const pterodactylUrl = pterodactylUrlSetting.value
-    const response = await fetch(`${pterodactylUrl}/api/client/servers/${params.identifier}/power`, {
+    const response = await fetch(`${pterodactylUrl}/api/client/servers/${identifier}/power`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${user.pterodactylUserApiKey}`,

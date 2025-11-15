@@ -6,7 +6,7 @@ import { pterodactylServerService } from "@/lib/pterodactyl"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,15 +15,21 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
 
     if (!server) {
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
+    }
+
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
     }
 
     // Fetch databases from Pterodactyl API
@@ -48,7 +54,7 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -57,15 +63,21 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
 
     if (!server) {
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
+    }
+
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
     }
 
     const { database, remote } = await request.json()

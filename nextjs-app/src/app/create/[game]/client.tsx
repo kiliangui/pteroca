@@ -6,9 +6,8 @@ import axios from "axios";
 import { ArrowLeft } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-export function GameClient({offers,game}:any){
+export function GameClient({offers,game,user}:any){
   const [offer, setOffer] = useState("8GB");
-  const session =useSession()
   
 
   return <div className="max-w-2/3 m-auto">
@@ -38,7 +37,7 @@ export function GameClient({offers,game}:any){
                   </div>
                 </Card>
                 <div className="grid grid-cols-2 gap-4 mt-4 ">
-                  {offers.map((o)=><OfferCard key={o.id} memory={Math.ceil(o.memory/1024)+"GB"} cores={o.cpu/100} recommended={o.recommended} storage={o.diskSpace/1024+"GB"} price={o?.prices.length > 0 ?o?.prices[0].price:"" } offer={offer} setOffer={setOffer} recommended={o.recommended} />)}
+                  {offers.map((o)=><OfferCard key={o.id} memory={Math.ceil(o.memory/1024)+"GB"} cores={o.cpu/100} recommended={o.recommended} storage={o.diskSpace/1024+"GB"} price={o?.prices.length > 0 ?o?.prices[0].price:"" } offer={offer} setOffer={setOffer}/>)}
                 
                 </div>
                 <h2 className="text-xl font-bold pt-4">Location</h2>

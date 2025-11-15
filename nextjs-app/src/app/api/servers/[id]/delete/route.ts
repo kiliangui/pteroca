@@ -6,7 +6,7 @@ import axios from 'axios'
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,9 +15,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
@@ -50,6 +52,7 @@ export async function DELETE(
           actionId: 'server_deleted',
           details: `Server "${server.name || `Server ${server.id}`}" deleted`,
           userId: session.user.id,
+          createdAt: new Date(),
         },
       })
 

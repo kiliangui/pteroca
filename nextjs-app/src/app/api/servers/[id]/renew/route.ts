@@ -10,7 +10,7 @@ interface RenewServerRequest {
   paymentMethod: 'balance' | 'stripe';
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -20,18 +20,21 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     const body: RenewServerRequest = await request.json();
     const { priceId, voucherCode, paymentMethod } = body;
 
+    const { id } = await params;
+
     // Get server
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       },
       include: {
-        serverProduct: {
+        product: {
           include: {
             prices: true
           }
-        }
+        },
+        productPrice: true
       }
     });
 
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 
     // Validate selected price
-    const selectedPrice = server.serverProduct?.prices.find(price => price.id === priceId);
+    const selectedPrice = server.product?.prices.find(price => price.id === priceId);
     if (!selectedPrice) {
       return NextResponse.json({ error: 'Invalid price selected' }, { status: 400 });
     }
@@ -49,7 +52,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     let finalPrice = parseFloat(selectedPrice.price);
 
     // Apply voucher if provided
-    let appliedVoucher = null;
+    let appliedVoucher: any = null;
     if (voucherCode) {
       const voucher = await prisma.voucher.findUnique({
         where: { code: voucherCode },
@@ -100,6 +103,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           balanceAmount: finalPrice.toString(),
           userId: user.id,
           usedVoucherId: appliedVoucher?.id,
+          createdAt: new Date(),
         },
       });
 
@@ -132,6 +136,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           actionId: 'server_renewed',
           details: `Server "${server.name || `Server ${server.id}`}" renewed for $${finalPrice.toFixed(2)}`,
           userId: session.user.id,
+          createdAt: new Date(),
         },
       });
 

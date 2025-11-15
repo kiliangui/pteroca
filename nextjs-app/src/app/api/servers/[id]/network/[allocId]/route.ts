@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; allocId: string } }
+  { params }: { params: Promise<{ id: string; allocId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -14,9 +14,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id, allocId } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })

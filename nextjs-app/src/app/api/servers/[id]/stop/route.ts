@@ -36,6 +36,10 @@ export async function POST(
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
     }
 
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier missing" }, { status: 500 })
+    }
+
     try {
       // Ensure user has an API key for server management
       const userApiKey = await pterodactylAccountService.ensureUserApiKey(server.user.pterodactylUserId!)

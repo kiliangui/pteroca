@@ -275,7 +275,7 @@ export function DatabasesTab({ serverId }: DatabasesTabProps) {
           <DialogHeader>
             <DialogTitle>Reset Database Password</DialogTitle>
             <DialogDescription>
-              Reset the password for database "{selectedDatabase?.name}".
+              Reset the password for database {'"'}{selectedDatabase?.name}{'"'}.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">

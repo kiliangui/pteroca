@@ -36,12 +36,16 @@ export async function POST(
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
     }
 
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier missing" }, { status: 500 })
+    }
+
     // Check if server is suspended
     if (server.isSuspended) {
       return NextResponse.json({ error: "Cannot start suspended server" }, { status: 400 })
     }
 
-    
+
 
     //// Check if server has expired
     //if (server.expiresAt && new Date() > server.expiresAt) {

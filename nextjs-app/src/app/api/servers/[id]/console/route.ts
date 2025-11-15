@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -14,9 +14,11 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       },
       include: {
@@ -26,6 +28,10 @@ export async function GET(
 
     if (!server) {
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
+    }
+
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
     }
 
     // Get console logs from Pterodactyl API

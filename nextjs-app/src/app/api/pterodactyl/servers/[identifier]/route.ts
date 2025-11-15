@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { identifier: string } }
+  context: { params: Promise<{ identifier: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -13,6 +13,8 @@ export async function GET(
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const { identifier } = await context.params
 
     // Get user API key
     const user = await prisma.user.findUnique({
@@ -35,7 +37,7 @@ export async function GET(
 
     // Proxy the request to Pterodactyl
     const pterodactylUrl = pterodactylUrlSetting.value
-    const response = await fetch(`${pterodactylUrl}/api/client/servers/${params.identifier}`, {
+    const response = await fetch(`${pterodactylUrl}/api/client/servers/${identifier}`, {
       headers: {
         'Authorization': `Bearer ${user.pterodactylUserApiKey}`,
         'Accept': 'Application/vnd.pterodactyl.v1+json'

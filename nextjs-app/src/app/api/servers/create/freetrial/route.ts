@@ -4,8 +4,7 @@ import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 
 export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  request: Request
 ){
      const session = await getServerSession(authOptions)
     const body = await request.json()
@@ -43,7 +42,7 @@ export async function POST(
               autoRenewal: true,
               createdAt: new Date(),
               expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1))
-              
+               
             },
 
           })

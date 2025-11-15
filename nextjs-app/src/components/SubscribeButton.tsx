@@ -3,7 +3,7 @@
 interface SubscribeButtonProps {
   stripePriceId?: string;
   productPriceId?: number;
-  customerId?: string;
+  customerId?: string | null;
 }
 
 export default function SubscribeButton({ stripePriceId, productPriceId,customerId }: SubscribeButtonProps) {

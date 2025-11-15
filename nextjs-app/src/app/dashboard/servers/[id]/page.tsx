@@ -30,7 +30,7 @@ export default async function ServerPage({ params }: ServerPageProps) {
       userId: session.user.id
     },
     include: {
-      serverProduct: true
+      product: true
     }
   })
 

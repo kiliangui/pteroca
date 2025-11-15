@@ -7,7 +7,7 @@ import axios from 'axios'
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,9 +16,11 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await context.params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
@@ -60,6 +62,7 @@ export async function POST(
           actionId: 'server_unsuspended',
           details: `Server "${server.name || `Server ${server.id}`}" unsuspended`,
           userId: session.user.id,
+          createdAt: new Date(),
         },
       })
 

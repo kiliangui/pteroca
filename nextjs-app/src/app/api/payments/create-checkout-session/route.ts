@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
         balanceAmount: finalAmount.toString(),
         userId: session.user.id,
         usedVoucherId,
+        createdAt: new Date(),
       },
     });
 

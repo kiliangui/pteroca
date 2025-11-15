@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
 
         // Find the payment record
-        const payment = await prisma.payment.findUnique({
+        const payment = await prisma.payment.findFirst({
           where: { sessionId: session.id },
           include: { user: true, usedVoucher: true },
         });
@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
             actionId: 'payment_completed',
             details: `Payment of $${balanceAmount.toFixed(2)} completed. New balance: $${newBalance.toFixed(2)}`,
             userId: payment.userId,
+            createdAt: new Date(),
           },
         });
 

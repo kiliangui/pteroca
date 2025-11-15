@@ -19,7 +19,7 @@ export default function ContactPage() {
             Get in touch
           </span>
           <h1 className="text-5xl font-bold mb-4 mt-6 text-white">Contact our support team</h1>
-          <p className="text-lg text-slate-200">Need help with your server? We're here to help you 24/7 with any questions or issues.</p>
+          <p className="text-lg text-slate-200">Need help with your server? We{"'"}re here to help you 24/7 with any questions or issues.</p>
         </div>
       </section>
 
@@ -72,7 +72,7 @@ export default function ContactPage() {
                 <CardDescription className="text-slate-300">Need a custom server setup?</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-300 mb-4">We'll customize hardware, modpacks, and plugins for your specific needs.</p>
+                <p className="text-slate-300 mb-4">We{"'"}ll customize hardware, modpacks, and plugins for your specific needs.</p>
                 <Link href="/pricing">
                   <Button className="bg-gradient-to-r from-indigo-500 to-fuchsia-600 text-white hover:from-indigo-600 hover:to-fuchsia-700">View plans</Button>
                 </Link>

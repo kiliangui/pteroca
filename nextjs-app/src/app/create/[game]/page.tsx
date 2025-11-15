@@ -1,11 +1,14 @@
 import { Card } from "@/components/ui/card"
 import { GameClient } from "./client"
 import { prisma } from "@/lib/prisma"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 
 export default  async function GamePage({ params }: { params: { game: string } }) {
   const { game } = await params
-  const session = await auth
+  const session = await getServerSession(authOptions);
+  
   let offers = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -26,7 +29,7 @@ export default  async function GamePage({ params }: { params: { game: string } }
     const GBb = parseInt(b.name.split("GB")[0])
     return GBa - GBb
   })
-  return <GameClient offers={offers} game={game} />
+  return <GameClient offers={offers} game={game} user={session?.user} />
   
 }
 

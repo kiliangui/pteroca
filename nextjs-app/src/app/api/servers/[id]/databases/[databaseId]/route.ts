@@ -6,7 +6,7 @@ import { pterodactylServerService } from "@/lib/pterodactyl"
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; databaseId: string } }
+  { params }: { params: Promise<{ id: string; databaseId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,9 +15,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id, databaseId } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
@@ -26,14 +28,18 @@ export async function DELETE(
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
     }
 
-    const databaseId = parseInt(params.databaseId)
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
+    }
 
-    if (isNaN(databaseId)) {
+    const databaseIdNum = parseInt(databaseId)
+
+    if (isNaN(databaseIdNum)) {
       return NextResponse.json({ error: "Invalid database ID" }, { status: 400 })
     }
 
     // Delete database via Pterodactyl API
-    await pterodactylServerService.deleteServerDatabase(server.pterodactylServerIdentifier, databaseId)
+    await pterodactylServerService.deleteServerDatabase(server.pterodactylServerIdentifier, databaseIdNum)
 
     return NextResponse.json({ message: "Database deleted successfully" })
   } catch (error) {
@@ -44,7 +50,7 @@ export async function DELETE(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string; databaseId: string } }
+  { params }: { params: Promise<{ id: string; databaseId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -53,9 +59,11 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id, databaseId } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
@@ -64,9 +72,13 @@ export async function PUT(
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
     }
 
-    const databaseId = parseInt(params.databaseId)
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
+    }
 
-    if (isNaN(databaseId)) {
+    const databaseIdNum = parseInt(databaseId)
+
+    if (isNaN(databaseIdNum)) {
       return NextResponse.json({ error: "Invalid database ID" }, { status: 400 })
     }
 
@@ -78,7 +90,7 @@ export async function PUT(
     }
 
     // Reset database password via Pterodactyl API
-    await pterodactylServerService.resetServerDatabasePassword(server.pterodactylServerIdentifier, databaseId, password)
+    await pterodactylServerService.resetServerDatabasePassword(server.pterodactylServerIdentifier, databaseIdNum, password)
 
     return NextResponse.json({ message: "Database password reset successfully" })
   } catch (error) {

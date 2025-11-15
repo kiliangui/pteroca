@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { connect } from "http2";
 import { pterodactylServerService } from "@/lib/pterodactyl";
+import { installServerOnPterodactyl } from "../servers/install/route";
 
 export async function POST(req: Request) {
   const body = await req.text();

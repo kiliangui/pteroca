@@ -206,7 +206,7 @@ export function createServerFactory(
 ): ServerFactory {
   switch (serverType) {
     case 'paper':
-      return new PaperServer(config, options as {
+      return new MinecraftPaperServer(config, options as {
         minecraftVersion?: string
         buildNumber?: string
         serverJarFile?: string

@@ -22,14 +22,6 @@ export async function GET(request: NextRequest) {
           userId: session.user.id,
           deletedAt: null, // Only active servers
         },
-        include: {
-          serverProduct: {
-            include: {
-              originalProduct: true,
-              prices: true,
-            },
-          },
-        },
         orderBy: {
           createdAt: 'desc',
         },

@@ -6,7 +6,7 @@ import Stripe from "stripe"
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
 
   const stripeSecretKey = await prisma.setting.findUnique({
@@ -16,8 +16,10 @@ export async function POST(
     const stripe = new Stripe(stripeSecretKey.value);
   try {
     await requireAdmin()
-    const {id} = await params;
+
+    const { id } = await context.params
     const userId = id
+
     // Get user from database
     const user = await prisma.user.findUnique({
       where: { id: userId }

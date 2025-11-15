@@ -6,7 +6,7 @@ import { pterodactylServerService } from "@/lib/pterodactyl"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string; backupId: string } }
+  { params }: { params: Promise<{ id: string; backupId: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,9 +15,11 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id, backupId } = await params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })
@@ -26,10 +28,14 @@ export async function GET(
       return NextResponse.json({ error: "Server not found" }, { status: 404 })
     }
 
+    if (!server.pterodactylServerIdentifier) {
+      return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
+    }
+
     // Get download URL from Pterodactyl API
     const downloadUrl = await pterodactylServerService.getBackupDownloadUrl(
       server.pterodactylServerIdentifier,
-      params.backupId
+      backupId
     )
 
     // Redirect to the actual download URL

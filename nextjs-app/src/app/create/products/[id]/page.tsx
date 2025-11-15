@@ -123,7 +123,7 @@ export default async function ProductPage({
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <Button variant="ghost" asChild className="mb-4">
-          <Link href="/create>
+          <Link href="/create">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Store
           </Link>

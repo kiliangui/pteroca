@@ -33,8 +33,10 @@ export async function GET(
       servers.map(async (server) => {
         let existsOnPanel = false
         try {
-          await pterodactylServerService.getServer(server.pterodactylServerId)
-          existsOnPanel = true
+          if (server.pterodactylServerId !== null) {
+            await pterodactylServerService.getServer(server.pterodactylServerId)
+            existsOnPanel = true
+          }
         } catch (error) {
           // Server doesn't exist on panel or API error
           existsOnPanel = false

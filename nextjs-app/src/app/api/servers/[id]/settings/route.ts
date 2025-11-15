@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -14,13 +14,15 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await context.params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       },
       include: {
-        serverProduct: true
+        product: true
       }
     })
 
@@ -33,7 +35,7 @@ export async function GET(
     const settings = {
       name: server.name || `Server ${server.id}`,
       autoRenewal: server.autoRenewal,
-      egg: server.serverProduct?.eggs || "minecraft",
+      egg: server.product?.eggs || "minecraft",
       startupCommand: "java -Xmx1024M -Xms1024M -jar server.jar",
       environment: {
         "SERVER_JARFILE": "server.jar",
@@ -50,7 +52,7 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -59,9 +61,11 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await context.params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id
       }
     })

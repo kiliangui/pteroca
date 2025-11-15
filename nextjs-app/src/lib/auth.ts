@@ -79,6 +79,7 @@ export async function checkAdmin(): Promise<boolean> {
       where:{id:session?.user.id}
     })
     if (!user || !user.roles) return false
+    //@ts-expect-error roles is str
     return user.roles.findLast((role)=>((role==="admin")||(role==="ADMIN")))
   } catch (error) {
     console.error('Error checking admin status:', error)

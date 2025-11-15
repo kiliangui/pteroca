@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
         actionId: 'balance_updated',
         details: `Balance updated by $${amount.toFixed(2)}. New balance: $${newBalance.toFixed(2)}. Reason: ${reason || 'Manual adjustment'}`,
         userId: session.user.id,
+        createdAt:new Date()
       },
     });
 

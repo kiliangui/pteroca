@@ -5,11 +5,11 @@ import { pterodactylAccountService } from "@/lib/pterodactyl"
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin()
-    const {id} = await params;
+    const { id } = await context.params
     const userId = id
     // Get user from database
     const user = await prisma.user.findUnique({

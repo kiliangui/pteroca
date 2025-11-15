@@ -50,6 +50,10 @@ export async function POST(
       // Ensure user has an API key for server management
       const userApiKey = await pterodactylAccountService.ensureUserApiKey(server.user.pterodactylUserId!)
 
+      if (!server.pterodactylServerIdentifier) {
+        return NextResponse.json({ error: "Server identifier not found" }, { status: 404 })
+      }
+
       // Restart the server via Pterodactyl API using user's API key
       await pterodactylServerService.restartServer(server.pterodactylServerIdentifier, userApiKey)
 

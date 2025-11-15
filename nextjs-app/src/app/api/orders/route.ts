@@ -147,43 +147,11 @@ export async function POST(request: Request) {
         createdAt: new Date(),
         expiresAt,
         userId: session.user.id,
+        productId: productId,
       }
     })
 
     try {
-      // Create server product linked to the server
-      await prisma.serverProduct.create({
-        data: {
-          serverId: server.id,
-          originalProductId: productId,
-          name: product.name,
-          diskSpace: product.diskSpace,
-          memory: product.memory,
-          io: product.io,
-          cpu: product.cpu,
-          dbCount: product.dbCount,
-          swap: product.swap,
-          backups: product.backups,
-          ports: product.ports,
-          nodes: product.nodes || undefined,
-          nest: 1, // Use default nest for now
-          eggs: product.eggs || undefined,
-          eggsConfiguration: product.eggsConfiguration,
-          allowChangeEgg: product.allowChangeEgg,
-          schedules: product.schedules,
-          threads: product.threads,
-          prices: {
-            create: {
-              type: selectedPrice.type,
-              value: selectedPrice.value,
-              unit: selectedPrice.unit,
-              price: selectedPrice.price,
-              isSelected: true
-            }
-          }
-        }
-      })
-
       // Update user balance
       await prisma.user.update({
         where: { id: session.user.id },

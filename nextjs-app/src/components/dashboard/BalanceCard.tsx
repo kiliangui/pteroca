@@ -53,7 +53,7 @@ export function BalanceCard() {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">
-          {balance ? `${Math.round(balance.balance*100)/100} ${balance.currency?balance.currency:"$"}` : "N/A"}
+          {balance ? `${Math.round(Number(balance?.balance)*100)/100} ${balance.currency?balance.currency:"$"}` : "N/A"}
         </div>
         <p className="text-xs text-muted-foreground">
           Current account balance

@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     let finalPrice = parseFloat(selectedPrice.price);
 
     // Apply voucher if provided
-    let appliedVoucher = null;
+    let appliedVoucher;
     if (voucherCode) {
       const voucher = await prisma.voucher.findUnique({
         where: { code: voucherCode },
@@ -75,10 +75,10 @@ export async function POST(request: NextRequest) {
       } else {
         finalPrice = Math.max(0, finalPrice - parseFloat(voucher.discount));
       }
-
       appliedVoucher = voucher;
     }
 
+    
     // Handle payment
     if (paymentMethod === 'balance') {
       const userBalance = parseFloat(user.balance || '0');
@@ -101,7 +101,8 @@ export async function POST(request: NextRequest) {
           currency: 'usd',
           balanceAmount: finalPrice.toString(),
           userId: user.id,
-          usedVoucherId: appliedVoucher?.id,
+          usedVoucherId: appliedVoucher ? appliedVoucher?.id : null ,
+          createdAt: new Date()
         },
       });
 
@@ -144,6 +145,7 @@ export async function POST(request: NextRequest) {
           actionId: 'server_created',
           details: `Server "${serverName}" created successfully. Product: ${product.name}, Price: $${finalPrice.toFixed(2)}`,
           userId: user.id,
+          createdAt:new Date()
         },
       });
 

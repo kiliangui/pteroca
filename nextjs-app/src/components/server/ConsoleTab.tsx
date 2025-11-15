@@ -28,7 +28,7 @@ interface ServerInfo {
 
 interface ConsoleTabProps {
   serverId: number
-  serverIdentifier: string
+  serverIdentifier: string | null
   userApiKey: string
   pterodactylUrl: string
 }
@@ -402,7 +402,7 @@ export function ConsoleTab({ serverId, serverIdentifier, userApiKey, pterodactyl
           <div className="mt-4">
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
               By accepting this agreement, you agree to the Minecraft End User License Agreement.
-              This will create an eula.txt file with "eula=true" to allow the server to start.
+              This will create an eula.txt file with {'"'}eula=true{'"'} to allow the server to start.
             </p>
             <div className="flex gap-2 justify-end">
               <Button variant="outline" onClick={() => setShowEulaDialog(false)}>

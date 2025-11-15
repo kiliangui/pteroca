@@ -25,6 +25,7 @@ interface User {
   createdAt: string
   roles: any
   pterodactylUserId: number | null
+  stripeId:any
 }
 
 export function UsersTable() {
@@ -447,7 +448,7 @@ export function UsersTable() {
                 : selectedUserForServers?.email} - Servers
             </DialogTitle>
             <DialogDescription>
-              View user's servers and their Pterodactyl status
+              View user{"'"}s servers and their Pterodactyl status
             </DialogDescription>
           </DialogHeader>
           {selectedUserForServers && (

@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 // GET /api/servers/[id] - Get specific server details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,19 +14,21 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params
+
     const server = await prisma.server.findFirst({
       where: {
-        id: parseInt(params.id),
+        id: parseInt(id),
         userId: session.user.id,
         deletedAt: null,
       },
       include: {
-        serverProduct: {
+        product: {
           include: {
-            originalProduct: true,
             prices: true,
           },
         },
+        productPrice: true,
         logs: {
           orderBy: {
             createdAt: 'desc',

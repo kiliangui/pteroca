@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -14,8 +14,8 @@ export async function GET(
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    const paramsA = await params;
-    const id = parseInt(paramsA.id)
+    const { id: idStr } = await params;
+    const id = parseInt(idStr)
     if (!id) return NextResponse.json({error:"No id provided"},{status:404})
 
     const server = await prisma.server.findFirst({
