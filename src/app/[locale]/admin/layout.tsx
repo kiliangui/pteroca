@@ -25,7 +25,6 @@ const siteName = await prisma.setting.findFirst({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header siteName={siteName?.value ? siteName.value:"pteroCa"} />
       <div className="flex">
         <AdminSidebar />
         <main className="flex-1 p-8">

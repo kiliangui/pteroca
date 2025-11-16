@@ -28,7 +28,6 @@ export default async function StoreLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header siteName={siteName?.value ? siteName.value:"pteroCa"} />
       {children}
     </div>
   )
