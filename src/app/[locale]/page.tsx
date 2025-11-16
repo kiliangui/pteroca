@@ -326,29 +326,29 @@ export default function Home() {
             {[
               {
                 name: t('pricing.plans.starter.name'),
-                price: "$4.99",
+                price: "7€",
                 period: "/month",
                 desc: t('pricing.plans.starter.desc'),
-                features: ["2GB RAM", "10 Player Slots", "Basic Support", "Daily Backups"],
+                features: ["4GB RAM", "Unlimited Player Slots", "Basic Support", "Daily Backups"],
                 popular: false,
                 getStarted: t('pricing.plans.starter.getStarted')
               },
               {
                 name: t('pricing.plans.pro.name'),
-                price: "$9.99",
+                price: "14€",
                 period: "/month",
                 desc: t('pricing.plans.pro.desc'),
-                features: ["8GB RAM", "50 Player Slots", "Priority Support", "Hourly Backups", "Custom Plugins"],
+                features: ["8GB RAM", "Unlimited Player Slots", "Priority Support", "Hourly Backups","Perfect for modpacks"],
                 popular: true,
                 popularText: t('pricing.plans.pro.popular'),
                 getStarted: t('pricing.plans.pro.getStarted')
               },
               {
                 name: t('pricing.plans.enterprise.name'),
-                price: "$19.99",
+                price: "20€",
                 period: "/month",
                 desc: t('pricing.plans.enterprise.desc'),
-                features: ["16GB RAM", "Unlimited Players", "24/7 Support", "Real-time Backups", "Dedicated IP"],
+                features: ["12GB RAM", "Unlimited Players", "Priority Support", "Unlimited backups Backups"],
                 popular: false,
                 getStarted: t('pricing.plans.enterprise.getStarted')
               },
