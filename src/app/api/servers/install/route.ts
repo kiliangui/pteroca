@@ -28,9 +28,8 @@ export async function installServerOnPterodactyl(serverId: number, game: string,
     return
   }
   const pterodactylUserId = user?.pterodactylUserId;
-  const pterodactylUserApiKey = user?.pterodactylUserApiKey;
 
-  if (!pterodactylUserId || !pterodactylUserApiKey) {
+  if (!pterodactylUserId) {
     console.log("Cannot install server: Missing Pterodactyl user ID or API key.");
     return;
   }

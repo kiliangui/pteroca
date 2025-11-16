@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
+import { useTranslations, useLocale } from 'next-intl'
 import { cn } from "@/lib/utils"
 import {
   Home,
@@ -15,43 +16,47 @@ import {
   Menu,
   X
 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
 
-const navigation = [
-  {
-    name: "Dashboard",
-    href: "/dashboard",
-    icon: Home,
-  },
-  {
-    name: "Servers",
-    href: "/dashboard/servers",
-    icon: Server,
-  },
-  {
-    name: "Store",
-    href: "/create",
-    icon: ShoppingCart,
-  },
-  {
-    name: "Balance",
-    href: "/dashboard/balance",
-    icon: Wallet,
-  },
-]
-
-const adminNavigation = [
-  {
-    name: "Admin",
-    href: "/admin",
-    icon: Shield,
-  },
-]
-
 export function Header({siteName="Pteroca"}) {
+  const t = useTranslations('header')
   const pathname = usePathname()
+  const router = useRouter()
+  const locale = useLocale()
   const { data: session } = useSession()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const navigation = [
+    {
+      name: t("dashboard"),
+      href: "/dashboard",
+      icon: Home,
+    },
+    {
+      name: t("servers"),
+      href: "/dashboard/servers",
+      icon: Server,
+    },
+    {
+      name: t("store"),
+      href: "/create",
+      icon: ShoppingCart,
+    },
+    {
+      name: t("balance"),
+      href: "/dashboard/balance",
+      icon: Wallet,
+    },
+  ]
+
+  const adminNavigation = [
+    {
+      name: t("admin"),
+      href: "/admin",
+      icon: Shield,
+    },
+  ]
 
   const isAdmin = session?.user?.role === "admin" // TODO: Implement proper role checking
 
@@ -61,9 +66,9 @@ export function Header({siteName="Pteroca"}) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/dashboard" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">{siteName.charAt(0).toUpperCase()}</span>
+                <img src={"/logo.png"}/>
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">
                 {siteName}
@@ -112,6 +117,21 @@ export function Header({siteName="Pteroca"}) {
             })}
           </nav>
 
+          {/* Language Switcher */}
+          <Select value={locale} onValueChange={(newLocale) => {
+            const pathWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/'
+            const newPath = `/${newLocale}${pathWithoutLocale}`
+            window.location.href = newPath
+          }}>
+            <SelectTrigger className="w-20">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">EN</SelectItem>
+              <SelectItem value="fr">FR</SelectItem>
+            </SelectContent>
+          </Select>
+
           {/* User Menu */}
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-2">
@@ -124,13 +144,13 @@ export function Header({siteName="Pteroca"}) {
             <button
               onClick={async () => {
                 await signOut({ callbackUrl: "/auth/login" })
-                window.location.href="/" 
-              
+                window.location.href="/"
+
               }}
               className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
             >
               <LogOut className="h-4 w-4" />
-              <span className="hidden md:inline">Logout</span>
+              <span className="hidden md:inline">{t('logout')}</span>
             </button>
 
             {/* Mobile menu button */}

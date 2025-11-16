@@ -1,0 +1,169 @@
+{
+  "metadata": {
+    "title": "pteroca - Game Server Hosting",
+    "description": "Professional game server hosting with easy management"
+  },
+  "header": {
+    "login": "Login",
+    "startFreeTrial": "Start Free Trial",
+    "dashboard": "Dashboard",
+    "servers": "Servers",
+    "store": "Store",
+    "balance": "Balance",
+    "admin": "Admin",
+    "logout": "Logout"
+  },
+  "hero": {
+    "badge": "🚀 Now with 50% faster server deployment",
+    "title": "Game Servers That Just Work",
+    "subtitle": "Launch professional game servers in seconds. No technical headaches, just pure gaming freedom. Join 50,000+ gamers who trust HostChicken.",
+    "chooseGame": "Choose your game",
+    "startServer": "Start Your Server",
+    "readyToDeploy": "Ready to deploy in seconds",
+    "trustBadges": {
+      "freeTrial": "Free 7-day trial",
+      "noSetupFees": "No setup fees",
+      "support": "24/7 support",
+      "instantDeployment": "Instant deployment"
+    }
+  },
+  "socialProof": {
+    "title": "Trusted by Gamers Worldwide",
+    "subtitle": "Real numbers from real gamers",
+    "stats": {
+      "activeServers": "Active Servers",
+      "uptime": "Uptime",
+      "hoursPlayed": "Hours Played",
+      "support": "Support"
+    }
+  },
+  "features": {
+    "title": "Why Choose HostChicken?",
+    "subtitle": "Everything you need for the perfect gaming experience, simplified.",
+    "items": {
+      "lightningFast": {
+        "title": "Lightning Fast",
+        "desc": "Deploy servers in under 30 seconds with our optimized infrastructure."
+      },
+      "enterpriseSecurity": {
+        "title": "Enterprise Security",
+        "desc": "DDoS protection, automatic backups, and 256-bit encryption."
+      },
+      "globalNetwork": {
+        "title": "Global Network",
+        "desc": "Choose from 15+ data centers worldwide for optimal latency."
+      },
+      "communityFirst": {
+        "title": "Community First",
+        "desc": "Built by gamers, for gamers. Join our active Discord community."
+      },
+      "alwaysOnline": {
+        "title": "Always Online",
+        "desc": "99.9% uptime guarantee with automatic failover systems."
+      },
+      "awardWinning": {
+        "title": "Award Winning",
+        "desc": "Recognized as the best game hosting platform 3 years running."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Start free, scale as you grow",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "desc": "Perfect for small communities",
+        "getStarted": "Get Started"
+      },
+      "pro": {
+        "name": "Pro",
+        "desc": "Most popular choice",
+        "popular": "Most Popular",
+        "getStarted": "Get Started"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "desc": "For large servers",
+        "getStarted": "Get Started"
+      }
+    }
+  },
+  "testimonials": {
+    "title": "What Gamers Say",
+    "subtitle": "Real reviews from real players",
+    "items": [
+      {
+        "name": "Alex Chen",
+        "role": "Minecraft Server Owner",
+        "content": "HostChicken made setting up my server so easy. Within minutes, I had a fully configured Minecraft server running smoothly.",
+        "rating": 5
+      },
+      {
+        "name": "Sarah Johnson",
+        "role": "Rust Community Manager",
+        "content": "The performance is incredible. Our server handles 100+ players without any lag. Support is always there when needed.",
+        "rating": 5
+      },
+      {
+        "name": "Mike Rodriguez",
+        "role": "CS2 Team Captain",
+        "content": "Finally found a hosting service that understands competitive gaming. Low ping and reliable uptime every time.",
+        "rating": 5
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know",
+    "questions": {
+      "deployment": {
+        "question": "How quickly can I get my server running?",
+        "answer": "Most servers are deployed within 30 seconds of payment confirmation. You'll receive login details immediately."
+      },
+      "upgrade": {
+        "question": "Can I upgrade or downgrade my plan anytime?",
+        "answer": "Yes! You can change your plan at any time. Upgrades take effect immediately, downgrades at the next billing cycle."
+      },
+      "games": {
+        "question": "What games do you support?",
+        "answer": "We support all major games including Minecraft, Rust, ARK, Counter-Strike, Team Fortress 2, and many more."
+      },
+      "refunds": {
+        "question": "Do you offer refunds?",
+        "answer": "We offer a 7-day money-back guarantee. If you're not satisfied, contact support for a full refund."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to Start Gaming?",
+    "subtitle": "Join thousands of gamers who have already made the switch. Your perfect server is just one click away.",
+    "startTrial": "Start Your Free Trial",
+    "loginDashboard": "Login to Dashboard",
+    "footer": "No credit card required • 7-day free trial • Cancel anytime"
+  },
+  "games": {
+    "minecraft": "Minecraft Java",
+    "bedrock": "Minecraft Bedrock",
+    "csgo": "Counter-Strike 2",
+    "tf2": "Team Fortress 2",
+    "rust": "Rust",
+    "ark": "ARK: Survival Evolved"
+  },
+  "footer": {
+    "description": "The easiest way to host game servers. Built for gamers, by gamers.",
+    "product": "Product",
+    "createServer": "Create Server",
+    "pricing": "Pricing",
+    "features": "Features",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "contact": "Contact Us",
+    "status": "Server Status",
+    "company": "Company",
+    "about": "About",
+    "blog": "Blog",
+    "careers": "Careers",
+    "copyright": "© 2024 HostChicken. All rights reserved."
+  }
+}

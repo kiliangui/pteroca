@@ -1,0 +1,169 @@
+{
+  "metadata": {
+    "title": "pteroca - Hébergement de serveurs de jeu",
+    "description": "Hébergement professionnel de serveurs de jeu avec gestion facile"
+  },
+  "header": {
+    "login": "Connexion",
+    "startFreeTrial": "Commencer l'essai gratuit",
+    "dashboard": "Tableau de bord",
+    "servers": "Serveurs",
+    "store": "Boutique",
+    "balance": "Solde",
+    "admin": "Admin",
+    "logout": "Déconnexion"
+  },
+  "hero": {
+    "badge": "🚀 Maintenant avec un déploiement de serveur 50% plus rapide",
+    "title": "Des serveurs de jeu qui fonctionnent simplement",
+    "subtitle": "Lancez des serveurs de jeu professionnels en quelques secondes. Pas de maux de tête techniques, juste une liberté de jeu pure. Rejoignez plus de 50 000 joueurs qui font confiance à HostChicken.",
+    "chooseGame": "Choisissez votre jeu",
+    "startServer": "Démarrer votre serveur",
+    "readyToDeploy": "Prêt à déployer en secondes",
+    "trustBadges": {
+      "freeTrial": "Essai gratuit de 7 jours",
+      "noSetupFees": "Pas de frais d'installation",
+      "support": "Support 24/7",
+      "instantDeployment": "Déploiement instantané"
+    }
+  },
+  "socialProof": {
+    "title": "Approuvé par les joueurs du monde entier",
+    "subtitle": "Des chiffres réels de vrais joueurs",
+    "stats": {
+      "activeServers": "Serveurs actifs",
+      "uptime": "Disponibilité",
+      "hoursPlayed": "Heures jouées",
+      "support": "Support"
+    }
+  },
+  "features": {
+    "title": "Pourquoi choisir HostChicken ?",
+    "subtitle": "Tout ce dont vous avez besoin pour une expérience de jeu parfaite, simplifié.",
+    "items": {
+      "lightningFast": {
+        "title": "Ultra rapide",
+        "desc": "Déployez des serveurs en moins de 30 secondes avec notre infrastructure optimisée."
+      },
+      "enterpriseSecurity": {
+        "title": "Sécurité d'entreprise",
+        "desc": "Protection DDoS, sauvegardes automatiques et cryptage 256 bits."
+      },
+      "globalNetwork": {
+        "title": "Réseau mondial",
+        "desc": "Choisissez parmi plus de 15 centres de données dans le monde pour une latence optimale."
+      },
+      "communityFirst": {
+        "title": "Communauté d'abord",
+        "desc": "Construit par des joueurs, pour des joueurs. Rejoignez notre communauté Discord active."
+      },
+      "alwaysOnline": {
+        "title": "Toujours en ligne",
+        "desc": "Garantie de disponibilité à 99,9 % avec systèmes de basculement automatique."
+      },
+      "awardWinning": {
+        "title": "Récompensé",
+        "desc": "Reconnu comme la meilleure plateforme d'hébergement de jeu depuis 3 ans."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Tarification simple et transparente",
+    "subtitle": "Commencez gratuitement, évoluez selon vos besoins",
+    "plans": {
+      "starter": {
+        "name": "Débutant",
+        "desc": "Parfait pour les petites communautés",
+        "getStarted": "Commencer"
+      },
+      "pro": {
+        "name": "Pro",
+        "desc": "Le choix le plus populaire",
+        "popular": "Le plus populaire",
+        "getStarted": "Commencer"
+      },
+      "enterprise": {
+        "name": "Entreprise",
+        "desc": "Pour les grands serveurs",
+        "getStarted": "Commencer"
+      }
+    }
+  },
+  "testimonials": {
+    "title": "Ce que disent les joueurs",
+    "subtitle": "De vrais avis de vrais joueurs",
+    "items": [
+      {
+        "name": "Alex Chen",
+        "role": "Propriétaire de serveur Minecraft",
+        "content": "HostChicken a rendu la configuration de mon serveur si facile. En quelques minutes, j'avais un serveur Minecraft entièrement configuré qui fonctionnait parfaitement.",
+        "rating": 5
+      },
+      {
+        "name": "Sarah Johnson",
+        "role": "Gestionnaire de communauté Rust",
+        "content": "Les performances sont incroyables. Notre serveur gère plus de 100 joueurs sans aucun lag. Le support est toujours là quand on en a besoin.",
+        "rating": 5
+      },
+      {
+        "name": "Mike Rodriguez",
+        "role": "Capitaine d'équipe CS2",
+        "content": "Enfin trouvé un service d'hébergement qui comprend le gaming compétitif. Ping faible et disponibilité fiable à chaque fois.",
+        "rating": 5
+      }
+    ]
+  },
+  "faq": {
+    "title": "Questions fréquemment posées",
+    "subtitle": "Tout ce que vous devez savoir",
+    "questions": {
+      "deployment": {
+        "question": "À quelle vitesse puis-je avoir mon serveur opérationnel ?",
+        "answer": "La plupart des serveurs sont déployés dans les 30 secondes suivant la confirmation du paiement. Vous recevrez les détails de connexion immédiatement."
+      },
+      "upgrade": {
+        "question": "Puis-je mettre à niveau ou rétrograder mon plan à tout moment ?",
+        "answer": "Oui ! Vous pouvez changer de plan à tout moment. Les mises à niveau prennent effet immédiatement, les rétrogradations au prochain cycle de facturation."
+      },
+      "games": {
+        "question": "Quels jeux prenez-vous en charge ?",
+        "answer": "Nous prenons en charge tous les jeux majeurs incluant Minecraft, Rust, ARK, Counter-Strike, Team Fortress 2, et bien d'autres."
+      },
+      "refunds": {
+        "question": "Offrez-vous des remboursements ?",
+        "answer": "Nous offrons une garantie de remboursement de 7 jours. Si vous n'êtes pas satisfait, contactez le support pour un remboursement complet."
+      }
+    }
+  },
+  "cta": {
+    "title": "Prêt à commencer à jouer ?",
+    "subtitle": "Rejoignez des milliers de joueurs qui ont déjà fait le changement. Votre serveur parfait n'est qu'à un clic.",
+    "startTrial": "Commencer votre essai gratuit",
+    "loginDashboard": "Se connecter au tableau de bord",
+    "footer": "Aucune carte de crédit requise • Essai gratuit de 7 jours • Annulez à tout moment"
+  },
+  "games": {
+    "minecraft": "Minecraft Java",
+    "bedrock": "Minecraft Bedrock",
+    "csgo": "Counter-Strike 2",
+    "tf2": "Team Fortress 2",
+    "rust": "Rust",
+    "ark": "ARK: Survival Evolved"
+  },
+  "footer": {
+    "description": "Le moyen le plus simple d'héberger des serveurs de jeu. Construit pour les joueurs, par les joueurs.",
+    "product": "Produit",
+    "createServer": "Créer un serveur",
+    "pricing": "Tarification",
+    "features": "Fonctionnalités",
+    "support": "Support",
+    "helpCenter": "Centre d'aide",
+    "contact": "Nous contacter",
+    "status": "Statut du serveur",
+    "company": "Entreprise",
+    "about": "À propos",
+    "blog": "Blog",
+    "careers": "Carrières",
+    "copyright": "© 2024 HostChicken. Tous droits réservés."
+  }
+}
