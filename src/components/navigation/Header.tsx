@@ -14,7 +14,8 @@ import {
   User,
   LogOut,
   Menu,
-  X
+  X,
+  LogIn
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
@@ -131,8 +132,8 @@ export function Header({siteName="Pteroca"}) {
               <SelectItem value="fr">FR</SelectItem>
             </SelectContent>
           </Select>
-
-          {/* User Menu */}
+           {session?.user?.email ? <>
+             {/* User Menu */}
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-2">
               <User className="h-4 w-4 text-gray-500" />
@@ -151,7 +152,20 @@ export function Header({siteName="Pteroca"}) {
             >
               <LogOut className="h-4 w-4" />
               <span className="hidden md:inline">{t('logout')}</span>
+            </button> </div></>: <div>
+            <button
+              onClick={async () => {
+                window.location.href="/auth/login"
+
+              }}
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
+            >
+              <LogIn className="h-4 w-4" />
+              <span className="hidden md:inline">{t('login')}</span>
             </button>
+            </div>
+          }
+         <div>
 
             {/* Mobile menu button */}
             <button

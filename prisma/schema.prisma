@@ -6,11 +6,11 @@ generator client {
 }
 
 datasource db {
-  //provider = "sqlite"
-  //url      = "file:./dev.db"
+  provider = "sqlite"
+  url      = "file:./dev.db"
   
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  //provider = "mysql"
+  //url      = env("DATABASE_URL")
 }
 
 model User {
@@ -31,8 +31,6 @@ model User {
   updatedAt             DateTime?
   deletedAt             DateTime?
   emailVerified         DateTime?
-  stripeId              String?
-
   servers               Server[]
   payments              Payment[]
   logs                  Log[]
@@ -61,6 +59,7 @@ model Product {
   description       String?
   isActive          Boolean  @default(true)
   recommended       Boolean  @default(false)
+  stripeId          String?
   diskSpace         Int
   memory            Int
   io                Int

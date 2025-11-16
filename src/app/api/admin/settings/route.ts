@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { requireAdmin } from "@/lib/auth"
 
 export async function GET() {
+      await requireAdmin()
+  
   try {
     const settings = await prisma.setting.findMany({
       include: {

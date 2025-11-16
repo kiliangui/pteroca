@@ -21,6 +21,7 @@ interface Product {
   isActive: boolean
   recommended: boolean
   diskSpace: number
+  stripeId: string
   memory: number
   cpu: number
   io: number
@@ -304,6 +305,10 @@ export function ProductsTable() {
                       <Input id="io" name="io" type="number" required />
                     </div>
                   </div>
+                  <div>
+                      <Label htmlFor="stripeId">Stripe Id</Label>
+                      <Input id="stripeId" name="stripeId" type="text" />
+                    </div>
                   <div className="flex items-center space-x-2">
                     <Switch id="isActive" name="isActive" defaultChecked />
                     <Label htmlFor="isActive">Active</Label>
@@ -628,6 +633,11 @@ export function ProductsTable() {
                   <Input id="edit-io" name="io" type="number" defaultValue={selectedProduct.io} required />
                 </div>
               </div>
+              
+              <div>
+                  <Label htmlFor="edit-stripeId">Stripe Id</Label>
+                  <Input id="edit-stripeId" name="stripeId" type="text" defaultValue={selectedProduct.stripeId} />
+                </div>
               <div className="flex items-center space-x-2">
                 <Switch id="edit-isActive" name="isActive" defaultChecked={selectedProduct.isActive} />
                 <Label htmlFor="edit-isActive">Active</Label>

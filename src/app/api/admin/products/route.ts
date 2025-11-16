@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { requireAdmin } from "@/lib/auth"
 
 export async function GET() {
+    await requireAdmin()
+
   try {
     const products = await prisma.product.findMany({
       include: {
@@ -16,6 +19,7 @@ export async function GET() {
             id: true,
             type: true,
             value: true,
+            stripePriceId:true,
             unit: true,
             price: true,
           },
@@ -35,6 +39,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+        await requireAdmin()
+    
     const formData = await request.formData()
     const name = formData.get("name") as string
     const description = formData.get("description") as string
@@ -45,6 +51,7 @@ export async function POST(request: NextRequest) {
     const io = parseInt(formData.get("io") as string)
     const isActive = formData.get("isActive") === "on"
     const recommended = formData.get("recommended") === "on"
+    const stripeId = formData.get("stripeId") as string
 
     if (!name || !diskSpace || !memory || !cpu || !io) {
       return NextResponse.json({ error: "Required fields are missing" }, { status: 400 })
@@ -57,6 +64,7 @@ export async function POST(request: NextRequest) {
         diskSpace,
         memory,
         cpu,
+        stripeId,
         io,
         isActive,
         recommended,
@@ -67,6 +75,7 @@ export async function POST(request: NextRequest) {
         swap: 0,
         backups: 2,
         ports: 2,
+        
       },
       include: {
         category: {

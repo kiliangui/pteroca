@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { requireAdmin } from "@/lib/auth"
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+        await requireAdmin()
+    
     const { id } = await params
     const formData = await request.formData()
     const name = formData.get("name") as string
@@ -62,6 +65,8 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+    await requireAdmin()
+
   try {
     const { id } = await params
     await prisma.product.delete({
