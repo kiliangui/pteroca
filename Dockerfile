@@ -11,7 +11,7 @@ COPY package*.json ./
 COPY next.config.ts ./
 
 # Install all dependencies (including devDependencies for build)
-RUN npm ci && npm cache clean --force
+RUN npm i && npm cache clean --force
 
 # Copy source code
 COPY . .
