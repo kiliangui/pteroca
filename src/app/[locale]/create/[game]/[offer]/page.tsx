@@ -21,7 +21,7 @@ export default async function OfferPage({ params }: { params: { game: string; of
   }
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { id: true,stripeId: true  },
+    select: { id: true,stripeId:true  },
   })
 
   // Resolve the selected Product by "offer" segment (case-insensitive) and its first ProductPrice with a stripePriceId.
