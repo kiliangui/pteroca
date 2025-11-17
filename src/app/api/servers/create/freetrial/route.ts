@@ -24,6 +24,7 @@ export async function POST(
         }
     })
     if (userFreeTrials.length>0){
+      console.log("USER already has freetrial")
         return NextResponse.json({ message:"Vous avez déja un essaie en cours" }, { status: 200 })
     }
     if (!body.game) return NextResponse.json({ message:"Aucun jeu" }, { status: 400 })

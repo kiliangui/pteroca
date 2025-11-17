@@ -90,7 +90,8 @@ export default async function OfferPage({ params }: { params: { game: string; of
           <SubscribeButton
             stripePriceId={stripePriceId}
             productPriceId={productPriceId}
-            customerId={user?.stripeId}
+            game={game}
+            content={"Pay"}
           />
         )}
       </div>

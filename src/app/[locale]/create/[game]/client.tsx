@@ -1,20 +1,40 @@
 "use client";
+import SubscribeButton from "@/components/SubscribeButton";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Card } from "@/components/ui/card";
 import { Select,SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Product } from "@prisma/client";
+import { Product, ProductPrice } from "@prisma/client";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react"
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export function GameClient({offers,game,user}:any){
   const [offer, setOffer] = useState("8GB");
   const [periodName,setPeriodName] = useState("month")
   const [period,setPeriod] = useState(1)
+  const [priceId,setPriceId] = useState("")
+  const [productId,setProductId] = useState("")
+
+  useEffect(()=>{
+    const currentOffer = offers.find((ofr)=>ofr.name==offer)
+    if (offer=="freetrial"){
+      setPriceId("freetrial")
+
+    }else{
+      const price = currentOffer.prices.find((price)=>(price.type==periodName && price.value==period)) as ProductPrice
+      console.log("price",price)
+      if (price?.stripePriceId) setPriceId(price?.stripePriceId)
+      if (currentOffer.id) setProductId(currentOffer.id)
+    }
+    
+
+
+  },[offer])
   
 
   return <div className="max-w-2/3 m-auto">
+    <p>{priceId}</p>
     <h1 className="text-3xl font-bold py-4">Create Server</h1>
     <Card className=" flex rounded-lg relative p-0 items-center justify-center ">
       <div className="h-full  rounded-lg w-full absolute  " style={{backgroundImage: `url(${"/images/games/minecraft.jpg"})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
@@ -72,33 +92,14 @@ export function GameClient({offers,game,user}:any){
                   </Select>
                 </div>
 
-                <Button className="mt-8 w-full" size="lg" onClick={async ()=>{
-                  if (offer=="freetrial") {
-                    const res = await axios.post("/api/servers/create/freetrial",{
-                       game:"minecraft",
-                       serverName:"freeTrial",
-                    })
-                    if (res.data.server){
-                      window.location.href="/dashboard/servers"
-                    }
-                  }else{
-                    const res = await axios.post("/api/create-checkout-session",{
-                       game,
-                       offer,
-                       periodName,
-                       period
-                    })
-                    if (res.data.url){
-                      window.location.href = res.data.url
-                    }
+                <SubscribeButton
+                stripePriceId={priceId.toString()}
+                productPriceId={Number(productId)}game={game}
+                  content={offer=="freetrial"?"Start Free Trial":"Pay Now"}
+                >
+                    
 
-                  }
-
-
-                }}>
-                    {offer=="freetrial"?"Start Free Trial":"Pay Now"}
-
-                </Button>
+                </SubscribeButton>
 
   </div>
 }
