@@ -1,13 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Card } from "@/components/ui/card";
 import { Select,SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Product } from "@prisma/client";
 import axios from "axios";
 import { ArrowLeft } from "lucide-react"
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 export function GameClient({offers,game,user}:any){
   const [offer, setOffer] = useState("8GB");
+  const [periodName,setPeriodName] = useState("month")
+  const [period,setPeriod] = useState(1)
   
 
   return <div className="max-w-2/3 m-auto">
@@ -27,17 +31,32 @@ export function GameClient({offers,game,user}:any){
         </div>
       
     </Card>
-    <div>
-                <Card className={"px-8 cursor-pointer mt-8 py-6  border-2 hover:shadow-lg transition-shadow "+ (offer=="freetrial"?"border-blue-500":"border-transparent")} onClick={()=>{
-                    setOffer("freetrial")
-                }}>
-                  <div  className="flex items-center gap-2">
-                    <div className="text-lg font-bold">Essaie gratuit</div>
-                    <p>(1 mois)</p>
-                  </div>
-                </Card>
+    <div className="mt-8">
+      <ButtonGroup className="mb-2 ml-auto">
+        <Button onClick={()=>{setPeriod(1);setPeriodName("month")}} variant={periodName=="month" && period==1 ? "default": "outline"}>1 mois</Button>
+        <Button onClick={()=>{setPeriod(3);setPeriodName("month")}} variant={periodName=="month" && period==3 ? "default": "outline"}>3 mois <span className="text-green-600 font-bold">(-33%)</span></Button>
+        <Button onClick={()=>{setPeriod(1);setPeriodName("year")}} variant={periodName=="year" && period==1 ? "default": "outline"}>1 an <span className="text-green-600 font-bold">(-43%)</span></Button>
+      </ButtonGroup>
+                {periodName === "month" && period === 1 && (
+                  <Card className={"px-8 cursor-pointer  py-6  border-2 hover:shadow-lg transition-shadow "+ (offer=="freetrial"?"border-blue-500":"border-transparent")} onClick={()=>{
+                      setOffer("freetrial")
+                  }}>
+                    <div  className="flex items-center gap-2">
+                      <div className="text-lg font-bold">Essaie gratuit</div>
+                      <p>(1 mois)</p>
+                    </div>
+                  </Card>
+                )}
                 <div className="grid grid-cols-2 gap-4 mt-4 ">
-                  {offers.map((o)=><OfferCard key={o.id} memory={Math.ceil(o.memory/1024)+"GB"} cores={o.cpu/100} recommended={o.recommended} storage={o.diskSpace/1024+"GB"} price={o?.prices.length > 0 ?o?.prices[0].price:"" } offer={offer} setOffer={setOffer}/>)}
+                  {offers.map((o)=>{      
+                    const odPrice = o.prices.find((price)=>(price.type=="month" && price.value==1)).price
+
+                    const price = o.prices.find((price)=>(price.type==periodName && price.value==period)).price
+                    const monthlyPrice = Math.ceil((periodName=="year" ? price/12 : (period==3 && periodName=="month" ? price/3:price))*100 )/100
+                   return  <OfferCard key={o.id} memory={Math.ceil(o.memory/1024)+"GB"} cores={o.cpu/100} recommended={o.recommended} storage={o.diskSpace/1024+"GB"} 
+                  price={monthlyPrice} ogPrice={odPrice} offer={offer} setOffer={setOffer}/>
+                
+})}
                 
                 </div>
                 <h2 className="text-xl font-bold pt-4">Location</h2>
@@ -56,28 +75,36 @@ export function GameClient({offers,game,user}:any){
                 <Button className="mt-8 w-full" size="lg" onClick={async ()=>{
                   if (offer=="freetrial") {
                     const res = await axios.post("/api/servers/create/freetrial",{
-                       game:"minecraft", 
+                       game:"minecraft",
                        serverName:"freeTrial",
                     })
                     if (res.data.server){
                       window.location.href="/dashboard/servers"
                     }
                   }else{
-                    window.location.href=`/create/${game}/${offer}`
+                    const res = await axios.post("/api/create-checkout-session",{
+                       game,
+                       offer,
+                       periodName,
+                       period
+                    })
+                    if (res.data.url){
+                      window.location.href = res.data.url
+                    }
 
                   }
 
 
                 }}>
-                    {offer=="freetrial"?"Start Free Trial":"Continue to Checkout"}
-                  
+                    {offer=="freetrial"?"Start Free Trial":"Pay Now"}
+
                 </Button>
 
   </div>
 }
 
 function OfferCard({
-  memory, cores, storage, price,setOffer,offer,recommended=false
+  memory, cores, storage, price, ogPrice,setOffer,offer,recommended=false
 }){
   return (<Card onClick={()=>{
     setOffer(memory)
@@ -92,7 +119,14 @@ function OfferCard({
         <div className="text-lg font-bold">{memory} RAM / {cores} CPU / {storage} de Stockage</div>
         <div className="text-sm text-gray-500">Perfect for small to medium-sized servers</div>
       </div>
-      <div className="text-2xl font-bold">{price}€/mois</div>
+      {ogPrice == price ? (
+        <div className="text-2xl font-bold text-black">{price}€/mois</div>
+      ) : (
+        <div className="text-right">
+          <div className="text-lg line-through text-gray-500">{ogPrice}€/mois</div>
+          <div className="text-2xl font-bold text-green-600">{price}€/mois</div>
+        </div>
+      )}
     </div>
 
   </Card>
