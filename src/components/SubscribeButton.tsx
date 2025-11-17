@@ -40,7 +40,7 @@ export default function SubscribeButton({ stripePriceId, productPriceId,content,
       onClick={handleSubscribe}
       className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
     >
-      {content} {stripePriceId} {productPriceId}
+      {content}
     </button>
   );
 }
