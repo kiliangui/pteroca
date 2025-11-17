@@ -51,7 +51,7 @@ export async function installServerOnPterodactyl(serverId: number, game: string,
   const allocation = await pterodactylServerService.getFreeAllocationOnNode(nodeId);
   console.log("ALLOCATION :",allocation);
   console.log("user id : ",user.id)
-  const pteroServer = await pterodactylServerService.createServer(server.name || "myserver",Number(user.pterodactylUserId),6,1,{memory:product.memory,cpu:product.cpu,disk:product.diskSpace,io:500,swap:0},{databases:1,allocations:2,backups:1},allocation);
+  const pteroServer = await pterodactylServerService.createServer(server.name || "myserver",pterodactylUserId,6,1,{memory:product.memory,cpu:product.cpu,disk:product.diskSpace,io:500,swap:0},{databases:1,allocations:2,backups:1},allocation);
   await prisma.server.update({
     where:{
         id:server.id

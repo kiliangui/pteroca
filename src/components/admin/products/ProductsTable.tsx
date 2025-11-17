@@ -95,6 +95,23 @@ export function ProductsTable() {
     (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
+  const handleSyncStripe = async ()=>{
+    try {
+      const response = await fetch("/api/admin/products/sync", {
+        method: "POST",
+      })
+
+      if (response.ok) {
+        toast.success("Product created successfully")
+      
+      } else {
+        toast.error("Failed to create product")
+      }
+    } catch (error) {
+      toast.error("Failed to create product")
+    }
+  }
+
   const handleCreateProduct = async (formData: FormData) => {
     try {
       const response = await fetch("/api/admin/products", {
@@ -247,6 +264,9 @@ export function ProductsTable() {
               </CardTitle>
               <CardDescription>Manage server products and configurations</CardDescription>
             </div>
+            <Button variant={"outline"} onClick={()=>{
+              handleSyncStripe()
+            }} >Sync</Button>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
