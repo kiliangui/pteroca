@@ -34,7 +34,6 @@ export function GameClient({offers,game,user}:any){
   
 
   return <div className="max-w-2/3 m-auto">
-    <p>{priceId}</p>
     <h1 className="text-3xl font-bold py-4">Create Server</h1>
     <Card className=" flex rounded-lg relative p-0 items-center justify-center ">
       <div className="h-full  rounded-lg w-full absolute  " style={{backgroundImage: `url(${"/images/games/minecraft.jpg"})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
