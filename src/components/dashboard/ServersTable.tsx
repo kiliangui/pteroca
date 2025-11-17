@@ -107,6 +107,7 @@ export function ServersTable() {
                         productId: server.productId?.toString() || ""
 
                       })
+                        window.location.reload()
                     }}>Install</Button>:
                     <Button
                       size="sm"
