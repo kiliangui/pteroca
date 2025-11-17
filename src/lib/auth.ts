@@ -20,6 +20,7 @@ async function generateAuthOptions(): Promise<NextAuthOptions> {
       DiscordProvider({
         clientId: discordId?.value ?? "",
         clientSecret: discordSecret?.value ?? "",
+        
       }),
 
       CredentialsProvider({

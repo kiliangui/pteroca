@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { pterodactylServerService } from "@/lib/pterodactyl";
+import { pterodactylAccountService, pterodactylServerService } from "@/lib/pterodactyl";
 
 export async function POST(req: Request) {
     // get the serverId, game, productId from the request body
@@ -27,11 +27,22 @@ export async function installServerOnPterodactyl(serverId: number, game: string,
     console.log("Cannot install server: Missing product, server, or user.");
     return
   }
-  const pterodactylUserId = user?.pterodactylUserId;
+  let pterodactylUserId = user?.pterodactylUserId;
 
   if (!pterodactylUserId) {
-    console.log("Cannot install server: Missing Pterodactyl user ID or API key.");
-    return;
+    const name = user.email.split("@")[0]
+    const pteroUser = await pterodactylAccountService.createUser(user.email,name,name,name,Math.random().toString(36).slice(-8))
+    pterodactylUserId =pteroUser.id
+    const pterodactylUserApiKey = await pterodactylAccountService.createUserApiKey(pteroUser.id,"Hostchicken Managment")
+    await prisma.user.update({
+      where:{
+        id:user.id
+      },
+      data:{
+        pterodactylUserApiKey:pterodactylUserApiKey,
+        pterodactylUserId:pterodactylUserId
+      }
+    })
   }
 
   // get an allocation from pterodactyl.
