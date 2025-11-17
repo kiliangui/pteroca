@@ -27,11 +27,11 @@ export function GameClient({offers,game,user}:any){
       if (price?.stripePriceId) setPriceId(price?.stripePriceId)
       if (currentOffer.id) setProductId(currentOffer.id)
     }
-    
 
 
-  },[offer])
-  
+
+
+  },[offer, period, periodName])
 
   return <div className="max-w-2/3 m-auto">
     <h1 className="text-3xl font-bold py-4">Create Server</h1>
