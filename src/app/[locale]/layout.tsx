@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, getLocale } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { prisma } from "@/lib/prisma";
@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('metadata');
+export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+  const t = await getTranslations('metadata', params.locale);
 
   return {
     title: t('title'),
@@ -29,12 +29,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
-  const messages = await getMessages();
-  const t = await getTranslations('metadata');
-  const locale = await getLocale();
+  const messages = await getMessages({ locale: params.locale });
+  const t = await getTranslations('metadata', params.locale);
+  const locale = params.locale;
   const siteName = await prisma.setting.findFirst({
     where:{
       name:"site_name"
@@ -45,7 +47,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             <Header siteName={siteName?.value}/>
 

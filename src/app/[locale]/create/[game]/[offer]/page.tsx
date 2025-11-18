@@ -1,21 +1,21 @@
 import { Card } from "@/components/ui/card";
-import { Select,SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button";
 import SubscribeButton from "@/components/SubscribeButton";
 import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { getTranslations } from "next-intl/server";
 
 export default async function OfferPage({ params }: { params: { game: string; offer: string } }) {
   const { game, offer } =await params
 
+  const t = await getTranslations('create');
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {
     return (
       <div className="max-w-2/3 m-auto">
-        <h1 className="text-3xl font-bold py-4">Create Server</h1>
-        <p className="mt-4">Please sign in to create your server.</p>
+        <h1 className="text-3xl font-bold py-4">{t('flow.clientTitle')}</h1>
+        <p className="mt-4">{t('flow.loginPrompt')}</p>
       </div>
     )
   }
@@ -45,7 +45,7 @@ export default async function OfferPage({ params }: { params: { game: string; of
 
   return (
     <div className="max-w-2/3 m-auto">
-      <h1 className="text-3xl font-bold py-4">Create Server</h1>
+      <h1 className="text-3xl font-bold py-4">{t('flow.clientTitle')}</h1>
       <Card className="flex rounded-lg relative p-0 items-center justify-center">
         <div
           className="h-full rounded-lg w-full absolute"
@@ -75,23 +75,22 @@ export default async function OfferPage({ params }: { params: { game: string; of
 
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">
-          You have selected the {offer} plan
+          {t('flow.selectedPlan', { offer })}
         </h2>
         <p className="text-muted-foreground mb-6">
-          Proceed to checkout to complete your server setup.
+          {t('flow.checkout')}
         </p>
 
         {!product || !productPriceId || !stripePriceId ? (
           <div className="text-red-500 mb-4">
-            No Stripe price configured for this offer. Please ensure a
-            ProductPrice with a valid stripePriceId exists for this plan.
+            {t('flow.stripeError')}
           </div>
         ) : (
           <SubscribeButton
             stripePriceId={stripePriceId}
             productPriceId={productPriceId}
             game={game}
-            content={"Pay"}
+            content={t("flow.payNow")}
           />
         )}
       </div>

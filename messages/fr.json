@@ -6,25 +6,26 @@
   "header": {
     "login": "Connexion",
     "startFreeTrial": "Commencer l'essai gratuit",
-    "dashboard": "Tableau de bord",
+    "dashboard": "Dashboard",
     "servers": "Serveurs",
     "store": "Boutique",
-    "balance": "Solde",
+    "balance": "Paiements",
     "admin": "Admin",
     "logout": "Déconnexion"
   },
   "hero": {
     "badge": "🚀 Maintenant avec un déploiement de serveur 50% plus rapide",
-    "title": "Des serveurs de jeu qui fonctionnent simplement",
-    "subtitle": "Lancez des serveurs de jeu professionnels en quelques secondes. Pas de maux de tête techniques, juste une liberté de jeu pure. Rejoignez plus de 50 000 joueurs qui font confiance à HostChicken.",
+    "title": "Des serveurs performants",
+    "highlight": "déployé en moins d'une minute ! ",
+    "subtitle": "Lancez des serveurs de jeu professionnels en quelques secondes. Pas de maux de tête techniques, juste la liberté de jouer avec tes amis.",
     "chooseGame": "Choisissez votre jeu",
     "startServer": "Démarrer votre serveur",
     "readyToDeploy": "Prêt à déployer en secondes",
     "trustBadges": {
-      "freeTrial": "Essai gratuit de 7 jours",
+      "freeTrial": "Essai gratuit pendant un mois",
       "noSetupFees": "Pas de frais d'installation",
-      "support": "Support 24/7",
-      "instantDeployment": "Déploiement instantané"
+      "support": "Support 7/7",
+      "instantDeployment": "Création Rapide"
     }
   },
   "socialProof": {
@@ -51,7 +52,7 @@
       },
       "globalNetwork": {
         "title": "Réseau mondial",
-        "desc": "Choisissez parmi plus de 15 centres de données dans le monde pour une latence optimale."
+        "desc": "Choisissez parmi plus de 5 centres de données dans le monde pour une latence optimale."
       },
       "communityFirst": {
         "title": "Communauté d'abord",
@@ -62,8 +63,8 @@
         "desc": "Garantie de disponibilité à 99,9 % avec systèmes de basculement automatique."
       },
       "awardWinning": {
-        "title": "Récompensé",
-        "desc": "Reconnu comme la meilleure plateforme d'hébergement de jeu depuis 3 ans."
+        "title": "Setup Plug & Play",
+        "desc": "Lance un serveur optimisé en un clic, sans fichiers à bidouiller."
       }
     }
   },
@@ -78,7 +79,7 @@
       },
       "pro": {
         "name": "Pro",
-        "desc": "Le choix le plus populaire",
+        "desc": "Serveur Performant, parfait pour les serveurs modées ou avec beaucoup de joueurs",
         "popular": "Le plus populaire",
         "getStarted": "Commencer"
       },
@@ -87,6 +88,27 @@
         "desc": "Pour les grands serveurs",
         "getStarted": "Commencer"
       }
+    },
+    "planFeatures": {
+      "starter": [
+        "4 Go de RAM",
+        "Slots de joueurs illimités",
+        "Support basique",
+        "Sauvegardes quotidiennes"
+      ],
+      "pro": [
+        "8 Go de RAM",
+        "Slots de joueurs illimités",
+        "Support prioritaire",
+        "Sauvegardes horaires",
+        "Parfait pour les modpacks"
+      ],
+      "enterprise": [
+        "12 Go de RAM",
+        "Joueurs illimités",
+        "Support prioritaire",
+        "Sauvegardes illimitées"
+      ]
     }
   },
   "testimonials": {
@@ -140,7 +162,131 @@
     "subtitle": "Rejoignez des milliers de joueurs qui ont déjà fait le changement. Votre serveur parfait n'est qu'à un clic.",
     "startTrial": "Commencer votre essai gratuit",
     "loginDashboard": "Se connecter au tableau de bord",
-    "footer": "Aucune carte de crédit requise • Essai gratuit de 7 jours • Annulez à tout moment"
+    "footer": "Aucune carte de crédit requise • Essai gratuit de 1 mois • Annulez à tout moment"
+  },
+  "create": {
+    "pageTitle": "Choisissez votre serveur de jeu",
+    "freeTrialBadge": "Essai gratuit disponible",
+    "games": [
+      {
+        "slug": "minecraft",
+        "name": "Minecraft",
+        "background": "/images/games/minecraft.jpg",
+        "freeTrial": true,
+        "features": [
+          "Compatibilité Java & Bedrock",
+          "Installation de modpacks",
+          "Protection DDoS",
+          "Sauvegardes automatiques"
+        ]
+      },
+      {
+        "slug": "bedrock",
+        "name": "Minecraft Bedrock",
+        "background": "/images/games/bedrock.jpg",
+        "freeTrial": true,
+        "features": [
+          "Jeu cross-platform",
+          "Installation facile",
+          "Protection DDoS",
+          "Sauvegardes automatiques"
+        ]
+      },
+      {
+        "slug": "rust",
+        "name": "Rust",
+        "background": "/images/games/rust.jpg",
+        "freeTrial": false,
+        "features": [
+          "Serveurs haute performance",
+          "Support de mods",
+          "Protection DDoS",
+          "Sauvegardes automatiques"
+        ]
+      },
+      {
+        "slug": "satisfactory",
+        "name": "Satisfactory",
+        "background": "/images/games/satisfactory.jpg",
+        "freeTrial": false,
+        "features": [
+          "Mods en un clic",
+          "Serveurs haute performance",
+          "Protection DDoS",
+          "Sauvegardes automatiques"
+        ]
+      }
+    ],
+    "flow": {
+      "clientTitle": "Créer un serveur",
+      "selectedPlan": "Vous avez choisi le plan {offer}",
+      "checkout": "Passez à la caisse pour finaliser la configuration de votre serveur.",
+      "loginPrompt": "Veuillez vous connecter pour créer votre serveur.",
+      "stripeError": "Aucun prix Stripe configuré pour cette offre. Assurez-vous qu'un ProductPrice avec un stripePriceId valide existe pour ce plan.",
+      "payNow": "Payer maintenant",
+      "startFreeTrial": "Commencer l'essai gratuit",
+      "location": "Emplacement",
+      "selectLocation": "Choisissez un emplacement",
+      "freeTrialCard": "Essai gratuit",
+      "recommended": "Recommandé",
+      "offerDescription": "Parfait pour les serveurs petits à moyens",
+      "duration": {
+        "monthly": "1 mois",
+        "quarterly": "3 mois (-33%)",
+        "yearly": "1 an (-43%)"
+      },
+      "locations": {
+        "us": "États-Unis",
+        "eu": "Europe - France",
+        "asia": "Asie"
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Contactez-nous",
+      "title": "Contactez notre équipe de support",
+      "subtitle": "Besoin d'aide pour votre serveur ? Nous sommes là 24h/24 et 7j/7 pour répondre à vos questions ou résoudre vos problèmes."
+    },
+    "form": {
+      "title": "Envoyez-nous un message",
+      "description": "Nous répondons en un jour ouvrable",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "subject": "Sujet",
+      "message": "Comment pouvons-nous vous aider ?",
+      "submit": "Envoyer le message"
+    },
+    "support": {
+      "title": "Support serveur",
+      "description": "Obtenez de l'aide pour votre serveur Minecraft",
+      "details": "Trouvez des réponses rapides dans nos guides ou discutez avec notre équipe.",
+      "guides": "Guides serveur",
+      "live": "Support en direct"
+    },
+    "enterprise": {
+      "title": "Entreprise",
+      "description": "Besoin d'une configuration personnalisée ?",
+      "details": "Nous adaptons le matériel, les modpacks et les plugins à vos besoins spécifiques.",
+      "cta": "Voir les offres"
+    },
+    "footer": {
+      "tagline": "Rendre l'hébergement Minecraft épique et accessible à tous les joueurs !",
+      "productTitle": "Produit",
+      "productPricing": "Tarification",
+      "productGuides": "Guides serveur",
+      "productSupport": "Support",
+      "resourcesTitle": "Ressources",
+      "resourcesBlog": "Blog",
+      "resourcesHelpCenter": "Centre d'aide",
+      "resourcesContact": "Contactez-nous",
+      "communityTitle": "Communauté",
+      "communityTutorials": "Tutoriels",
+      "communityDiscord": "Discord",
+      "communityMods": "Mod Packs",
+      "copyright": "© 2024 HostChicken. Tous droits réservés. Fait avec ❤️ pour la communauté Minecraft."
+    }
   },
   "games": {
     "minecraft": "Minecraft Java",

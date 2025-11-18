@@ -15,7 +15,8 @@
   },
   "hero": {
     "badge": "🚀 Now with 50% faster server deployment",
-    "title": "Game Servers That Just Work",
+    "title": "Game Servers That",
+    "highlight": "Just Work",
     "subtitle": "Launch professional game servers in seconds. No technical headaches, just pure gaming freedom. Join 50,000+ gamers who trust HostChicken.",
     "chooseGame": "Choose your game",
     "startServer": "Start Your Server",
@@ -62,8 +63,8 @@
         "desc": "99.9% uptime guarantee with automatic failover systems."
       },
       "awardWinning": {
-        "title": "Award Winning",
-        "desc": "Recognized as the best game hosting platform 3 years running."
+        "title": "Plug & Play Setup",
+        "desc": "Spin up a fully tuned server with one click—no config files, no stress."
       }
     }
   },
@@ -87,6 +88,27 @@
         "desc": "For large servers",
         "getStarted": "Get Started"
       }
+    },
+    "planFeatures": {
+      "starter": [
+        "4GB RAM",
+        "Unlimited Player Slots",
+        "Basic Support",
+        "Daily Backups"
+      ],
+      "pro": [
+        "8GB RAM",
+        "Unlimited Player Slots",
+        "Priority Support",
+        "Hourly Backups",
+        "Perfect for modpacks"
+      ],
+      "enterprise": [
+        "12GB RAM",
+        "Unlimited Players",
+        "Priority Support",
+        "Unlimited Backups"
+      ]
     }
   },
   "testimonials": {
@@ -141,6 +163,130 @@
     "startTrial": "Start Your Free Trial",
     "loginDashboard": "Login to Dashboard",
     "footer": "No credit card required • 7-day free trial • Cancel anytime"
+  },
+  "create": {
+    "pageTitle": "Choose your Game Server",
+    "freeTrialBadge": "Free Trial Available",
+    "games": [
+      {
+        "slug": "minecraft",
+        "name": "Minecraft",
+        "background": "/images/games/minecraft.jpg",
+        "freeTrial": true,
+        "features": [
+          "Java & Bedrock Support",
+          "Modpack Installation",
+          "DDoS Protection",
+          "Automatic Backups"
+        ]
+      },
+      {
+        "slug": "bedrock",
+        "name": "Minecraft Bedrock",
+        "background": "/images/games/bedrock.jpg",
+        "freeTrial": true,
+        "features": [
+          "Cross-Platform Play",
+          "Easy Setup",
+          "DDoS Protection",
+          "Automatic Backups"
+        ]
+      },
+      {
+        "slug": "rust",
+        "name": "Rust",
+        "background": "/images/games/rust.jpg",
+        "freeTrial": false,
+        "features": [
+          "High Performance Servers",
+          "Mod Support",
+          "DDoS Protection",
+          "Automatic Backups"
+        ]
+      },
+      {
+        "slug": "satisfactory",
+        "name": "Satisfactory",
+        "background": "/images/games/satisfactory.jpg",
+        "freeTrial": false,
+        "features": [
+          "1-Click Mods",
+          "High Performance Servers",
+          "DDoS Protection",
+          "Automatic Backups"
+        ]
+      }
+    ],
+    "flow": {
+      "clientTitle": "Create Server",
+      "selectedPlan": "You have selected the {offer} plan",
+      "checkout": "Proceed to checkout to complete your server setup.",
+      "loginPrompt": "Please sign in to create your server.",
+      "stripeError": "No Stripe price configured for this offer. Please ensure a ProductPrice with a valid stripePriceId exists for this plan.",
+      "payNow": "Pay Now",
+      "startFreeTrial": "Start Free Trial",
+      "location": "Location",
+      "selectLocation": "Select a location",
+      "freeTrialCard": "Free Trial",
+      "recommended": "Recommended",
+      "offerDescription": "Perfect for small to medium-sized servers",
+      "duration": {
+        "monthly": "1 month",
+        "quarterly": "3 months (-33%)",
+        "yearly": "1 year (-43%)"
+      },
+      "locations": {
+        "us": "United States",
+        "eu": "Europe - France",
+        "asia": "Asia"
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Get in touch",
+      "title": "Contact our support team",
+      "subtitle": "Need help with your server? We're here to help you 24/7 with any questions or issues."
+    },
+    "form": {
+      "title": "Send us a message",
+      "description": "We respond within one business day",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "How can we help?",
+      "submit": "Send message"
+    },
+    "support": {
+      "title": "Server Support",
+      "description": "Get help with your Minecraft server",
+      "details": "Find quick answers in our guides or chat with our team.",
+      "guides": "Server guides",
+      "live": "Live support"
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "description": "Need a custom server setup?",
+      "details": "We'll customize hardware, modpacks, and plugins for your specific needs.",
+      "cta": "View plans"
+    },
+    "footer": {
+      "tagline": "Making Minecraft hosting epic and accessible for every gamer!",
+      "productTitle": "Product",
+      "productPricing": "Pricing",
+      "productGuides": "Server Guides",
+      "productSupport": "Support",
+      "resourcesTitle": "Resources",
+      "resourcesBlog": "Blog",
+      "resourcesHelpCenter": "Help Center",
+      "resourcesContact": "Contact Us",
+      "communityTitle": "Community",
+      "communityTutorials": "Tutorials",
+      "communityDiscord": "Discord",
+      "communityMods": "Mod Packs",
+      "copyright": "© 2024 HostChicken. All rights reserved. Made with ❤️ for the Minecraft community."
+    }
   },
   "games": {
     "minecraft": "Minecraft Java",

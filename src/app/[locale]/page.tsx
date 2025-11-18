@@ -64,6 +64,7 @@ export default function Home() {
   }, [selectedGame, games.length]);
 
   const displayedGame = selectedGame ? games.find(g => g.value === selectedGame) : games[currentGameIndex];
+  const planFeatureGroups = (t.raw('pricing.planFeatures') as Record<string, string[]> | undefined) ?? {};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -95,7 +96,7 @@ export default function Home() {
 
             <h1 className="text-5xl lg:text-6xl font-black mb-6 text-gray-900 leading-tight">
               {t('hero.title')}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"> Just Work</span>
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"> {t('hero.highlight')}</span>
             </h1>
             <p className="text-xl lg:text-2xl text-gray-600 max-w-2xl mb-10 leading-relaxed">
               {t('hero.subtitle')}
@@ -325,30 +326,33 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               {
+                key: "starter",
                 name: t('pricing.plans.starter.name'),
                 price: "7€",
                 period: "/month",
                 desc: t('pricing.plans.starter.desc'),
-                features: ["4GB RAM", "Unlimited Player Slots", "Basic Support", "Daily Backups"],
+                features: planFeatureGroups.starter ?? [],
                 popular: false,
                 getStarted: t('pricing.plans.starter.getStarted')
               },
               {
+                key: "pro",
                 name: t('pricing.plans.pro.name'),
                 price: "14€",
                 period: "/month",
                 desc: t('pricing.plans.pro.desc'),
-                features: ["8GB RAM", "Unlimited Player Slots", "Priority Support", "Hourly Backups","Perfect for modpacks"],
+                features: planFeatureGroups.pro ?? [],
                 popular: true,
                 popularText: t('pricing.plans.pro.popular'),
                 getStarted: t('pricing.plans.pro.getStarted')
               },
               {
+                key: "enterprise",
                 name: t('pricing.plans.enterprise.name'),
                 price: "20€",
                 period: "/month",
                 desc: t('pricing.plans.enterprise.desc'),
-                features: ["12GB RAM", "Unlimited Players", "Priority Support", "Unlimited backups Backups"],
+                features: planFeatureGroups.enterprise ?? [],
                 popular: false,
                 getStarted: t('pricing.plans.enterprise.getStarted')
               },
