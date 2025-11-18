@@ -8,7 +8,7 @@ import { User } from "@prisma/client";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { stripePriceId, productPriceId} = body;
+    const { stripePriceId, productPriceId,code} = body;
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
           return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -57,6 +57,7 @@ export async function POST(req: Request) {
       mode: "subscription",
       payment_method_types: ["card"],
       customer: customerId,
+      allow_promotion_codes:true,
       subscription_data:{
         metadata:{
           game: "minecraft",
