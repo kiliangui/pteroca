@@ -46,7 +46,7 @@ export async function installServerOnPterodactyl(serverId: number, game: string,
   }
 
   // get an allocation from pterodactyl.
-  const nodeId = 1;
+  const nodeId = 2;
 // /api/application/nodes/{node}/allocations
   const allocation = await pterodactylServerService.getFreeAllocationOnNode(nodeId);
   console.log("ALLOCATION :",allocation);
