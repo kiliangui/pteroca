@@ -161,12 +161,60 @@
     "title": "Prêt à commencer à jouer ?",
     "subtitle": "Rejoignez des milliers de joueurs qui ont déjà fait le changement. Votre serveur parfait n'est qu'à un clic.",
     "startTrial": "Commencer votre essai gratuit",
-    "loginDashboard": "Se connecter au tableau de bord",
+    "loginDashboard": "Se connecter au Dashboard",
     "footer": "Aucune carte de crédit requise • Essai gratuit de 1 mois • Annulez à tout moment"
+  },
+  "auth": {
+    "common": {
+      "rememberMe": "Se souvenir de moi",
+      "orContinue": "Ou continuez avec",
+      "discord": "Continuer avec Discord"
+    },
+    "login": {
+      "eyebrow": "Content de vous revoir !",
+      "title": "Connectez-vous a votre compte",
+      "description": "Gérez vos serveurs, votre facturation et vos sauvegardes depuis un seul espace.",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "emailPlaceholder": "vous@exemple.com",
+      "passwordPlaceholder": "••••••••",
+      "signIn": "Se connecter",
+      "forgotPassword": "Mot de passe oublié ?",
+      "cta": "Vous n'avez pas de compte ?",
+      "ctaAction": "Créer un compte",
+      "showcaseLabel": "À l'honneur"
+    },
+    "register": {
+      "eyebrow": "De nouveaux mondes vous attendent",
+      "title": "Créez votre compte HostChicken",
+      "description": "Profitez d'un essai gratuit de 7 jours et déployez votre serveur en quelques secondes.",
+      "firstNameLabel": "Prénom",
+      "lastNameLabel": "Nom",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "confirmPasswordLabel": "Confirmez le mot de passe",
+      "firstNamePlaceholder": "Jean",
+      "lastNamePlaceholder": "Dupont",
+      "emailPlaceholder": "jean@exemple.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "signUp": "Créer un compte",
+      "cta": "Vous avez déjà un compte ?",
+      "ctaAction": "Connectez-vous",
+      "showcaseLabel": "Favoris de la communauté"
+    }
   },
   "create": {
     "pageTitle": "Choisissez votre serveur de jeu",
     "freeTrialBadge": "Essai gratuit disponible",
+    "heroIntro": "Déployez votre serveur en moins d'une minute",
+    "heroSubtitle": "Découvrez nos presets optimisés pour éviter le lag, supporter les modpacks et offrir des performances pro.",
+    "filters": {
+      "all": "Tous les jeux",
+      "trial": "Essai gratuit",
+      "premium": "Haute performance"
+    },
+    "cardCta": "Configurer",
     "games": [
       {
         "slug": "minecraft",
@@ -230,6 +278,8 @@
       "freeTrialCard": "Essai gratuit",
       "recommended": "Recommandé",
       "offerDescription": "Parfait pour les serveurs petits à moyens",
+      "perMonthApprox": "≈ {price} €/mois",
+      "savingsLabel": "Économisez {amount} €/mois",
       "duration": {
         "monthly": "1 mois",
         "quarterly": "3 mois (-33%)",

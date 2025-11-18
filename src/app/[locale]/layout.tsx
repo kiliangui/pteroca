@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import "./globals.css";
 import { Header } from "@/components/navigation/Header";
+import { Footer } from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
 
 const geistSans = Geist({
@@ -18,7 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params}): Promise<Metadata> {
+  //@ts-expect-error idk
   const t = await getTranslations('metadata', params.locale);
 
   return {
@@ -32,9 +34,10 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params;
 }>) {
   const messages = await getMessages({ locale: params.locale });
+  //@ts-expect-error idk
   const t = await getTranslations('metadata', params.locale);
   const locale = params.locale;
   const siteName = await prisma.setting.findFirst({
@@ -52,6 +55,7 @@ export default async function RootLayout({
             <Header siteName={siteName?.value}/>
 
             {children}
+            <Footer />
           </Providers>
         </NextIntlClientProvider>
       </body>

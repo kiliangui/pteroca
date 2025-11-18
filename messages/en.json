@@ -164,9 +164,57 @@
     "loginDashboard": "Login to Dashboard",
     "footer": "No credit card required • 7-day free trial • Cancel anytime"
   },
+  "auth": {
+    "common": {
+      "rememberMe": "Remember me",
+      "orContinue": "Or continue with",
+      "discord": "Continue with Discord"
+    },
+    "login": {
+      "eyebrow": "Dashboard access",
+      "title": "Sign in to your command center",
+      "description": "Manage your servers, billing, and backups in one place.",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "emailPlaceholder": "you@example.com",
+      "passwordPlaceholder": "••••••••",
+      "signIn": "Sign in",
+      "forgotPassword": "Forgot your password?",
+      "cta": "Don't have an account?",
+      "ctaAction": "Create an account",
+      "showcaseLabel": "Featured showcase"
+    },
+    "register": {
+      "eyebrow": "New worlds start now",
+      "title": "Create your HostChicken account",
+      "description": "Start with a free 7-day trial and spin up your first server.",
+      "firstNameLabel": "First name",
+      "lastNameLabel": "Last name",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm password",
+      "firstNamePlaceholder": "John",
+      "lastNamePlaceholder": "Doe",
+      "emailPlaceholder": "john@example.com",
+      "passwordPlaceholder": "••••••••",
+      "confirmPasswordPlaceholder": "••••••••",
+      "signUp": "Create account",
+      "cta": "Already have an account?",
+      "ctaAction": "Sign in",
+      "showcaseLabel": "Community favorites"
+    }
+  },
   "create": {
     "pageTitle": "Choose your Game Server",
     "freeTrialBadge": "Free Trial Available",
+    "heroIntro": "Launch your world in under a minute",
+    "heroSubtitle": "Browse curated game presets built for zero downtime, modpack support, and pro-grade performance.",
+    "filters": {
+      "all": "All games",
+      "trial": "Free trial",
+      "premium": "High performance"
+    },
+    "cardCta": "Configure",
     "games": [
       {
         "slug": "minecraft",
@@ -230,6 +278,8 @@
       "freeTrialCard": "Free Trial",
       "recommended": "Recommended",
       "offerDescription": "Perfect for small to medium-sized servers",
+      "perMonthApprox": "≈ {price} €/mo",
+      "savingsLabel": "Save {amount} €/mo",
       "duration": {
         "monthly": "1 month",
         "quarterly": "3 months (-33%)",

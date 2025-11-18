@@ -15,10 +15,13 @@ import {
   LogOut,
   Menu,
   X,
-  LogIn
+  LogIn,
+  ChevronDown,
+  Sun,
+  Moon,
 } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { useTheme } from "next-themes"
 
 export function Header({siteName="Pteroca"}) {
   const t = useTranslations('header')
@@ -27,6 +30,35 @@ export function Header({siteName="Pteroca"}) {
   const locale = useLocale()
   const { data: session } = useSession()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const langRef = useRef<HTMLDivElement>(null)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const locales = [
+    { code: "en", label: "English", flag: "🇬🇧" },
+    { code: "fr", label: "Français", flag: "🇫🇷" }
+  ]
+
+  useEffect(() => {
+    setMounted(true)
+    const close = (event: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setLangMenuOpen(false)
+      }
+    }
+    document.addEventListener("click", close)
+    return () => document.removeEventListener("click", close)
+  }, [])
+  const [langMenuOpen, setLangMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const close = (event: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(event.target as Node)) {
+        setLangMenuOpen(false)
+      }
+    }
+    document.addEventListener("click", close)
+    return () => document.removeEventListener("click", close)
+  }, [])
 
   const navigation = [
     {
@@ -62,7 +94,7 @@ export function Header({siteName="Pteroca"}) {
   const isAdmin = session?.user?.role === "admin" // TODO: Implement proper role checking
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur dark:bg-gray-900/95 shadow-sm border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -118,20 +150,66 @@ export function Header({siteName="Pteroca"}) {
             })}
           </nav>
 
-          {/* Language Switcher */}
-          <Select value={locale} onValueChange={(newLocale) => {
-            const pathWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/'
-            const newPath = `/${newLocale}${pathWithoutLocale}`
-            window.location.href = newPath
-          }}>
-            <SelectTrigger className="w-20">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en">EN</SelectItem>
-              <SelectItem value="fr">FR</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center gap-3">
+            <div ref={langRef} className="relative">
+            <button
+              onClick={(event) => {
+                setLangMenuOpen((open) => !open)
+                event.stopPropagation()
+              }}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-sm font-semibold text-foreground shadow-sm transition-colors hover:border-border"
+            >
+              <span className="text-lg">
+                {locales.find((lang) => lang.code === locale)?.flag}
+              </span>
+              <span>{locale.toUpperCase()}</span>
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+            </button>
+            {langMenuOpen && (
+              <div className="absolute right-0 z-10 mt-2 w-40 rounded-xl border border-border bg-popover shadow-lg">
+                {locales.map((lang) => {
+                  const isActive = locale === lang.code
+                  return (
+                    <button
+                      key={lang.code}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        if (lang.code === locale) {
+                          setLangMenuOpen(false)
+                          return
+                        }
+                        const pathWithoutLocale = pathname.replace(/^\/(en|fr)/, '') || '/'
+                        window.location.href = `/${lang.code}${pathWithoutLocale}`
+                      }}
+                      className={cn(
+                        "flex items-center gap-2 w-full px-3 py-2 text-left text-sm transition-colors",
+                        isActive
+                          ? "bg-accent/10 text-accent"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <span className="text-lg">{lang.flag}</span>
+                      <span>{lang.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+            <button
+              onClick={() =>
+                setTheme((theme === "dark" ? "light" : "dark") as "light" | "dark")
+              }
+              className="flex items-center justify-center rounded-full border border-gray-200 bg-white p-2 text-gray-600 shadow-sm transition-colors hover:border-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              aria-label="Toggle theme"
+            >
+              {mounted && theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </button>
+          </div>
            {session?.user?.email ? <>
              {/* User Menu */}
           <div className="flex items-center gap-4">

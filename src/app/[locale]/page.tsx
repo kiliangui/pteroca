@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useTranslations } from 'next-intl';
 
 export const dynamic = "force-dynamic";
@@ -11,13 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Server,
   Shield,
@@ -35,8 +29,9 @@ import {
   Award,
   MessageSquare,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Header } from "@/components/navigation/Header";
@@ -44,7 +39,8 @@ import { Header } from "@/components/navigation/Header";
 export default function Home() {
   const t = useTranslations();
   const [selectedGame, setSelectedGame] = useState<string>("");
-  const [currentGameIndex, setCurrentGameIndex] = useState(0);
+  const [currentGameIndex, setCurrentGameIndex] = useState();
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
 
   const games = [
     { value: "minecraft", label: t('games.minecraft'), image: "https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/93/Grass_Block_JE7_BE6.png",zoom:"1" },
@@ -53,17 +49,31 @@ export default function Home() {
     { value: "ark", label: t('games.ark'), image: "/images/games/ark.png", zoom:"2" },
   ];
 
+  const statItems = [
+    { label: t('socialProof.stats.activeServers'), value: "50K+" },
+    { label: t('socialProof.stats.uptime'), value: "99.9%" },
+    { label: t('socialProof.stats.hoursPlayed'), value: "2M+" },
+    { label: t('socialProof.stats.support'), value: "24/7" },
+  ];
+
+  const planPrices: Record<string, { monthly: string; yearly: string }> = {
+    starter: { monthly: "7€", yearly: "49€" },
+    pro: { monthly: "14€", yearly: "98€" },
+    enterprise: { monthly: "20€", yearly: "14€" },
+  };
+
   useEffect(() => {
     if (selectedGame) return; // Stop cycling if a game is selected
 
-    const interval = setInterval(() => {
-      setCurrentGameIndex((prev) => (prev + 1) % games.length);
-    }, 3000); // Change every 3 seconds
+    //const interval = setInterval(() => {
+    //  setCurrentGameIndex((prev) => (prev + 1) % games.length);
+    //}, 3000); // Change every 3 seconds
 
-    return () => clearInterval(interval);
+    //return () => clearInterval(interval);
   }, [selectedGame, games.length]);
 
-  const displayedGame = selectedGame ? games.find(g => g.value === selectedGame) : games[currentGameIndex];
+  const displayedGame = selectedGame && games.find(g => g.value === selectedGame) ;
+  //const displayedGame = selectedGame ? games.find(g => g.value === selectedGame) : games[currentGameIndex] ;
   const planFeatureGroups = (t.raw('pricing.planFeatures') as Record<string, string[]> | undefined) ?? {};
 
   return (
@@ -71,128 +81,89 @@ export default function Home() {
       {/* Header */}
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[length:50px_50px]"></div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-block px-4 py-2 bg-blue-100 border border-blue-200 rounded-full text-blue-700 text-sm font-medium mb-6"
-            >
+      <section className="relative overflow-hidden py-16 lg:py-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-purple-950 opacity-90"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.15),transparent_40%),radial-gradient(circle_at_bottom,rgba(147,51,234,0.2),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.25),transparent_40%),radial-gradient(circle_at_bottom,rgba(147,51,234,0.35),transparent_45%)]"></div>
+        <div className="relative max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+          <div className="space-y-10">
+            <div className="inline-flex items-center gap-3 rounded-full border border-gray-200/70 bg-white/70 px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm backdrop-blur dark:border-gray-700/50 dark:bg-gray-900/60 dark:text-gray-200">
               🚀 {t('hero.badge')}
-            </motion.div>
-
-            <h1 className="text-5xl lg:text-6xl font-black mb-6 text-gray-900 leading-tight">
-              {t('hero.title')}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"> {t('hero.highlight')}</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-2xl mb-10 leading-relaxed">
-              {t('hero.subtitle')}
-            </p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 mb-12"
-            >
-              <Select value={selectedGame} onValueChange={setSelectedGame}>
-                <SelectTrigger className="w-full sm:w-64 bg-white border border-gray-300 text-gray-900">
-                  <SelectValue placeholder={t('hero.chooseGame')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="minecraft">{t('games.minecraft')}</SelectItem>
-                  <SelectItem value="bedrock">{t('games.bedrock')}</SelectItem>
-                  <SelectItem value="csgo">{t('games.csgo')}</SelectItem>
-                  <SelectItem value="tf2">{t('games.tf2')}</SelectItem>
-                  <SelectItem value="rust">{t('games.rust')}</SelectItem>
-                  <SelectItem value="ark">{t('games.ark')}</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button size="lg" className="px-8 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold shadow-lg hover:shadow-xl transition-all" asChild>
-                <Link href={selectedGame != ``? `/create/${selectedGame}`:"/create"}>
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+            </div>
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white leading-tight">
+                {t('hero.title')}
+                <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  {t('hero.highlight')}
+                </span>
+              </h1>
+              <p className="text-lg md:text-2xl text-gray-700 dark:text-gray-300 max-w-2xl leading-relaxed">
+                {t('hero.subtitle')}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button size="lg" className="w-full sm:w-auto px-8 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all" asChild>
+                <Link href={selectedGame ? `/create/${selectedGame}` : "/create"}>
                   {t('hero.startServer')} <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
-            </motion.div>
-
-            {/* Trust badges */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap gap-6 text-gray-600 text-sm"
-            >
-              <span className="flex items-center gap-2"><Check className="text-green-600 w-4 h-4" /> {t('hero.trustBadges.freeTrial')}</span>
-              <span className="flex items-center gap-2"><Check className="text-green-600 w-4 h-4" /> {t('hero.trustBadges.noSetupFees')}</span>
-              <span className="flex items-center gap-2"><Check className="text-green-600 w-4 h-4" /> {t('hero.trustBadges.support')}</span>
-              <span className="flex items-center gap-2"><Check className="text-green-600 w-4 h-4" /> {t('hero.trustBadges.instantDeployment')}</span>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative flex justify-center lg:justify-end"
-          >
-            <div className="relative w-full max-w-md h-96">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={displayedGame?.value}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0 bg-white border border-gray-200 rounded-2xl p-8 flex flex-col items-center justify-center shadow-lg"
-                >
-                  <motion.img
-                    src={displayedGame?.image}
-                    alt={displayedGame?.label}
-                    
-                    className={"w-32 h-32 object-contain mb-6  " }
-                    initial={{ scale: 0 }}
-                    animate={{ scale: displayedGame?.zoom === "2"? 2: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                  />
-                  <motion.h3
-                    className="text-2xl font-bold text-gray-900 text-center mb-2"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    {displayedGame?.label}
-                  </motion.h3>
-                  <motion.p
-                    className="text-gray-600 text-center"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    {t('hero.readyToDeploy')}
-                  </motion.p>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-500 rounded-full animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute top-1/2 -left-8 w-4 h-4 bg-indigo-500 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+              <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 py-4 text-lg border-gray-300 text-gray-800 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-800" asChild>
+                <Link href="/dashboard">
+                  {t('cta.loginDashboard')}
+                </Link>
+              </Button>
             </div>
-          </motion.div>
+            <div className="flex flex-wrap gap-3 text-sm">
+              {["freeTrial","noSetupFees","support","instantDeployment"].map((badge) => (
+                <span key={badge} className="inline-flex items-center gap-2 rounded-full bg-white/80 dark:bg-gray-900/60 border border-gray-200/70 dark:border-gray-700/60 px-4 py-2 text-gray-600 dark:text-gray-300">
+                  <Check className="text-emerald-500 h-4 w-4" />
+                  {t(`hero.trustBadges.${badge}`)}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-blue-500/20 to-purple-500/20"></div>
+            <div className="relative bg-white dark:bg-gray-900 border border-gray-200/70 dark:border-gray-800 rounded-3xl shadow-2xl p-6 space-y-5">
+              <p className="text-sm uppercase tracking-[0.3em] text-gray-400 dark:text-gray-500">{t('hero.chooseGame')}</p>
+              <div className="grid gap-4">
+                {games.map((game, index) => {
+                  const active = (selectedGame || (displayedGame&& displayedGame?.value)) === game.value || ((!selectedGame && displayedGame)&& displayedGame.value === game.value)
+                  return (
+                    <button
+                      key={game.value}
+                      onClick={() => setSelectedGame(game.value)}
+                      className={cn(
+                        "relative flex items-center gap-4 rounded-2xl border px-4 py-3 transition-all",
+                        active
+                          ? "border-blue-500 bg-gradient-to-r from-blue-500/10 to-purple-500/10 shadow-lg"
+                          : "border-gray-200 hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700"
+                      )}
+                    >
+                      <img src={game.image} alt={game.label} className="h-12 w-12 object-contain" />
+                      <div className="flex-1 text-left">
+                        <p className="text-base font-semibold text-gray-900 dark:text-white">{game.label}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{t('hero.readyToDeploy')}</p>
+                      </div>
+                      {active && <Check className="text-blue-600 dark:text-blue-400 h-5 w-5" />}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative mt-12">
+          <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+            {statItems.map((stat, i) => (
+              <div key={stat.label} className="rounded-2xl border bg-white/80 dark:bg-gray-900/80 border-gray-200 dark:border-gray-800 p-4 shadow-sm backdrop-blur">
+                <p className="text-3xl font-black text-gray-900 dark:text-white">{stat.value}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -234,102 +205,93 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="py-20">
+      <section className="py-20 bg-gray-50 dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="grid lg:grid-cols-[1fr_1.2fr] gap-10 items-start"
           >
-            <h2 className="text-4xl font-black text-gray-900 mb-4">{t('features.title')}</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              {t('features.subtitle')}
-            </p>
+            <div className="space-y-6">
+              <p className="inline-flex items-center gap-3 rounded-full bg-white text-sm font-semibold text-gray-600 px-4 py-2 border border-gray-200 shadow-sm dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800">
+                <Sparkles className="h-4 w-4 text-amber-500" />
+                {t('features.title')}
+              </p>
+              <h2 className="text-4xl font-black text-gray-900 dark:text-white">
+                {t('features.subtitle')}
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                HostChicken condenses the most-requested features from pro server owners into a plug-and-play platform. No scripts, no guesswork—just fast deployment and outrageous stability.
+              </p>
+              <ul className="space-y-3 text-gray-700 dark:text-gray-300">
+                <li className="flex items-center gap-3"><Check className="text-emerald-500" />One-click modpack + panel setup</li>
+                <li className="flex items-center gap-3"><Check className="text-emerald-500" />Global edge network for sub-40ms ping</li>
+                <li className="flex items-center gap-3"><Check className="text-emerald-500" />Predictive autoscaling so your world never lags</li>
+              </ul>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { icon: Rocket, title: t('features.items.lightningFast.title'), desc: t('features.items.lightningFast.desc'), accent: "from-blue-500 to-cyan-500" },
+                { icon: Shield, title: t('features.items.enterpriseSecurity.title'), desc: t('features.items.enterpriseSecurity.desc'), accent: "from-green-500 to-emerald-500" },
+                { icon: Globe, title: t('features.items.globalNetwork.title'), desc: t('features.items.globalNetwork.desc'), accent: "from-purple-500 to-pink-500" },
+                { icon: Award, title: t('features.items.awardWinning.title'), desc: t('features.items.awardWinning.desc'), accent: "from-amber-500 to-orange-500" },
+                { icon: Users, title: t('features.items.communityFirst.title'), desc: t('features.items.communityFirst.desc'), accent: "from-indigo-500 to-purple-500" },
+                { icon: Clock, title: t('features.items.alwaysOnline.title'), desc: t('features.items.alwaysOnline.desc'), accent: "from-slate-500 to-slate-800" },
+              ].map((feature, i) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="relative rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/70 p-5 shadow hover:shadow-lg transition-all"
+                >
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.accent} flex items-center justify-center mb-4`}>
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Rocket,
-                title: t('features.items.lightningFast.title'),
-                desc: t('features.items.lightningFast.desc'),
-                color: "from-blue-500 to-cyan-500"
-              },
-              {
-                icon: Shield,
-                title: t('features.items.enterpriseSecurity.title'),
-                desc: t('features.items.enterpriseSecurity.desc'),
-                color: "from-green-500 to-emerald-500"
-              },
-              {
-                icon: Globe,
-                title: t('features.items.globalNetwork.title'),
-                desc: t('features.items.globalNetwork.desc'),
-                color: "from-purple-500 to-pink-500"
-              },
-              {
-                icon: Users,
-                title: t('features.items.communityFirst.title'),
-                desc: t('features.items.communityFirst.desc'),
-                color: "from-orange-500 to-red-500"
-              },
-              {
-                icon: Clock,
-                title: t('features.items.alwaysOnline.title'),
-                desc: t('features.items.alwaysOnline.desc'),
-                color: "from-yellow-500 to-orange-500"
-              },
-              {
-                icon: Award,
-                title: t('features.items.awardWinning.title'),
-                desc: t('features.items.awardWinning.desc'),
-                color: "from-indigo-500 to-purple-500"
-              },
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-              >
-                <Card className="bg-white border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
-                  <CardHeader>
-                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} flex items-center justify-center mb-4`}>
-                      <feature.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <CardTitle className="text-gray-900 text-xl">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{feature.desc}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* Pricing */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-black text-gray-900 mb-4">{t('pricing.title')}</h2>
-            <p className="text-xl text-gray-600">{t('pricing.subtitle')}</p>
+            <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-4">{t('pricing.title')}</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{t('pricing.subtitle')}</p>
+            <div className="mt-6 inline-flex rounded-full border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 p-1">
+              {(["monthly","yearly"] as const).map((cycle) => (
+                <button
+                  key={cycle}
+                  onClick={() => setBillingCycle(cycle)}
+                  className={cn(
+                    "px-6 py-2 rounded-full text-sm font-semibold transition-colors",
+                    billingCycle === cycle
+                      ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow"
+                      : "text-gray-500 dark:text-gray-400"
+                  )}
+                >
+                  {cycle === "monthly" ? "Monthly" : "Yearly (save 2 months)"}
+                </button>
+              ))}
+            </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {[
               {
                 key: "starter",
                 name: t('pricing.plans.starter.name'),
-                price: "7€",
-                period: "/month",
                 desc: t('pricing.plans.starter.desc'),
                 features: planFeatureGroups.starter ?? [],
                 popular: false,
@@ -338,8 +300,6 @@ export default function Home() {
               {
                 key: "pro",
                 name: t('pricing.plans.pro.name'),
-                price: "14€",
-                period: "/month",
                 desc: t('pricing.plans.pro.desc'),
                 features: planFeatureGroups.pro ?? [],
                 popular: true,
@@ -349,55 +309,55 @@ export default function Home() {
               {
                 key: "enterprise",
                 name: t('pricing.plans.enterprise.name'),
-                price: "20€",
-                period: "/month",
                 desc: t('pricing.plans.enterprise.desc'),
                 features: planFeatureGroups.enterprise ?? [],
                 popular: false,
                 getStarted: t('pricing.plans.enterprise.getStarted')
               },
-            ].map((plan, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-              >
-                <Card className={`relative bg-white border-gray-200 hover:shadow-lg transition-all duration-300 ${plan.popular ? 'ring-2 ring-blue-500 scale-105' : ''}`}>
+            ].map((plan) => {
+              const price = planPrices[plan.key]?.[billingCycle] ?? "—"
+              const suffix = billingCycle === "monthly" ? "/mo" : "/yr"
+              return (
+                <Card key={plan.key} className={cn(
+                  "relative border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/70 shadow-sm",
+                  plan.popular && "ring-2 ring-blue-500 shadow-xl scale-[1.02]"
+                )}>
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                      <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-xs font-bold">
                         {plan.popularText}
                       </span>
                     </div>
                   )}
                   <CardHeader className="text-center">
-                    <CardTitle className="text-gray-900 text-2xl">{plan.name}</CardTitle>
-                    <div className="mt-4">
-                      <span className="text-4xl font-black text-gray-900">{plan.price}</span>
-                      <span className="text-gray-600">{plan.period}</span>
+                    <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">{plan.name}</CardTitle>
+                    <p className="text-gray-600 dark:text-gray-400 mt-2">{plan.desc}</p>
+                    <div className="mt-6 flex items-end justify-center gap-1">
+                      <span className="text-4xl font-black text-gray-900 dark:text-white">{price}</span>
+                      <span className="text-gray-500 dark:text-gray-400">{suffix}</span>
                     </div>
-                    <p className="text-gray-600 mt-2">{plan.desc}</p>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3 mb-6">
                       {plan.features.map((feature, j) => (
-                        <li key={j} className="flex items-center gap-3 text-gray-600">
-                          <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                        <li key={j} className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                          <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
                     </ul>
-                    <Button
-                      className={`w-full ${plan.popular ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold' : 'bg-gray-100 hover:bg-gray-200 text-gray-900'}`}
-                      asChild
-                    >
+                    <Button className={cn(
+                      "w-full font-semibold",
+                      plan.popular
+                        ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                        : "bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
+                    )} asChild>
                       <Link href="/create">{plan.getStarted}</Link>
                     </Button>
                   </CardContent>
                 </Card>
-              </motion.div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -415,37 +375,40 @@ export default function Home() {
             <p className="text-xl text-gray-600">{t('testimonials.subtitle')}</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.raw('testimonials.items').map((testimonial, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-              >
-                <Card className="bg-white border-gray-200 hover:shadow-lg transition-all">
-                  <CardContent className="pt-6">
-                    <div className="flex mb-4">
-                      {[...Array(testimonial.rating)].map((_, j) => (
-                        <Star key={j} className="w-5 h-5 text-yellow-500 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-700 mb-4 italic">{'"'}{testimonial.content}{'"'}</p>
-                    <div>
-                      <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                      <div className="text-gray-600 text-sm">{testimonial.role}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+          <div className="overflow-x-auto pb-4">
+            <div className="flex gap-6 min-w-full">
+              {t.raw('testimonials.items').map((testimonial, i) => (
+                <motion.div
+                  key={testimonial.name}
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  className="min-w-[260px] flex-1"
+                >
+                  <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 h-full shadow-md">
+                    <CardContent className="pt-6 flex flex-col gap-4">
+                      <div className="flex">
+                        {[...Array(testimonial.rating)].map((_, j) => (
+                          <Star key={j} className="w-5 h-5 text-yellow-500 fill-current" />
+                        ))}
+                      </div>
+                      <p className="text-gray-700 dark:text-gray-300 italic">{testimonial.content}</p>
+                      <div>
+                        <div className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</div>
+                        <div className="text-gray-600 dark:text-gray-400 text-sm">{testimonial.role}</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-gray-50 dark:bg-gray-950">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -456,7 +419,7 @@ export default function Home() {
             <p className="text-xl text-gray-600">{t('faq.subtitle')}</p>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
             {[
               {
                 question: t('faq.questions.deployment.question'),
@@ -481,25 +444,30 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <Card className="bg-white border-gray-200">
+                <Card className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-800">
                   <CardContent className="pt-6">
                     <details className="group">
                       <summary className="flex justify-between items-center cursor-pointer text-gray-900 font-semibold text-lg">
                         {faq.question}
                         <ChevronDown className="w-5 h-5 group-open:rotate-180 transition-transform" />
                       </summary>
-                      <p className="text-gray-600 mt-4 leading-relaxed">{faq.answer}</p>
+                      <p className="text-gray-600 dark:text-gray-300 mt-4 leading-relaxed">{faq.answer}</p>
                     </details>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
+          <div className="text-center mt-10">
+            <Link href="/contact" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+              {t('cta.loginDashboard')} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
+      <section className="py-20 bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-900/30 dark:to-purple-900/30">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -528,51 +496,12 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 border-t border-gray-200 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Egg className="text-white w-5 h-5" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">HostChicken</span>
-              </div>
-              <p className="text-gray-600 text-sm">
-                {t('footer.description')}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-gray-900 font-semibold mb-4">{t('footer.product')}</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li><Link href="/create" className="hover:text-gray-900 transition-colors">{t('footer.createServer')}</Link></li>
-                <li><Link href="/pricing" className="hover:text-gray-900 transition-colors">{t('footer.pricing')}</Link></li>
-                <li><Link href="/features" className="hover:text-gray-900 transition-colors">{t('footer.features')}</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-gray-900 font-semibold mb-4">{t('footer.support')}</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li><Link href="/help" className="hover:text-gray-900 transition-colors">{t('footer.helpCenter')}</Link></li>
-                <li><Link href="/contact" className="hover:text-gray-900 transition-colors">{t('footer.contact')}</Link></li>
-                <li><Link href="/status" className="hover:text-gray-900 transition-colors">{t('footer.status')}</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-gray-900 font-semibold mb-4">{t('footer.company')}</h3>
-              <ul className="space-y-2 text-gray-600 text-sm">
-                <li><Link href="/about" className="hover:text-gray-900 transition-colors">{t('footer.about')}</Link></li>
-                <li><Link href="/blog" className="hover:text-gray-900 transition-colors">{t('footer.blog')}</Link></li>
-                <li><Link href="/careers" className="hover:text-gray-900 transition-colors">{t('footer.careers')}</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500 text-sm">
-            <p>{t('footer.copyright')}</p>
-          </div>
-        </div>
-      </footer>
+      <div className="md:hidden fixed bottom-4 left-4 right-4 z-40">
+        <Button className="w-full text-lg py-4 bg-black text-white shadow-2xl" asChild>
+          <Link href="/create">{t('cta.startTrial')}</Link>
+        </Button>
+      </div>
+
     </div>
   );
 }

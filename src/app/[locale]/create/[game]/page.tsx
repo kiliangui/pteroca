@@ -29,7 +29,7 @@ export default  async function GamePage({ params }: { params: { game: string } }
     const GBb = parseInt(b.name.split("GB")[0])
     return GBa - GBb
   })
-  return <GameClient offers={offers} game={game} user={session?.user} />
+  return <GameClient offers={offers} game={game}  />
   
 }
 

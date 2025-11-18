@@ -1,6 +1,12 @@
 "use client";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type GameCardConfig = {
   slug: string;
@@ -10,20 +16,80 @@ type GameCardConfig = {
   features: string[];
 };
 
+type Filter = "all" | "trial" | "premium";
+
 export default function CreatePage() {
-  const t = useTranslations("create");
-  const games = t.raw("games") as GameCardConfig[];
+  const createT = useTranslations("create");
+  const rootT = useTranslations();
+  const games = createT.raw("games") as GameCardConfig[];
+  const readyLabel = rootT("hero.readyToDeploy");
+  const [filter, setFilter] = useState<Filter>("all");
+
+  const filteredGames = useMemo(() => {
+    if (filter === "trial") return games.filter((game) => game.freeTrial);
+    if (filter === "premium") return games.filter((game) => !game.freeTrial);
+    return games;
+  }, [games, filter]);
+
+  const filters: { id: Filter; label: string }[] = [
+    { id: "all", label: createT("filters.all") },
+    { id: "trial", label: createT("filters.trial") },
+    { id: "premium", label: createT("filters.premium") },
+  ];
 
   return (
-    <div className="max-w-2/3 m-auto flex flex-col items-center">
-      <h1 className="text-5xl font-bold text-gray-900 pt-12 dark:text-white mb-6 text-center w-full">
-        {t("pageTitle")}
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 w-full py-12">
-        {games.map((game) => (
-          <GameCard key={game.slug} game={game} freeTrialLabel={t("freeTrialBadge")} />
-        ))}
-      </div>
+    <div className="min-h-screen bg-white dark:bg-gray-950">
+      <section className="max-w-6xl mx-auto px-4 py-16 space-y-10">
+        <div className="text-center space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-500/20 dark:to-purple-500/20 px-4 py-2 text-sm font-semibold text-blue-700 dark:text-blue-200">
+            <Sparkles className="h-4 w-4" />
+            {createT("heroIntro")}
+          </div>
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white">
+              {createT("pageTitle")}
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              {createT("heroSubtitle")}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {filters.map((chip) => (
+            <button
+              key={chip.id}
+              onClick={() => setFilter(chip.id)}
+              className={cn(
+                "px-5 py-2 rounded-full border text-sm font-semibold transition-all",
+                filter === chip.id
+                  ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                  : "border-gray-200 text-gray-600 hover:border-gray-300 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-500"
+              )}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          {filteredGames.map((game, index) => (
+            <motion.div
+              key={game.slug}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: index * 0.05 }}
+            >
+              <GameCard
+                game={game}
+                freeTrialLabel={createT("freeTrialBadge")}
+                readyLabel={readyLabel}
+                ctaLabel={createT("cardCta")}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
@@ -31,49 +97,54 @@ export default function CreatePage() {
 function GameCard({
   game,
   freeTrialLabel,
+  readyLabel,
+  ctaLabel,
 }: {
   game: GameCardConfig;
   freeTrialLabel: string;
+  readyLabel: string;
+  ctaLabel: string;
 }) {
   return (
-    <Card
-      onClick={() => {
-        window.location.href = `/create/${game.slug}`;
-      }}
-      className="relative overflow-hidden text-white cursor-pointer h-64 pt-0"
-    >
-      <div
-        className="h-full w-full absolute"
-        style={{
-          backgroundImage: `url(${game.background})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black opacity-40"></div>
-      </div>
-
-      <div className="flex flex-col p-4">
-        <CardHeader className="flex items-center justify-between" style={{ zIndex: "2" }}>
-          <CardTitle className="text-4xl font-black">{game.name}</CardTitle>
-          <CardDescription className="text-nowrap">
+    <Link href={`/create/${game.slug}`} className="group">
+      <Card className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gray-900 text-white shadow-lg transition-transform group-hover:-translate-y-1 dark:border-gray-800">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url(${game.background})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        <div className="relative z-10 flex h-full flex-col justify-between p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-3xl font-black tracking-tight">{game.name}</h3>
             {game.freeTrial && (
-              <span className="text-lg text-white bg-green-600 py-1 px-2 rounded-xl font-bold">
+              <span className="inline-flex items-center rounded-full bg-emerald-500/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
                 {freeTrialLabel}
               </span>
             )}
-          </CardDescription>
-        </CardHeader>
-        <div className="px-4 pb-4" style={{ zIndex: "2" }}>
-          <ul className="list-disc list-inside mb-4">
-            {game.features.map((feature, index) => (
-              <li key={index} className="text-md font-bold text-gray-200 dark:text-gray-300">
-                {feature}
-              </li>
-            ))}
-          </ul>
+          </div>
+          <div className="space-y-4">
+            <p className="text-sm text-white/80">{readyLabel}</p>
+            <div className="flex flex-wrap gap-2">
+              {game.features.slice(0, 4).map((feature) => (
+                <span
+                  key={feature}
+                  className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur"
+                >
+                  {feature}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center justify-between rounded-2xl bg-white/10 backdrop-blur px-4 py-3 text-sm font-semibold">
+            <span>{game.freeTrial ? freeTrialLabel : ctaLabel}</span>
+            <ArrowRight className="h-4 w-4" />
+          </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 }
