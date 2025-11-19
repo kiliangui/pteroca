@@ -1,8 +1,4 @@
 {
-  "metadata": {
-    "title": "pteroca - Game Server Hosting",
-    "description": "Professional game server hosting with easy management"
-  },
   "header": {
     "login": "Login",
     "startFreeTrial": "Start Free Trial",
@@ -27,6 +23,12 @@
       "support": "24/7 support",
       "instantDeployment": "Instant deployment"
     }
+  },
+  "gamesShowcase": {
+    "subtitle": "Game-specific infrastructure",
+    "title": "Battlefields optimized for every title",
+    "description": "Explore dedicated landing pages for Minecraft, Rust, ARK, and more so you know exactly what stack powers each world before you deploy.",
+    "cta": "See all game pages"
   },
   "socialProof": {
     "title": "Trusted by Gamers Worldwide",
@@ -346,6 +348,264 @@
     "tf2": "Team Fortress 2",
     "rust": "Rust",
     "ark": "ARK: Survival Evolved"
+  },
+  "gameLanding": {
+    "minecraft": {
+      "hero": {
+        "badge": "Optimized for modpacks & mini-games",
+        "title": "Minecraft servers that",
+        "highlight": "scale with your creativity",
+        "description": "Launch Paper, Forge, Fabric, or Bedrock servers with automatic jar selection, modpack installs, and instant scaling.",
+        "primaryCta": "Launch a Minecraft server",
+        "secondaryCta": "Explore Minecraft pricing"
+      },
+      "stats": [
+        { "label": "Supported modpacks", "value": "400+" },
+        { "label": "Average TPS", "value": "20.0" },
+        { "label": "Deploy time", "value": "40s" },
+        { "label": "Data centers", "value": "15+" }
+      ],
+      "features": [
+        {
+          "title": "One-click modpacks",
+          "description": "Install CurseForge & Modrinth packs with dependency management and version locking."
+        },
+        {
+          "title": "Bedrock + Java parity",
+          "description": "Enable cross-play with preconfigured Geyser & Floodgate pipelines."
+        },
+        {
+          "title": "Performance autoscaling",
+          "description": "Burst CPU & RAM to absorb player spikes without restarting worlds."
+        }
+      ],
+      "benefits": {
+        "title": "Built for big communities",
+        "description": "Give your builders, redstoners, and speedrunners a server that stays smooth even when the world file explodes.",
+        "items": [
+          {
+            "title": "Managed backups",
+            "description": "Hourly snapshots with 7-day retention and 1-click restore."
+          },
+          {
+            "title": "Proactive monitoring",
+            "description": "TPS, memory, and chunk health alerts routed to Discord."
+          },
+          {
+            "title": "Plugin safe updates",
+            "description": "Stage updates in a clone before promoting to production."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Spin up your next Minecraft world in under a minute",
+        "description": "Pick a region, paste your modpack, and start inviting players while we handle scaling, security, and backups.",
+        "primary": "Start a free Minecraft trial",
+        "secondary": "Chat with Minecraft experts"
+      },
+      "faqs": [
+        {
+          "question": "Can I migrate an existing world?",
+          "answer": "Yes. Upload your world folder or point us to an S3 bucket and we import it with zero downtime."
+        },
+        {
+          "question": "Do you support Bedrock clients?",
+          "answer": "Geyser/Floodgate is pre-installed so Bedrock players can join without extra plugins."
+        }
+      ]
+    },
+    "rust": {
+      "hero": {
+        "badge": "Rust wipes without the wait",
+        "title": "Low-latency Rust servers",
+        "highlight": "with preconfigured anti-cheat",
+        "description": "Deploy PvP, PvE, and modded Rust servers with automatic wipes, Oxide/uMod, and real-time performance metrics.",
+        "primaryCta": "Launch a Rust server",
+        "secondaryCta": "See Rust pricing"
+      },
+      "stats": [
+        { "label": "Concurrent players per node", "value": "250+" },
+        { "label": "Anti-cheat coverage", "value": "100%" },
+        { "label": "Network latency", "value": "<35ms" },
+        { "label": "Average setup time", "value": "2 min" }
+      ],
+      "features": [
+        {
+          "title": "Automated wipe schedules",
+          "description": "Pre-set weekly or custom cadence with Discord announcements."
+        },
+        {
+          "title": "Oxide & uMod ready",
+          "description": "Upload plugins, manage configs, and roll back with version history."
+        },
+        {
+          "title": "Advanced DDoS filtering",
+          "description": "Layer 3-7 mitigation tuned for Rust attack patterns."
+        }
+      ],
+      "benefits": {
+        "title": "Competitive players stay online",
+        "description": "Keep clans engaged with predictable wipes, stable performance, and instant support.",
+        "items": [
+          {
+            "title": "Region balancing",
+            "description": "Deploy across NA/EU/Asia with latency-aware routing."
+          },
+          {
+            "title": "Performance presets",
+            "description": "Choose between vanilla, 2x, or custom gather rates with saved templates."
+          },
+          {
+            "title": "Crash recovery",
+            "description": "Automatic restarts with last known good save plus alerting."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Own every Rust wipe",
+        "description": "From blueprints to raid alerts, Pteroca automates the busywork so you can focus on the fight.",
+        "primary": "Start a Rust free trial",
+        "secondary": "Talk to Rust support"
+      },
+      "faqs": [
+        {
+          "question": "Can I schedule BP wipes separately?",
+          "answer": "Yes—configure map and BP wipes independently with cron-style precision."
+        },
+        {
+          "question": "Do you support custom maps?",
+          "answer": "Upload .map files or link to CDN storage; we validate and rotate them automatically."
+        }
+      ]
+    },
+    "ark": {
+      "hero": {
+        "badge": "Survive with zero lag",
+        "title": "ARK: Survival Ascended hosting",
+        "highlight": "that adapts to every map",
+        "description": "Spin up ASA or ASE clusters with mod workshop syncing, dino backups, and cross-server travel.",
+        "primaryCta": "Launch an ARK server",
+        "secondaryCta": "See ARK pricing"
+      },
+      "stats": [
+        { "label": "Clustered maps", "value": "8+" },
+        { "label": "Workshop sync", "value": "Auto" },
+        { "label": "Dino backups", "value": "Hourly" },
+        { "label": "Support response", "value": "<5 min" }
+      ],
+      "features": [
+        {
+          "title": "Cluster automation",
+          "description": "Link multiple maps with shared player and dino data."
+        },
+        {
+          "title": "Mod workshop mirroring",
+          "description": "Auto-download, update, and rollback Steam mods per server."
+        },
+        {
+          "title": "Safe taming mode",
+          "description": "Scheduled resource boosts and offline raid protection templates."
+        }
+      ],
+      "benefits": {
+        "title": "Perfect for tribes & creators",
+        "description": "From small friend groups to monetized clusters, you get predictable performance and white-glove assistance.",
+        "items": [
+          {
+            "title": "Blueprint versioning",
+            "description": "Track every config change with instant rollback."
+          },
+          {
+            "title": "Dino insurance",
+            "description": "Enable disaster recovery to resurrect creatures after crashes."
+          },
+          {
+            "title": "Creator monetization",
+            "description": "Patreon and Tebex perks integrate out of the box."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Launch your ARK cluster today",
+        "description": "Choose your maps, define rates, and we'll handle the autoscaling plus backups.",
+        "primary": "Start an ARK free trial",
+        "secondary": "Speak with ARK engineers"
+      },
+      "faqs": [
+        {
+          "question": "Can I mix ASA and ASE?",
+          "answer": "Yes, deploy both editions inside one dashboard with separate resource pools."
+        },
+        {
+          "question": "How do mod updates work?",
+          "answer": "We mirror Steam Workshop updates to a staging server before applying them to production."
+        }
+      ]
+    },
+    "satisfactory": {
+      "hero": {
+        "badge": "Factorio fans welcome",
+        "title": "Satisfactory dedicated servers",
+        "highlight": "with blueprint-safe saves",
+        "description": "Build mega factories with high tick-rate servers, autosave streaming, and instant mod deployment.",
+        "primaryCta": "Launch a Satisfactory server",
+        "secondaryCta": "Check Satisfactory pricing"
+      },
+      "stats": [
+        { "label": "Autosave retention", "value": "30 days" },
+        { "label": "Tick rate", "value": "120Hz" },
+        { "label": "Mod installs", "value": "1-click" },
+        { "label": "Deploy time", "value": "45s" }
+      ],
+      "features": [
+        {
+          "title": "Blueprint-safe autosaves",
+          "description": "Streamed backups ensure no blueprint or train desync is lost."
+        },
+        {
+          "title": "Performance overlays",
+          "description": "Monitor belts, power, and CPU from a live dashboard."
+        },
+        {
+          "title": "SMM & FICSIT mods",
+          "description": "Install mods via authenticated API with rollback support."
+        }
+      ],
+      "benefits": {
+        "title": "Keep production running",
+        "description": "Scale to enormous factories without fighting desync, lag, or manual patching.",
+        "items": [
+          {
+            "title": "Unlimited players",
+            "description": "Invite the whole crew with autoscaling bandwidth."
+          },
+          {
+            "title": "Power-use insights",
+            "description": "Spot bottlenecks with long-term analytics."
+          },
+          {
+            "title": "Custom automation scripts",
+            "description": "Integrate with webhooks to trigger builds, backups, or alerts."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Ship your next milestone faster",
+        "description": "Provision a server in seconds, hand teammates an invite link, and keep iterating without hardware limits.",
+        "primary": "Start a Satisfactory free trial",
+        "secondary": "Chat with a Satisfactory specialist"
+      },
+      "faqs": [
+        {
+          "question": "Do you support experimental builds?",
+          "answer": "Yes, opt into experimental or stable channels per server with 1-click rollback."
+        },
+        {
+          "question": "Can I upload local saves?",
+          "answer": "Drag-and-drop saves in the panel or sync via S3/Dropbox."
+        }
+      ]
+    }
   },
   "footer": {
     "description": "The easiest way to host game servers. Built for gamers, by gamers.",

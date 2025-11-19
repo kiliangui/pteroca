@@ -1,12 +1,18 @@
-import type { Metadata } from "next";
+import type {  Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
+import {
+  buildSeoMetadata,
+  buildStructuredData,
+  getResolvedMarketingMetadata,
+  FALLBACK_SITE_NAME,
+} from "@/lib/marketingMetadata";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,33 +24,45 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-export async function generateMetadata({ params }: { params}): Promise<Metadata> {
-  //@ts-expect-error idk
-  const t = await getTranslations('metadata', params.locale);
-
-  return {
-    title: t('title'),
-    description: t('description'),
+type LayoutParams = {
+  params: {
+    locale: string;
   };
+};
+
+export async function generateMetadata({
+  params,
+}: LayoutParams): Promise<Metadata> {
+  const locale = params?.locale ?? "en";
+  const resolvedMetadata = await getResolvedMarketingMetadata(locale, "page");
+  return buildSeoMetadata({
+    locale,
+    slug: "page",
+    metadata: resolvedMetadata,
+  });
 }
 
 export default async function RootLayout({
   children,
   params,
-}: Readonly<{
-  children: React.ReactNode;
-  params;
-}>) {
-  const messages = await getMessages({ locale: params.locale });
-  //@ts-expect-error idk
-  const t = await getTranslations('metadata', params.locale);
-  const locale = params.locale;
+}: LayoutProps<"/[locale]">) {
+  //@ts-expect-error oui
+  const locale = params?.locale ?? "en";
+  const messages = await getMessages({ locale });
+  const resolvedMetadata = await getResolvedMarketingMetadata(locale, "page");
   const siteName = await prisma.setting.findFirst({
-    where:{
-      name:"site_name"
-    }
-  })
+    where: {
+      name: "site_name",
+    },
+  });
+  const resolvedSiteName = siteName?.value ?? FALLBACK_SITE_NAME;
+  const structuredData = buildStructuredData({
+    locale,
+    slug: "page",
+    metadata: resolvedMetadata,
+    siteName: resolvedSiteName,
+  });
+
   return (
     <html lang={locale}>
       <body
@@ -52,12 +70,16 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
-            <Header siteName={siteName?.value}/>
+            <Header siteName={resolvedSiteName} />
 
             {children}
             <Footer />
           </Providers>
         </NextIntlClientProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </body>
     </html>
   );

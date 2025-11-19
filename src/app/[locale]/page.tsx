@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export const dynamic = "force-dynamic";
 import {
@@ -35,6 +35,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Header } from "@/components/navigation/Header";
+import { showcaseGames } from "@/components/auth/GameShowcase";
 
 export default function Home() {
   const t = useTranslations();
@@ -75,6 +76,12 @@ export default function Home() {
   const displayedGame = selectedGame && games.find(g => g.value === selectedGame) ;
   //const displayedGame = selectedGame ? games.find(g => g.value === selectedGame) : games[currentGameIndex] ;
   const planFeatureGroups = (t.raw('pricing.planFeatures') as Record<string, string[]> | undefined) ?? {};
+  const locale = useLocale();
+  const localizedShowcase = showcaseGames.map((game) => ({
+    ...game,
+    title: t(`gameLanding.${game.value}.hero.title`),
+    description: t(`gameLanding.${game.value}.hero.description`),
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -168,7 +175,7 @@ export default function Home() {
       </section>
 
       {/* Social Proof */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-gray-100 dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -176,7 +183,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('socialProof.title')}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-200 mb-4">{t('socialProof.title')}</h2>
             <p className="text-gray-600">{t('socialProof.subtitle')}</p>
           </motion.div>
 
@@ -199,6 +206,55 @@ export default function Home() {
                 </div>
                 <div className="text-gray-600 text-sm uppercase tracking-wide">{stat.label}</div>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Game showcase */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400">
+                {t('gamesShowcase.subtitle')}
+              </p>
+              <h2 className="mt-3 text-4xl font-black text-gray-900 dark:text-white">
+                {t('gamesShowcase.title')}
+              </h2>
+              <p className="mt-3 max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+                {t('gamesShowcase.description')}
+              </p>
+            </div>
+            <Link
+              href={`/${locale}/create`}
+              className="inline-flex items-center rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-900 transition hover:bg-gray-50"
+            >
+              {t('gamesShowcase.cta')}
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {localizedShowcase.map((game) => (
+              <Link
+                href={`/${locale}/${game.value}`}
+                key={game.value}
+                className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-gray-900 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${game.image})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900/70 to-slate-900/90" />
+                <div className="relative z-10 flex h-full flex-col gap-3 p-6 text-white">
+                  <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">{game.title}</p>
+                  <h3 className="text-2xl font-black">{game.title}</h3>
+                  <p className="text-sm text-white/70">{game.description}</p>
+                  <div className="mt-auto flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.4em] text-white/70">
+                    <span>View</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
