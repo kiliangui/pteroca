@@ -6,6 +6,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import { compare } from "bcryptjs"
 import { prisma } from "./prisma"
 import { getServerSession } from "next-auth"
+import posthog from "posthog-js";
 async function generateAuthOptions(): Promise<NextAuthOptions> {
   const [discordId, discordSecret] = await Promise.all([
     prisma.setting.findFirst({ where: { name: "discord_client_id" }}),
@@ -51,7 +52,7 @@ async function generateAuthOptions(): Promise<NextAuthOptions> {
               role = "USER";
             }
           }
-
+          posthog.identify()
           return {
             id: user.id,
             email: user.email,
@@ -91,7 +92,6 @@ async function generateAuthOptions(): Promise<NextAuthOptions> {
             });
           }
         }
-        
         if (user) token.role = user.role;
         return token;
       },

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AuthGameShowcase, showcaseGames } from "@/components/auth/GameShowcase"
+import posthog from "posthog-js"
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -60,6 +61,8 @@ export default function LoginForm() {
       if (result?.error) {
         setError("Invalid credentials")
       } else {
+        posthog.identify()
+
         const redirect = params.get("redirect")
         if (redirect) {
           router.push(redirect)
