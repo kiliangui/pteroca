@@ -25,8 +25,8 @@ export default  async function GamePage({ params }: { params: { game: string } }
     },
   })
   offers = offers.sort((a,b)=>{
-    const GBa = parseInt(a.name.split("GB")[0])
-    const GBb = parseInt(b.name.split("GB")[0])
+    const GBa = a.memory
+    const GBb = b.memory
     return GBa - GBb
   })
   return <GameClient offers={offers} game={game}  />
