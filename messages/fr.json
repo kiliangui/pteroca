@@ -168,7 +168,8 @@
     "common": {
       "rememberMe": "Se souvenir de moi",
       "orContinue": "Ou continuez avec",
-      "discord": "Continuer avec Discord"
+      "discord": "Continuer avec Discord",
+      "google": "Continuer avec Google"
     },
     "login": {
       "eyebrow": "Content de vous revoir !",

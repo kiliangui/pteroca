@@ -8,9 +8,11 @@ import { prisma } from "./prisma"
 import { getServerSession } from "next-auth"
 import posthog from "posthog-js";
 async function generateAuthOptions(): Promise<NextAuthOptions> {
-  const [discordId, discordSecret] = await Promise.all([
+  const [discordId, discordSecret,googleId,googleSecret] = await Promise.all([
     prisma.setting.findFirst({ where: { name: "discord_client_id" }}),
-    prisma.setting.findFirst({ where: { name: "discord_client_secret" }})
+    prisma.setting.findFirst({ where: { name: "discord_client_secret" }}),
+    prisma.setting.findFirst({ where: { name: "google_client_id" }}),
+    prisma.setting.findFirst({ where: { name: "google_client_secret" }})
   ]);
   console.log("discordId",discordId)
 
@@ -21,6 +23,11 @@ async function generateAuthOptions(): Promise<NextAuthOptions> {
       DiscordProvider({
         clientId: discordId?.value ?? "",
         clientSecret: discordSecret?.value ?? "",
+        
+      }),
+      GoogleProvider({
+        clientId: googleId?.value ?? "",
+        clientSecret: googleSecret?.value ?? "",
         
       }),
 
