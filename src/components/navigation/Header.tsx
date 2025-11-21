@@ -23,7 +23,7 @@ import {
 import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
 
-export function Header({siteName="Pteroca"}) {
+export function Header({siteName="HostChicken"}) {
   const t = useTranslations('header')
   const pathname = usePathname()
   const router = useRouter()

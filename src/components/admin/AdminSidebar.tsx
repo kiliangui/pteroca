@@ -33,6 +33,10 @@ const navigation = [
     name: "Categories",
     href: "/admin/categories",
     icon: FolderOpen,
+  },{
+    name: "Eggs",
+    href: "/admin/eggs",
+    icon: FolderOpen,
   },
   {
     name: "Settings",

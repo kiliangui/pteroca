@@ -1,8 +1,8 @@
 ---
-title: "Hébergement serveur Rust | Pteroca"
+title: "Hébergement serveur Rust | HostChicken"
 description: "Déployez des serveurs Rust avec wipes automatisés, Oxide/uMod, anti-cheat renforcé, et protection multi-régions pour garder vos raids équitables."
 backgroundImage: "/images/games/background/rust.png"
-modifiedAt: "2025-11-09T16:36:00Z"
+modifiedAt: "2025-11-21T16:36:00Z"
 keywords:
   - "hébergement serveur rust"
   - "serveur oxide"
@@ -12,11 +12,11 @@ keywords:
   - "serveur rust dédié"
   - "hébergement rust compétitif"
   - "rust anti-cheat hébergement"
-twitterTitle: "Serveurs Rust sans lag avec wipes auto | Pteroca"
+twitterTitle: "Serveurs Rust sans lag avec wipes auto | HostChicken"
 twitterDescription: "Lancez des serveurs Rust PvP ou PvE en quelques minutes avec Oxide/uMod, maps personnalisées et anti-DDoS managé."
 tagline: "Hébergement Rust taillé pour les wipes et les guerres de clans."
-productDescription: "Pteroca automatise les wipes, mises à jour de plugins, sauvegardes et monitoring pour garder votre communauté Rust en ligne."
-supportEmail: "support@pteroca.com"
+productDescription: "HostChicken automatise les wipes, mises à jour de plugins, sauvegardes et monitoring pour garder votre communauté Rust en ligne."
+supportEmail: "support@HostChicken.com"
 startingPrice: "9.00"
 startingCurrency: "EUR"
 ---

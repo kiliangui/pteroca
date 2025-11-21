@@ -8,6 +8,7 @@ import { BackupsTab } from "@/components/server/BackupsTab"
 import { DatabasesTab } from "@/components/server/DatabasesTab"
 import { NetworkTab } from "@/components/server/NetworkTab"
 import { SettingsTab } from "@/components/server/SettingsTab"
+import { pterodactylAccountService } from "@/lib/pterodactyl"
 
 interface ServerPageProps {
   params: {
@@ -34,14 +35,27 @@ export default async function ServerPage({ params }: ServerPageProps) {
     }
   })
 
-  const user = await prisma.user.findUnique({
+  let user = await prisma.user.findUnique({
     where: {
       id: session.user.id
     },
     select: {
-      pterodactylUserApiKey: true
+      id:true,
+      pterodactylUserApiKey: true,
+      pterodactylUserId:true
     }
   })
+  if (user && user.pterodactylUserId && !user?.pterodactylUserApiKey){
+    const api =await pterodactylAccountService.createUserApiKey(user?.pterodactylUserId)
+    user = await prisma.user.update({
+      where:{
+        id:user.id
+      },
+      data:{
+        pterodactylUserApiKey:api
+      }
+    })
+  }
 
   // Fetch Pterodactyl URL from settings
   const pterodactylUrlSetting = await prisma.setting.findUnique({

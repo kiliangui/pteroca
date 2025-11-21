@@ -1,7 +1,7 @@
 ---
 title: "Hébergement Serveur Minecraft, ARK, Rust & Satisfactory — Ultra Rapide & Protégé (FR)"
 description: "Serveurs de jeux en France avec latence ultra-basse, installation instantanée, protection DDoS avancée et modpacks prêts à l’emploi. Minecraft, ARK, Rust, Satisfactory. Démarrez en quelques secondes."
-modifiedAt: "2025-11-09T16:36:00Z"
+modifiedAt: "2025-11-21T16:36:00Z"
 keywords:
   - "hébergement serveur minecraft"
   - "hébergement serveur rust"
@@ -26,4 +26,4 @@ startingPrice: "7.00"
 startingCurrency: "EUR"
 ---
 
-Pteroca offre un hébergement hautes performances, une création de serveur instantanée et un support joueur 24/7 pour que vos mondes restent toujours disponibles.
+HostChicken offre un hébergement hautes performances, une création de serveur instantanée et un support joueur 24/7 pour que vos mondes restent toujours disponibles.

@@ -196,7 +196,8 @@ export function ServersTable() {
                         size="sm"
                         variant="outline"
                         onClick={() =>
-                          (window.location.href = `/sso/redirect?redirectPath=/server/${server.pterodactylServerIdentifier}`)
+                          (window.location.href = `/dashboard/servers/${server.id}`)
+                          //(window.location.href = `/sso/redirect?redirectPath=/server/${server.pterodactylServerIdentifier}`)
                         }
                         className="gap-2"
                       >

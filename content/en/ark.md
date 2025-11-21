@@ -1,8 +1,8 @@
 ---
-title: "ARK Server Hosting | Pteroca"
+title: "ARK Server Hosting | HostChicken"
 description: "Host ARK: Survival Ascended or Ascended clusters with automated mod syncing, dino backups, cross-map travel, and cluster autoscaling."
 backgroundImage: "/images/games/background/ark.png"
-modifiedAt: "2025-11-09T16:36:00Z"
+modifiedAt: "2025-11-21T16:36:00Z"
 keywords:
   - "ark server hosting"
   - "ark survival ascended hosting"
@@ -10,11 +10,11 @@ keywords:
   - "ark modded server"
   - "ark dino backups"
   - "ark cross-map hosting"
-twitterTitle: "Managed ARK: Survival Server Hosting | Pteroca"
+twitterTitle: "Managed ARK: Survival Server Hosting | HostChicken"
 twitterDescription: "Launch ASA or ASE clusters with Workshop syncing, safe taming presets, and disaster-proof backups."
 tagline: "Survive every raid with autoscaling ARK infrastructure."
-productDescription: "Pteroca keeps your ARK clusters patched, synced, and backed up so players can travel freely between maps."
-supportEmail: "support@pteroca.com"
+productDescription: "HostChicken keeps your ARK clusters patched, synced, and backed up so players can travel freely between maps."
+supportEmail: "support@HostChicken.com"
 startingPrice: "11.00"
 startingCurrency: "EUR"
 ---

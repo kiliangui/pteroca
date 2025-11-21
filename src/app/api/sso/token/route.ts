@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       token,
-      redirectUrl: `${pterodactylUrl}/pteroca/authorize`,
+      redirectUrl: `${pterodactylUrl}/HostChicken/authorize`,
       redirectPath: redirectPath || '/',
     });
   } catch (error) {

@@ -5,11 +5,11 @@ import { parseMarkdownWithFrontmatter } from "@/lib/md";
 
 const CONTENT_BASE_PATH = path.join(process.cwd(), "content");
 
-export const DEFAULT_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://pteroca.com";
-export const FALLBACK_SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "Pteroca";
+export const DEFAULT_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://HostChicken.com";
+export const FALLBACK_SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "HostChicken";
 export const SUPPORTED_LOCALES = ["en", "fr"] as const;
 export const SOCIAL_IMAGE_PATH = "/logo.png";
-const RAW_TWITTER_HANDLE = process.env.NEXT_PUBLIC_TWITTER_HANDLE ?? "@pteroca";
+const RAW_TWITTER_HANDLE = process.env.NEXT_PUBLIC_TWITTER_HANDLE ?? "@HostChicken";
 export const TWITTER_HANDLE = RAW_TWITTER_HANDLE.startsWith("@")
   ? RAW_TWITTER_HANDLE
   : `@${RAW_TWITTER_HANDLE}`;
@@ -47,7 +47,7 @@ export type ResolvedMetadataContent = {
 };
 
 const DEFAULT_FALLBACK: ResolvedMetadataContent = {
-  title: "Pteroca | Managed Game Server Hosting",
+  title: "HostChicken | Managed Game Server Hosting",
   description:
     "Deploy low-latency game servers with instant scaling, DDoS protection, and 24/7 gamer support.",
   keywords: [
@@ -56,13 +56,13 @@ const DEFAULT_FALLBACK: ResolvedMetadataContent = {
     "rust server hosting",
     "ark server hosting",
   ],
-  twitterTitle: "Launch Lightning-Fast Game Servers | Pteroca",
+  twitterTitle: "Launch Lightning-Fast Game Servers | HostChicken",
   twitterDescription:
     "Spin up mod-ready Minecraft, Rust, and ARK servers with instant scaling and gamer-first support.",
   tagline: "Instant, DDoS-proof servers for your favorite games.",
   productDescription:
-    "Pteroca delivers managed infrastructure, one-click modpacks, autoscaling resources, and real-time monitoring.",
-  supportEmail: "support@pteroca.com",
+    "HostChicken delivers managed infrastructure, one-click modpacks, autoscaling resources, and real-time monitoring.",
+  supportEmail: "support@HostChicken.com",
   startingPrice: "7.00",
   startingCurrency: "EUR",
   modifiedAt: "2024-11-07T00:00:00Z",

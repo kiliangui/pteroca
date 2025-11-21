@@ -22,10 +22,10 @@ async function main() {
   // Create admin user
   const adminPassword = await bcrypt.hash('admin123', 12)
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@pteroca.com' },
+    where: { email: 'admin@HostChicken.com' },
     update: {},
     create: {
-      email: 'admin@pteroca.com',
+      email: 'admin@HostChicken.com',
       password: adminPassword,
       name: 'Admin',
       surname: 'User',
@@ -40,10 +40,10 @@ async function main() {
   // Create test user
   const userPassword = await bcrypt.hash('user123', 12)
   const user = await prisma.user.upsert({
-    where: { email: 'user@pteroca.com' },
+    where: { email: 'user@HostChicken.com' },
     update: {},
     create: {
-      email: 'user@pteroca.com',
+      email: 'user@HostChicken.com',
       password: userPassword,
       name: 'Test',
       surname: 'User',
@@ -132,7 +132,7 @@ async function main() {
 
   // Create sample settings
   const settings = [
-    { name: 'site_name', value: 'PteroCA', type: 'text', context: 'General', hierarchy: 1 },
+    { name: 'site_name', value: 'HostChicken', type: 'text', context: 'General', hierarchy: 1 },
     { name: 'site_description', value: 'Game Server Hosting Platform', type: 'textarea', context: 'General', hierarchy: 2 },
     { name: 'default_theme', value: 'default', type: 'text', context: 'Appearance', hierarchy: 1 },
     { name: 'enable_dark_mode', value: 'true', type: 'boolean', context: 'Appearance', hierarchy: 2 },
@@ -184,8 +184,8 @@ async function main() {
   })
 
   console.log('✅ Database seeding completed!')
-  console.log('Admin user: admin@pteroca.com / admin123')
-  console.log('Test user: user@pteroca.com / user123')
+  console.log('Admin user: admin@HostChicken.com / admin123')
+  console.log('Test user: user@HostChicken.com / user123')
   console.log('')
   console.log('📊 Seeded data summary:')
   console.log(`   • ${await prisma.user.count()} users`)
