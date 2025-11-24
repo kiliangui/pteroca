@@ -83,6 +83,7 @@ export abstract class ServerFactory {
       this.config.limits,
       this.config.featureLimits,
       this.config.allocationId,
+      //@ts-expect-error no egg
       this.getStartupCommand(),
       this.getEnvironmentVariables()
     )

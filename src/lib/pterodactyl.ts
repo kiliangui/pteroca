@@ -719,7 +719,7 @@ class PterodactylServerService extends PterodactylService {
 
       return response.data.attributes
     } catch (error) {
-      console.error('Error updating server:', error.response.data.errors)
+      console.error('Error updating server:', error)
       throw new Error('Failed to update server')
     }
   }

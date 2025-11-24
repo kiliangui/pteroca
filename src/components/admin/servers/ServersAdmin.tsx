@@ -66,7 +66,7 @@ export function ServerAdmin() {
     <div>
       {servers.map((server)=>{
         console.log(server)
-        return <p>{server.name},{server.pterodactylServerIdentifier}{server.pterodactylServerId}</p>
+        return <p key={server.name}>{server.name}</p>
       })}
     </div>
   )

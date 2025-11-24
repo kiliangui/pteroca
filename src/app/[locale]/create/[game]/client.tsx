@@ -48,7 +48,6 @@ export function GameClient({ offers, game }: { offers: Offer[]; game: string }) 
   const games = createT.raw("games") as GameCardConfig[];
   const gameI= games.find((s)=>s.slug ==decodeURIComponent(game).toLocaleLowerCase())
 
-  if (!gameI) return <></>
   useEffect(() => {
     const currentOffer = offers.find((ofr) => ofr.name === offer);
     if (offer === "freetrial") {
@@ -112,6 +111,7 @@ export function GameClient({ offers, game }: { offers: Offer[]; game: string }) 
       : Number(
           selectedOffer?.prices.find((price) => price.type === "month" && price.value === 1)?.price ?? 0
         );
+  if (!gameI) return <></>
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 space-y-10">
