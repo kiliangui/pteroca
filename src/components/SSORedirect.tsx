@@ -44,13 +44,13 @@ export default function SSORedirect({ redirectPath }: SSORedirectProps) {
 
         const tokenInput = document.createElement('input');
         tokenInput.type = 'hidden';
-        tokenInput.name = 'HostChicken_sso_token';
+        tokenInput.name = 'pteroca_sso_token';
         tokenInput.value = token;
         form.appendChild(tokenInput);
 
         const redirectInput = document.createElement('input');
         redirectInput.type = 'hidden';
-        redirectInput.name = 'HostChicken_sso_redirect';
+        redirectInput.name = 'pteroca_sso_redirect';
         redirectInput.value = finalRedirectPath;
         form.appendChild(redirectInput);
 
