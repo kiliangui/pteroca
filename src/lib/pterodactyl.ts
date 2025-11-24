@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { prisma } from './prisma'
+import { features } from 'process'
 
 export interface PterodactylBackup {
   uuid: string
@@ -403,7 +404,7 @@ abstract class PterodactylService {
     }
   }
 
-  async getFreeAllocationOnNode(nodeId: number): Promise<number> {
+  async getFreeAllocationOnNode(nodeId: number,type="id"): Promise<number> {
     try {
       const response = await axios.get(
         `${(await this.getSettings()).baseUrl}/api/application/nodes/${nodeId}/allocations`,
@@ -417,6 +418,8 @@ abstract class PterodactylService {
       if (!freeAllocation) {
         throw new Error('No free allocations available on this node')
       }
+      if (type=="all") return freeAllocation.attributes
+      if (type=="port") return freeAllocation.attributes.port
 
       return freeAllocation.attributes.id
     } catch (error) {
@@ -649,7 +652,12 @@ class PterodactylServerService extends PterodactylService {
     serverId: number,
     updates: Partial<{
       name: string
-      user: number
+      user: number,
+      allocation: Partial<{
+        default:number,
+        additionnal:[any]
+      }>,
+      environment:any,
       limits: Partial<{
         memory: number
         swap: number
@@ -665,15 +673,53 @@ class PterodactylServerService extends PterodactylService {
     }>
   ): Promise<PterodactylServer> {
     try {
+      // THIS API IS AWEFULL. WORKS FOR SATISFACTORY. DON'T MODIFY
+      console.log("ADDING ADITIONNAL: ", updates.allocation?.additionnal,"body: ", {add_allocations:updates.allocation?.additionnal,
+          allocation:updates.allocation?.default,
+          memory:updates.limits?.memory,
+          swap:updates.limits?.swap,
+          disk:updates.limits?.disk,
+          io:updates.limits?.io,
+          cpu:updates.limits?.cpu,
+          features_limits:updates.feature_limits
+
+
+        })
       const response = await axios.patch(
-        `${(await this.getSettings()).baseUrl}/api/application/servers/${serverId}`,
-        updates,
+        `${(await this.getSettings()).baseUrl}/api/application/servers/${serverId}/build`,
+        {
+          "allocation": updates.allocation?.default,
+          "memory": updates.limits?.memory,
+          "swap": updates.limits?.swap,
+          "disk": updates.limits?.disk,
+          "io": updates.limits?.io,
+          "cpu": updates.limits?.cpu,
+          "feature_limits": {
+            "databases": 5,
+            "allocations": 2,
+            "backups": 10
+    },
+    "add_allocations" : updates.allocation?.additionnal
+
+        },
+        { headers: await this.getHeaders() }
+      )
+      let respons2e
+      if (updates.environment) respons2e = await axios.patch(
+        `${(await this.getSettings()).baseUrl}/api/application/servers/${serverId}/startup`,
+        { "startup": "./Engine/Binaries/Linux/*-Linux-Shipping FactoryGame -Port={{SERVER_PORT}} -ReliablePort={{RELIABLE_PORT}}",
+    "environment": {
+      ...updates.environment
+    },
+    "egg": 19,
+  image:"ghcr.io/ptero-eggs/steamcmd:debian",
+  skip_scripts:false},
         { headers: await this.getHeaders() }
       )
 
       return response.data.attributes
     } catch (error) {
-      console.error('Error updating server:', error)
+      console.error('Error updating server:', error.response.data.errors)
       throw new Error('Failed to update server')
     }
   }

@@ -70,4 +70,41 @@ export async function installServerOnPterodactyl(serverId: number, game: string,
     }
   })
 
+  if (game=="satisfactory"){
+    try{
+const allocation2 = await pterodactylServerService.getFreeAllocationOnNode(nodeId,"all") as any;
+     await pterodactylServerService.updateServer(pteroServer.id,{
+      allocation:{
+        default:allocation,
+        additionnal:[allocation2?.id]
+      },
+      limits:{
+        memory: product.memory,
+        swap: product.swap,
+        disk: product.diskSpace,
+        io: product.io,
+        cpu: product.cpu
+      },
+      feature_limits:{
+        databases:2,
+        allocations:3,
+        backups:5
+      },
+      environment:{
+        ...gameEgg.environment,
+        "RELIABLE_PORT":allocation2.port.toString()
+      }
+     })
+    }catch(e){
+      await pterodactylServerService.deleteServer(pteroServer.id)
+      await prisma.server.delete({
+        where:{
+          id:server.id
+        }
+      })
+    }
+    
+
+  }
+
 }
