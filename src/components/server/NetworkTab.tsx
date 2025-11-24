@@ -20,11 +20,15 @@ interface Allocation {
   description?: string
 }
 
-interface NetworkTabProps {
+interface ConsoleTabProps {
   serverId: number
+  serverIdentifier: string | null
+  userApiKey: string
+  pterodactylUrl: string
 }
 
-export function NetworkTab({ serverId }: NetworkTabProps) {
+
+export function NetworkTab({ serverId, serverIdentifier, userApiKey, pterodactylUrl }: ConsoleTabProps) {
   const [allocations, setAllocations] = useState<Allocation[]>([])
   const [loading, setLoading] = useState(true)
   const [createDialogOpen, setCreateDialogOpen] = useState(false)

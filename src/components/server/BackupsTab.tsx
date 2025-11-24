@@ -18,11 +18,14 @@ interface Backup {
   status: "completed" | "pending" | "failed"
 }
 
-interface BackupsTabProps {
+interface ConsoleTabProps {
   serverId: number
+  serverIdentifier: string | null
+  userApiKey: string
+  pterodactylUrl: string
 }
 
-export function BackupsTab({ serverId }: BackupsTabProps) {
+export function BackupsTab({ serverId, serverIdentifier, userApiKey, pterodactylUrl }: ConsoleTabProps) {
   const [backups, setBackups] = useState<Backup[]>([])
   const [loading, setLoading] = useState(true)
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
@@ -34,7 +37,12 @@ export function BackupsTab({ serverId }: BackupsTabProps) {
 
   const fetchBackups = async () => {
     try {
-      const response = await fetch(`/api/servers/${serverId}/backups`)
+      const response = await fetch(`${pterodactylUrl}/api/client/servers/${serverIdentifier}/backups`,{
+        headers: {
+          'Authorization': `Bearer ${userApiKey}`,
+          'Accept': 'Application/vnd.pterodactyl.v1+json'
+        }
+      })
       if (response.ok) {
         const data = await response.json()
         setBackups(data.backups || [])
@@ -50,10 +58,11 @@ export function BackupsTab({ serverId }: BackupsTabProps) {
     if (!backupName.trim()) return
 
     try {
-      const response = await fetch(`/api/servers/${serverId}/backups`, {
+      const response = await fetch(`${pterodactylUrl}/api/client/servers/${serverIdentifier}/backups`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          'Authorization': `Bearer ${userApiKey}`,
+          'Accept': 'Application/vnd.pterodactyl.v1+json'
         },
         body: JSON.stringify({ name: backupName })
       })

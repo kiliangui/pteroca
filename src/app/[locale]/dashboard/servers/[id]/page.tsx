@@ -119,23 +119,23 @@ export default async function ServerPage({ params }: ServerPageProps) {
           </TabsList>
 
           <TabsContent value="console">
-            <ConsoleTab serverId={id} serverIdentifier={server.pterodactylServerIdentifier} userApiKey={user?.pterodactylUserApiKey || ''} pterodactylUrl={pterodactylUrl} />
+            <ConsoleTab  serverId={id} serverIdentifier={server.pterodactylServerIdentifier} userApiKey={user?.pterodactylUserApiKey || ''} pterodactylUrl={pterodactylUrl} />
           </TabsContent>
 
           <TabsContent value="backups">
-            <BackupsTab serverId={id} />
+            <BackupsTab  serverId={id} serverIdentifier={server.pterodactylServerIdentifier} userApiKey={user?.pterodactylUserApiKey || ''} pterodactylUrl={pterodactylUrl}  />
           </TabsContent>
 
           <TabsContent value="databases">
-            <DatabasesTab serverId={id} />
+            <DatabasesTab  serverId={id} serverIdentifier={server.pterodactylServerIdentifier} userApiKey={user?.pterodactylUserApiKey || ''} pterodactylUrl={pterodactylUrl}  />
           </TabsContent>
 
           <TabsContent value="network">
-            <NetworkTab serverId={id} />
+            <NetworkTab  serverId={id} serverIdentifier={server.pterodactylServerIdentifier} userApiKey={user?.pterodactylUserApiKey || ''} pterodactylUrl={pterodactylUrl}  />
           </TabsContent>
 
           <TabsContent value="settings">
-            <SettingsTab serverId={id} />
+            <SettingsTab  serverId={id} serverIdentifier={server.pterodactylServerIdentifier} userApiKey={user?.pterodactylUserApiKey || ''} pterodactylUrl={pterodactylUrl}  />
           </TabsContent>
         </Tabs>
       </div>

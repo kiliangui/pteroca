@@ -20,11 +20,15 @@ interface Database {
   createdAt: string
 }
 
-interface DatabasesTabProps {
+interface ConsoleTabProps {
   serverId: number
+  serverIdentifier: string | null
+  userApiKey: string
+  pterodactylUrl: string
 }
 
-export function DatabasesTab({ serverId }: DatabasesTabProps) {
+
+export function DatabasesTab({ serverId, serverIdentifier, userApiKey, pterodactylUrl }: ConsoleTabProps) {
   const [databases, setDatabases] = useState<Database[]>([])
   const [loading, setLoading] = useState(true)
   const [createDialogOpen, setCreateDialogOpen] = useState(false)

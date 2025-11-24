@@ -19,11 +19,15 @@ interface ServerSettings {
   environment: Record<string, string>
 }
 
-interface SettingsTabProps {
+interface ConsoleTabProps {
   serverId: number
+  serverIdentifier: string | null
+  userApiKey: string
+  pterodactylUrl: string
 }
 
-export function SettingsTab({ serverId }: SettingsTabProps) {
+
+export function SettingsTab({ serverId, serverIdentifier, userApiKey, pterodactylUrl }: ConsoleTabProps) {
   const [settings, setSettings] = useState<ServerSettings>({
     name: "",
     autoRenewal: false,

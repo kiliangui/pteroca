@@ -197,90 +197,32 @@ export function ConsoleTab({ serverId, serverIdentifier, userApiKey, pterodactyl
   }
 
   const handleStartServer = async () => {
-    try {
-      const response = await fetch(`${pterodactylUrl}/api/client/servers/${serverIdentifier}/power`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${userApiKey}`,
-          'Accept': 'Application/vnd.pterodactyl.v1+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ signal: 'start' })
-      })
-      if (response.ok) {
-        if (xtermRef.current) {
-          xtermRef.current.write('\r\n[INFO] Server starting...\r\n')
-        }
-      }
-    } catch (error) {
-      console.error("Failed to start server:", error)
-    }
+   await socket?.send(JSON.stringify({
+      event: 'set state',
+      args: ['start']
+    }))
   }
 
   const handleStopServer = async () => {
-    try {
-      const response = await fetch(`${pterodactylUrl}/api/client/servers/${serverIdentifier}/power`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${userApiKey}`,
-          'Accept': 'Application/vnd.pterodactyl.v1+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ signal: 'stop' })
-      })
-      if (response.ok) {
-        if (xtermRef.current) {
-          xtermRef.current.write('\r\n[INFO] Server stopping...\r\n')
-        }
-      }
-    } catch (error) {
-      console.error("Failed to stop server:", error)
-    }
+    await socket?.send(JSON.stringify({
+      event: 'set state',
+      args: ['stop']
+    }))
   }
 
   const handleRestartServer = async () => {
-    try {
-      const response = await fetch(`${pterodactylUrl}/api/client/servers/${serverIdentifier}/power`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${userApiKey}`,
-          'Accept': 'Application/vnd.pterodactyl.v1+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ signal: 'restart' })
-      })
-      if (response.ok) {
-        if (xtermRef.current) {
-          xtermRef.current.write('\r\n[INFO] Server restarting...\r\n')
-        }
-      }
-    } catch (error) {
-      console.error("Failed to restart server:", error)
-    }
+    await socket?.send(JSON.stringify({
+      event: 'set state',
+      args: ['restart']
+    }))
   }
 
   const handleSendCommand = async () => {
     if (!command.trim()) return
-
-    try {
-      const response = await fetch(`${pterodactylUrl}/api/client/servers/${serverIdentifier}/command`, {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${userApiKey}`,
-          'Accept': 'Application/vnd.pterodactyl.v1+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ command })
-      })
-      if (response.ok) {
-        if (xtermRef.current) {
-          xtermRef.current.write(`\r\n> ${command}\r\n`)
-        }
-        setCommand("")
-      }
-    } catch (error) {
-      console.error("Failed to send command:", error)
-    }
+    await socket?.send(JSON.stringify({
+      event: 'send command',
+      args: [command]
+    }))
   }
 
   const handleAcceptEula = async () => {
