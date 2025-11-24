@@ -157,6 +157,13 @@ export default function Home() {
                     </button>
                   )
                 })}
+                {selectedGame&&
+               <Button size="lg" className="w-full sm:w-auto px-8 py-8 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all" asChild>
+                <Link href={"/create/"+selectedGame}>
+                  {t('hero.startServer')}
+                </Link>
+              </Button>
+}
               </div>
             </div>
           </div>
