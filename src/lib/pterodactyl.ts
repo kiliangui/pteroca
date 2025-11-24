@@ -576,8 +576,8 @@ class PterodactylServerService extends PterodactylService {
       backups: number
     },
     allocationId: number,
+    environment?: Record<string, string>,
     startupCommand?: string,
-    environment?: Record<string, string>
   ): Promise<PterodactylServer> {
     try {
       // Get egg details to get default startup command and docker image
@@ -598,7 +598,7 @@ class PterodactylServerService extends PterodactylService {
         allocation: {
           default: allocationId
         },
-        environment: {
+        environment: environment? environment : {
           "VANILLA_VERSION": "latest",
           "SERVER_JARFILE": "server.jar"
         },
@@ -608,7 +608,6 @@ class PterodactylServerService extends PterodactylService {
 
       // Include environment variables if provided
       if (environment && Object.keys(environment).length > 0) {
-      //@ts-expect-error any
 
         payload.environment = environment
       }

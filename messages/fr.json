@@ -244,6 +244,29 @@
         ]
       },
       {
+        "slug": "ark:sa",
+        "name": "Ark Survival Ascended",
+        "background": "/images/games/background/arksa.jpg",
+        "freeTrial": false,
+        "features": [
+          "Serveurs haute performance",
+          "Support de mods",
+          "Protection DDoS",
+          "Sauvegardes automatiques"
+        ]
+      },
+      {
+        "slug": "ark:se",
+        "name": "Ark Survival Evolved",
+        "background": "/images/games/background/ark.png",
+        "freeTrial": false,
+        "features": [
+          "Serveurs haute performance",
+          "Support de mods",
+          "Protection DDoS",
+          "Sauvegardes automatiques"
+        ]
+      },{
         "slug": "rust",
         "name": "Rust",
         "background": "/images/games/rust.jpg",

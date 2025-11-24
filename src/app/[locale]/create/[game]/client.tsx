@@ -20,6 +20,13 @@ type Offer = {
   recommended?: boolean;
   prices: ProductPrice[];
 };
+type GameCardConfig = {
+  slug: string;
+  name: string;
+  background: string;
+  freeTrial: boolean;
+  features: string[];
+};
 
 const heroBackgrounds: Record<string, string> = {
   minecraft: "/images/games/minecraft.jpg",
@@ -36,7 +43,12 @@ export function GameClient({ offers, game }: { offers: Offer[]; game: string }) 
   const [period, setPeriod] = useState(1);
   const [priceId, setPriceId] = useState("");
   const [productId, setProductId] = useState("");
+  const createT = useTranslations("create");
 
+  const games = createT.raw("games") as GameCardConfig[];
+  const gameI= games.find((s)=>s.slug ==decodeURIComponent(game).toLocaleLowerCase())
+
+  if (!gameI) return <></>
   useEffect(() => {
     const currentOffer = offers.find((ofr) => ofr.name === offer);
     if (offer === "freetrial") {
@@ -107,7 +119,7 @@ export function GameClient({ offers, game }: { offers: Offer[]; game: string }) 
         <div
           className="absolute inset-0 opacity-60"
           style={{
-            backgroundImage: `url(${heroImage})`,
+            backgroundImage: `url(${gameI.background})`,
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}
@@ -121,7 +133,7 @@ export function GameClient({ offers, game }: { offers: Offer[]; game: string }) 
             </Link>
             <div className="flex flex-col gap-2">
               <p className="text-sm uppercase tracking-[0.3em] text-white/70">{t("heroIntro")}</p>
-              <h1 className="text-3xl md:text-5xl font-black tracking-tight">{game}</h1>
+              <h1 className="text-3xl md:text-5xl font-black tracking-tight">{decodeURIComponent(game).toUpperCase()}</h1>
               <p className="text-base text-white/80 max-w-2xl">{t("heroSubtitle")}</p>
             </div>
           </div>

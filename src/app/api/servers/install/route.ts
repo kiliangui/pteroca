@@ -1,5 +1,7 @@
+import { eggs } from "@/lib/eggs";
 import { prisma } from "@/lib/prisma";
 import { pterodactylAccountService, pterodactylServerService } from "@/lib/pterodactyl";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     // get the serverId, game, productId from the request body
@@ -51,7 +53,12 @@ export async function installServerOnPterodactyl(serverId: number, game: string,
   const allocation = await pterodactylServerService.getFreeAllocationOnNode(nodeId);
   console.log("ALLOCATION :",allocation);
   console.log("user id : ",user.id)
-  const pteroServer = await pterodactylServerService.createServer(server.name || "myserver",pterodactylUserId,6,1,{memory:product.memory,cpu:product.cpu,disk:product.diskSpace,io:500,swap:0},{databases:1,allocations:2,backups:1},allocation);
+
+  const gameEgg = eggs[game]
+  if (!gameEgg) return NextResponse.json({message:"GAME NOT FOUND"})
+
+
+  const pteroServer = await pterodactylServerService.createServer(server.name || "myserver",pterodactylUserId,gameEgg.id,gameEgg.nest,{memory:product.memory,cpu:product.cpu,disk:product.diskSpace,io:500,swap:0},{databases:1,allocations:2,backups:1},allocation,gameEgg.environment);
   await prisma.server.update({
     where:{
         id:server.id

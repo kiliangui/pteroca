@@ -242,8 +242,31 @@
           "DDoS Protection",
           "Automatic Backups"
         ]
+      },{
+        "slug": "ark:sa",
+        "name": "Ark Survival Ascended",
+        "background": "/images/games/background/arksa.png",
+        "freeTrial": false,
+        "features": [
+          "High Performance Servers",
+          "Mod Support",
+          "DDoS Protection",
+          "Automatic Backups"
+        ]
       },
+      
       {
+        "slug": "ark:se",
+        "name": "Ark Survival Evolved",
+        "background": "/images/games/background/ark.png",
+        "freeTrial": false,
+        "features": [
+          "High Performance Servers",
+          "Mod Support",
+          "DDoS Protection",
+          "Automatic Backups"
+        ]
+      },{
         "slug": "rust",
         "name": "Rust",
         "background": "/images/games/rust.jpg",
