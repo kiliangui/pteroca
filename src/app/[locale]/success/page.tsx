@@ -54,6 +54,7 @@ export default function Page() {
       }
 
       window.localStorage.setItem(CONVERSION_STORAGE_KEY, "true");
+      window.location.href="/dashboard/servers"
     };
 
     sendConversion();
