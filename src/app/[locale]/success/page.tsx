@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const CONVERSION_STORAGE_KEY = "conversionPushed";
 const GTAG_ID = "AW-313446119/JnzgCI6bysgbEOedu5UB";
 
 export default function Page() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams?.get("session_id") ?? null;
-  console.log("PAGE")
   useEffect(() => {
     console.log("GTAG")
     if (!sessionId) {
@@ -54,11 +54,19 @@ export default function Page() {
       }
 
       window.localStorage.setItem(CONVERSION_STORAGE_KEY, "true");
-      window.location.href="/dashboard/servers"
+      
     };
 
     sendConversion();
   }, [sessionId]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.replace("/dashboard/servers");
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [router]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 py-12 text-center">
