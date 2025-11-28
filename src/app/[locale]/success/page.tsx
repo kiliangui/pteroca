@@ -5,16 +5,18 @@ import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 const CONVERSION_STORAGE_KEY = "conversionPushed";
-const GTAG_ID = "AW-313446119";
+const GTAG_ID = "AW-313446119/JnzgCI6bysgbEOedu5UB";
 
 export default function Page() {
   const searchParams = useSearchParams();
   const sessionId = searchParams?.get("session_id") ?? null;
-
+  console.log("PAGE")
   useEffect(() => {
+    console.log("GTAG")
     if (!sessionId) {
       return;
     }
+    console.log("SESSIONID")
 
     if (typeof window === "undefined") {
       return;
@@ -28,6 +30,7 @@ export default function Page() {
     }
 
     const sendConversion = () => {
+      console.log("TRYING SEN")
       const gtag = (window as typeof window & {
         gtag?: (...args: unknown[]) => void;
         dataLayer?: Array<Record<string, unknown>>;
@@ -39,10 +42,11 @@ export default function Page() {
           transaction_id: sessionId,
         });
       } else {
-        //@ts-expect-error Datalayer on layout
-        window?.dataLayer = window.dataLayer || [];
-        //@ts-expect-error Datalayer on layout
-        window?.dataLayer.push({
+        const win = window as typeof window & {
+          dataLayer?: Array<Record<string, unknown>>;
+        };
+        win.dataLayer = win.dataLayer ?? [];
+        win.dataLayer.push({
           event: "subscription_created",
           send_to: GTAG_ID,
           transaction_id: sessionId,
